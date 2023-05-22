@@ -21,10 +21,10 @@ export default function Header() {
         onClick={() => push('/')}
         size={25}
       />
-      <div className="flex items-center gap-2">
+      <button className="flex items-center gap-2">
         <FcCalendar size={20} />
         Jan/2023
-      </div>
+      </button>
       <div className="flex">
         <FcReadingEbook
           className="cursor-pointer border border-gray-300 rounded-full"

@@ -25,7 +25,7 @@ export default function Income() {
         <div className="font-semibold text-indigo-600">Income</div>
         <button className="font-semibold text-indigo-600">View all</button>
       </div>
-      <div className="h-52 overflow-auto">
+      <div className="h-52 overflow-y-auto">
         {expenses.map((expense) => (
           <FinancialMovements key={expense.id} movements={expense} />
         ))}
