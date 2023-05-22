@@ -33,7 +33,7 @@ export default function Expenses() {
     <div>
       <div className="flex justify-between mx-5">
         <div className="font-semibold text-indigo-600">Expenses</div>
-        <div className="font-semibold text-indigo-600">View all</div>
+        <button className="font-semibold text-indigo-600">View all</button>
       </div>
       <div className="h-52 overflow-auto">
         {expenses.map((expense) => (

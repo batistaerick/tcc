@@ -3,28 +3,18 @@ import FinancialMovements from './subcomponents/FinancialMovements';
 const expenses = [
   {
     id: '2312322323',
-    type: 'Home',
-    value: 425,
+    type: 'Salary',
+    value: 2000,
   },
   {
     id: '1222',
-    type: 'Health',
-    value: 116,
+    type: 'Vale',
+    value: 600,
   },
   {
     id: '33232',
-    type: 'Groceries',
+    type: 'Freelances',
     value: 81,
-  },
-  {
-    id: '65656',
-    type: 'Shopping',
-    value: 64,
-  },
-  {
-    id: '67676',
-    type: 'Eating out',
-    value: 325.5,
   },
 ];
 
@@ -33,7 +23,7 @@ export default function Income() {
     <div>
       <div className="flex justify-between mx-5 overflow-auto">
         <div className="font-semibold text-indigo-600">Income</div>
-        <div className="font-semibold text-indigo-600">View all</div>
+        <button className="font-semibold text-indigo-600">View all</button>
       </div>
       <div className="h-52 overflow-auto">
         {expenses.map((expense) => (
