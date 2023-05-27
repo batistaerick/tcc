@@ -1,3 +1,4 @@
+import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 const STYLE_LIST =
@@ -9,6 +10,10 @@ interface DropdownMenuProps {
 
 export default function DropdownMenu({ isOpen }: DropdownMenuProps) {
   const { push } = useRouter();
+
+  function handleSignOut() {
+    signOut().catch((error) => console.error(error));
+  }
 
   return (
     <div
@@ -25,7 +30,9 @@ export default function DropdownMenu({ isOpen }: DropdownMenuProps) {
         <li className={STYLE_LIST} onClick={() => push('/settings')}>
           Settings
         </li>
-        <li className={STYLE_LIST}>Sign out</li>
+        <li className={STYLE_LIST} onClick={handleSignOut}>
+          Sign out
+        </li>
       </ul>
     </div>
   );

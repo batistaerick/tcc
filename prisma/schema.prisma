@@ -11,13 +11,55 @@ model User {
   id String @id @default(uuid()) @map("id")
   name String
   image String?
-  email String? @unique
+  email String @unique
   emailVerified DateTime?
   hashedPassword String? @db.VarChar
   createdAt DateTime @default(now()) @db.Timestamp
   updateAt DateTime @updatedAt @db.Timestamp
   sessions Session[]
   accounts Account[]
+  expenses Expense[]
+  incomes Income[]
+  fixedExpenses FixedExpense[]
+  fixedIncome FixedIncome[]
+}
+
+model Expense {
+  id String @id @default(uuid()) @map("id")
+  userId String @map("user_id")
+  category String
+  notes String
+  date DateTime
+  amount Float
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Income {
+  id String @id @default(uuid()) @map("id")
+  userId String @map("user_id")
+  category String
+  notes String
+  date DateTime
+  amount Float
+  user User @relation(fields: [userId], references: [id])
+}
+
+model FixedExpense {
+  id String @id @default(uuid()) @map("id")
+  userId String @map("user_id")
+  category String
+  notes String
+  amount Float
+  user User @relation(fields: [userId], references: [id])
+}
+
+model FixedIncome {
+  id String @id @default(uuid()) @map("id")
+  userId String @map("user_id")
+  category String
+  notes String
+  amount Float
+  user User @relation(fields: [userId], references: [id])
 }
 
 model Account {

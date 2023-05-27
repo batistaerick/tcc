@@ -1,4 +1,4 @@
-import prismadb from '@/libs/prismadb';
+import { prismadb } from '@/libs/prismadb';
 import bcrypt from 'bcrypt';
 
 export async function POST(request: Request) {

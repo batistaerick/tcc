@@ -26,7 +26,7 @@ export default function Auth() {
     await signIn('credentials', {
       email,
       password,
-      callbackUrl: '/profiles',
+      callbackUrl: '/',
     }).catch((error) => console.error(error));
   }, [email, password]);
 
