@@ -43,6 +43,7 @@ export default function Input({
       />
       <label
         className={`
+          cursor-text
           absolute
           text-md
           text-zinc-400

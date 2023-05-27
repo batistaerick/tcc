@@ -1,4 +1,4 @@
-import FinancialMovements from './subcomponents/FinancialMovements';
+import FinancialMovements from './FinancialMovements';
 
 const expenses = [
   {
