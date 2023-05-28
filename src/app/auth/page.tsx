@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { KeyboardEvent, useCallback, useState } from 'react';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
-import wallet from '../../images/wallet.png';
+import wallet from '../../../public/images/wallet.png';
 
 export default function Auth() {
   const [email, setEmail] = useState<string>('');
@@ -67,7 +67,7 @@ export default function Auth() {
         bg-no-repeat bg-center bg-fixed bg-cover
       `}
     >
-      <div className="bg-dark-theme w-full h-full lg:bg-opacity-50">
+      <div className="bg-zinc-900 w-full h-full lg:bg-opacity-50">
         <nav className="px-12 py-10 flex justify-center items-center">
           <Image src={wallet} alt="Logo" width={48} height={48} />
         </nav>

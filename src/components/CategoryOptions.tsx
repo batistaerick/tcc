@@ -1,19 +1,20 @@
 import { ChangeEvent } from 'react';
 
 interface CategoryOptionsProps {
+  category: string;
+  expenseOptions: string[];
+  incomeOptions: string[];
   handleChange: ({
     target: { value, id },
   }: ChangeEvent<HTMLSelectElement>) => void;
-  category: string;
 }
 
 export default function CategoryOptions({
-  handleChange,
   category,
+  expenseOptions,
+  incomeOptions,
+  handleChange,
 }: CategoryOptionsProps) {
-  const expenseOptions = ['Food', 'Home', 'Car', 'Motorcycle'];
-  const incomeOptions = ['Salary', 'Freelance', 'Investments'];
-
   function renderOption() {
     if (category === 'expenses') {
       return expenseOptions;

@@ -40,12 +40,12 @@ export default function NewTransaction({
   });
   const { mutate: mutateExpense } = useExpenseList();
   const { mutate: mutateIncome } = useIncomeList();
-  const { data: currentUser, mutate: mutateUser } = useCurrentUser();
+  const { data: user, mutate: mutateUser } = useCurrentUser();
 
   useEffect(() => {
     setForm((prevFormState) => ({
       ...prevFormState,
-      date: new Date(date),
+      date: date,
     }));
   }, [date]);
 
@@ -69,7 +69,7 @@ export default function NewTransaction({
     });
 
     await mutateUser({
-      ...currentUser,
+      ...user,
       [route]: response,
     }).catch((error) => console.error(error));
 
@@ -78,11 +78,14 @@ export default function NewTransaction({
     setIsOpen(false);
   }
 
+  const isSaveButtonDisabled =
+    form.amount === 0 || form.category === '' || expenseOrIncomeOption === '';
+
   return (
     <>
       {isOpen && (
         <div className="absolute h-screen w-screen z-20 bg-white">
-          <div className="h-screen dark:bg-dark-theme">
+          <div className="h-screen dark:bg-zinc-900">
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-2 mt-5 ml-5">
                 <FcCalendar size={20} />
@@ -173,6 +176,8 @@ export default function NewTransaction({
                     </div>
                     <CategoryOptions
                       category={expenseOrIncomeOption}
+                      expenseOptions={user.expenseOptions}
+                      incomeOptions={user.incomeOptions}
                       handleChange={handleChange}
                     />
                   </div>
@@ -183,7 +188,11 @@ export default function NewTransaction({
                   <button
                     form="form"
                     type="submit"
-                    className="bg-indigo-800 text-black h-12 w-20 rounded-full"
+                    disabled={isSaveButtonDisabled}
+                    className={`
+                      ${isSaveButtonDisabled ? 'bg-slate-400' : 'bg-indigo-800'}
+                      text-black h-12 w-20 rounded-full
+                    `}
                   >
                     Save
                   </button>

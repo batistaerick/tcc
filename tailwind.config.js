@@ -5,13 +5,7 @@ module.exports = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  theme: {
-    extend: {
-      colors: {
-        'dark-theme': 'rgb(0, 0, 0, 0.89)',
-      },
-    },
-  },
+  theme: {},
   darkMode: 'class',
   plugins: [],
 };

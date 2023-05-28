@@ -1,0 +1,26 @@
+export const expenseOptions: string[] = [
+  'Beauty',
+  'Clothes',
+  'Eating out',
+  'Entertainment',
+  'Gifts',
+  'Groceries',
+  'Hardware',
+  'Health',
+  'Home',
+  'Other',
+  'Shopping',
+  'Software',
+  'Transport',
+  'Travel',
+  'Utilities',
+  'Vehicle',
+];
+export const incomeOptions: string[] = [
+  'Deposit',
+  'Freelance',
+  'Investments',
+  'Other',
+  'Salary',
+  'Savings',
+];

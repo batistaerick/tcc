@@ -10,7 +10,6 @@ import { RecoilRoot } from 'recoil';
 
 export default function Home() {
   const { push } = useRouter();
-
   const { status } = useSession({
     required: true,
     onUnauthenticated() {
@@ -24,7 +23,7 @@ export default function Home() {
 
   return (
     <RecoilRoot>
-      <div className="flex flex-col h-screen dark:bg-dark-theme dark:text-gray-300">
+      <div className="flex flex-col h-screen dark:bg-zinc-900 dark:text-gray-300">
         <Header />
         <Balance />
         <SpendStatus />

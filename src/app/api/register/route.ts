@@ -1,4 +1,5 @@
 import { prismadb } from '@/libs/prismadb';
+import { expenseOptions, incomeOptions } from '@/utils/categoryOptions';
 import bcrypt from 'bcrypt';
 
 export async function POST(request: Request) {
@@ -20,6 +21,9 @@ export async function POST(request: Request) {
         name,
         hashedPassword,
         image: '',
+        savedMoney: 0,
+        expenseOptions: expenseOptions,
+        incomeOptions: incomeOptions,
         emailVerified: new Date(),
       },
     });
