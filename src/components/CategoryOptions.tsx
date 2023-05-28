@@ -15,10 +15,10 @@ export default function CategoryOptions({
   const incomeOptions = ['Salary', 'Freelance', 'Investments'];
 
   function renderOption() {
-    if (category === 'EXPENSE') {
+    if (category === 'expenses') {
       return expenseOptions;
     }
-    if (category === 'INCOME') {
+    if (category === 'incomes') {
       return incomeOptions;
     }
   }

@@ -1,7 +1,7 @@
 'use client';
 import useCurrentUser from '@/hooks/useCurrentUser';
-import useExpense from '@/hooks/useExpense';
-import useIncome from '@/hooks/useIncome';
+import useExpenseList from '@/hooks/useExpenseList';
+import useIncomeList from '@/hooks/useIncomeList';
 import { Expense, Income } from '@prisma/client';
 import axios from 'axios';
 import {
@@ -38,8 +38,8 @@ export default function NewTransaction({
     notes: '',
     userId: '',
   });
-  const { mutate: mutateExpense } = useExpense();
-  const { mutate: mutateIncome } = useIncome();
+  const { mutate: mutateExpense } = useExpenseList();
+  const { mutate: mutateIncome } = useIncomeList();
   const { data: currentUser, mutate: mutateUser } = useCurrentUser();
 
   useEffect(() => {
@@ -60,14 +60,7 @@ export default function NewTransaction({
 
   function onSubmit(event: ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
-
-    if (expenseOrIncomeOption === 'EXPENSE') {
-      handleSubmit('expenses').catch((error) => console.error(error));
-    }
-    if (expenseOrIncomeOption === 'INCOME') {
-      handleSubmit('incomes').catch((error) => console.error(error));
-    }
-    setIsOpen(false);
+    handleSubmit(expenseOrIncomeOption).catch((error) => console.error(error));
   }
 
   async function handleSubmit(route: string) {
@@ -82,6 +75,7 @@ export default function NewTransaction({
 
     await mutateExpense().catch((error) => console.error(error));
     await mutateIncome().catch((error) => console.error(error));
+    setIsOpen(false);
   }
 
   return (
@@ -111,8 +105,8 @@ export default function NewTransaction({
                     className="accent-indigo-800 w-5 h-5"
                     id="expense"
                     type="radio"
-                    value="EXPENSE"
-                    checked={expenseOrIncomeOption === 'EXPENSE'}
+                    value="expenses"
+                    checked={expenseOrIncomeOption === 'expenses'}
                     onChange={({ target: { value } }) =>
                       setExpenseOrIncomeOption(value)
                     }
@@ -126,8 +120,8 @@ export default function NewTransaction({
                     className="accent-indigo-800 w-5 h-5"
                     id="income"
                     type="radio"
-                    value="INCOME"
-                    checked={expenseOrIncomeOption === 'INCOME'}
+                    value="incomes"
+                    checked={expenseOrIncomeOption === 'incomes'}
                     onChange={({ target: { value } }) =>
                       setExpenseOrIncomeOption(value)
                     }

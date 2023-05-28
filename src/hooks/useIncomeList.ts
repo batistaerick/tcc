@@ -1,9 +1,13 @@
 import fetcher from '@/libs/fetcher';
+import { selectedDateAtom } from '@/recoil/datePickerDialog';
+import { useRecoilState } from 'recoil';
 import useSWR from 'swr';
 
-export default function useIncomeList(date: Date) {
-  const { data, error, isLoading } = useSWR(
-    date && `/api/incomes/${date}`,
+export default function useIncomeList() {
+  const [selectedDate] = useRecoilState(selectedDateAtom);
+
+  const { data, error, isLoading, mutate } = useSWR(
+    selectedDate && `/api/incomes/${selectedDate}`,
     fetcher,
     {
       revalidateIfStale: false,
@@ -12,5 +16,5 @@ export default function useIncomeList(date: Date) {
     }
   );
 
-  return { data, error, isLoading };
+  return { data, error, isLoading, mutate };
 }

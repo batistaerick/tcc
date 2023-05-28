@@ -1,15 +1,12 @@
 'use client';
 import useExpenseList from '@/hooks/useExpenseList';
 import useIncomeList from '@/hooks/useIncomeList';
-import { selectedDateAtom } from '@/recoil/datePickerDialog';
 import { Expense, Income } from '@prisma/client';
-import { useRecoilState } from 'recoil';
 import FinancialMovements from './FinancialMovements';
 
 export default function Transactions() {
-  const [selectedDate] = useRecoilState(selectedDateAtom);
-  const { data: expenses }: { data: Expense[] } = useExpenseList(selectedDate);
-  const { data: incomes }: { data: Income[] } = useIncomeList(selectedDate);
+  const { data: expenses }: { data: Expense[] } = useExpenseList();
+  const { data: incomes }: { data: Income[] } = useIncomeList();
 
   return (
     <div>
