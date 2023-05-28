@@ -16,11 +16,11 @@ export default function Balance() {
   }
 
   function totalExpenses() {
-    return expenses.reduce((sum, expense) => sum + expense.amount, 0);
+    return expenses?.reduce((sum, expense) => sum + expense.amount, 0);
   }
 
   function totalIncomes() {
-    return incomes.reduce((sum, expense) => sum + expense.amount, 0);
+    return incomes?.reduce((sum, expense) => sum + expense.amount, 0);
   }
 
   return (

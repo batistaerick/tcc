@@ -1,8 +1,9 @@
 'use client';
 import Input from '@/components/Input';
 import axios from 'axios';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { KeyboardEvent, useCallback, useState } from 'react';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
@@ -13,6 +14,8 @@ export default function Auth() {
   const [password, setPassword] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [variant, setVariant] = useState<string>('login');
+  const { status } = useSession();
+  const { push } = useRouter();
 
   const toggleVariant = useCallback(
     () =>
@@ -47,6 +50,14 @@ export default function Auth() {
         ? login().catch((error) => console.error(error))
         : register().catch((error) => console.error(error));
     }
+  }
+
+  if (status === 'loading') {
+    return <></>;
+  }
+  if (status === 'authenticated') {
+    push('/');
+    return <></>;
   }
 
   return (
@@ -109,7 +120,7 @@ export default function Auth() {
                   flex items-center justify-center
                   cursor-pointer hover:opacity-80 transition
                 `}
-                onClick={() => signIn('google', { callbackUrl: '/profiles' })}
+                onClick={() => signIn('google', { callbackUrl: '/' })}
               >
                 <FcGoogle size={30} />
               </div>
@@ -119,7 +130,7 @@ export default function Auth() {
                   flex items-center justify-center
                   cursor-pointer hover:opacity-80 transition
                 `}
-                onClick={() => signIn('github', { callbackUrl: '/profiles' })}
+                onClick={() => signIn('github', { callbackUrl: '/' })}
               >
                 <FaGithub size={30} />
               </div>
