@@ -1,12 +1,12 @@
 'use client';
 import AddButton from '@/components/AddButton';
 import Balance from '@/components/Balance';
-import Expenses from '@/components/Expenses';
 import Header from '@/components/Header';
-import Income from '@/components/Income';
 import SpendStatus from '@/components/SpendStatus';
+import Transactions from '@/components/Transactions';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { RecoilRoot } from 'recoil';
 
 export default function Home() {
   const { push } = useRouter();
@@ -23,13 +23,14 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col h-screen dark:bg-dark-theme dark:text-gray-300">
-      <Header />
-      <Balance />
-      <SpendStatus />
-      <Expenses />
-      <Income />
-      <AddButton />
-    </div>
+    <RecoilRoot>
+      <div className="flex flex-col h-screen dark:bg-dark-theme dark:text-gray-300">
+        <Header />
+        <Balance />
+        <SpendStatus />
+        <Transactions />
+        <AddButton />
+      </div>
+    </RecoilRoot>
   );
 }

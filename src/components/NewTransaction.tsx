@@ -1,5 +1,16 @@
 'use client';
-import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
+import useCurrentUser from '@/hooks/useCurrentUser';
+import useExpense from '@/hooks/useExpense';
+import useIncome from '@/hooks/useIncome';
+import { Expense, Income } from '@prisma/client';
+import axios from 'axios';
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import {
   FcCalendar,
@@ -7,6 +18,8 @@ import {
   FcIdea,
   FcSurvey,
 } from 'react-icons/fc';
+import CategoryOptions from './CategoryOptions';
+import DatePickerDialog from './DatePickerDialog';
 
 interface NewTransactionProps {
   isOpen: boolean;
@@ -17,19 +30,59 @@ export default function NewTransaction({
   isOpen,
   setIsOpen,
 }: NewTransactionProps) {
-  const [amountOrIncomeOption, setAmountOrIncomeOption] = useState('');
-  const [amount, setAmount] = useState('');
-  const [notes, setNotes] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [expenseOrIncomeOption, setExpenseOrIncomeOption] = useState('');
+  const [date, setDate] = useState(new Date());
+  const [form, setForm] = useState({
+    amount: 0,
+    category: '',
+    notes: '',
+    userId: '',
+  });
+  const { mutate: mutateExpense } = useExpense();
+  const { mutate: mutateIncome } = useIncome();
+  const { data: currentUser, mutate: mutateUser } = useCurrentUser();
 
-  const handleAmountChange = ({
-    target: { value },
-  }: ChangeEvent<HTMLInputElement>) => {
-    const regex = /^[0-9\b]+$/;
-    if (value === '' || regex.test(value)) {
-      setAmount(value);
+  useEffect(() => {
+    setForm((prevFormState) => ({
+      ...prevFormState,
+      date: new Date(date),
+    }));
+  }, [date]);
+
+  function handleChange({
+    target: { value, id },
+  }: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+    setForm((prevForm) => ({
+      ...prevForm,
+      [id]: value,
+    }));
+  }
+
+  function onSubmit(event: ChangeEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (expenseOrIncomeOption === 'EXPENSE') {
+      handleSubmit('expenses').catch((error) => console.error(error));
     }
-  };
+    if (expenseOrIncomeOption === 'INCOME') {
+      handleSubmit('incomes').catch((error) => console.error(error));
+    }
+    setIsOpen(false);
+  }
+
+  async function handleSubmit(route: string) {
+    const response: Expense | Income = await axios.post(`/api/${route}`, {
+      ...form,
+    });
+
+    await mutateUser({
+      ...currentUser,
+      [route]: response,
+    }).catch((error) => console.error(error));
+
+    await mutateExpense().catch((error) => console.error(error));
+    await mutateIncome().catch((error) => console.error(error));
+  }
 
   return (
     <>
@@ -37,17 +90,21 @@ export default function NewTransaction({
         <div className="absolute h-screen w-screen z-20 bg-white">
           <div className="h-screen dark:bg-dark-theme">
             <div className="flex justify-between items-center">
-              <button className="flex items-center gap-2 mt-5 ml-5">
+              <div className="flex items-center gap-2 mt-5 ml-5">
                 <FcCalendar size={20} />
-                Jan/2023
-              </button>
+                <DatePickerDialog date={date} setDate={setDate} />
+              </div>
               <AiFillCloseCircle
                 className="cursor-pointer mt-5 mr-5"
                 size={30}
                 onClick={() => setIsOpen(!isOpen)}
               />
             </div>
-            <form className="flex flex-col gap-10 mt-5" id="form">
+            <form
+              className="flex flex-col gap-10 mt-5"
+              id="form"
+              onSubmit={onSubmit}
+            >
               <div className="grid grid-cols-2 place-items-center">
                 <div className="flex flex-row items-center gap-1">
                   <input
@@ -55,9 +112,9 @@ export default function NewTransaction({
                     id="expense"
                     type="radio"
                     value="EXPENSE"
-                    checked={amountOrIncomeOption === 'EXPENSE'}
+                    checked={expenseOrIncomeOption === 'EXPENSE'}
                     onChange={({ target: { value } }) =>
-                      setAmountOrIncomeOption(value)
+                      setExpenseOrIncomeOption(value)
                     }
                   />
                   <label className="text-lg" htmlFor="expense">
@@ -70,9 +127,9 @@ export default function NewTransaction({
                     id="income"
                     type="radio"
                     value="INCOME"
-                    checked={amountOrIncomeOption === 'INCOME'}
+                    checked={expenseOrIncomeOption === 'INCOME'}
                     onChange={({ target: { value } }) =>
-                      setAmountOrIncomeOption(value)
+                      setExpenseOrIncomeOption(value)
                     }
                   />
                   <label className="text-lg" htmlFor="income">
@@ -90,10 +147,9 @@ export default function NewTransaction({
                     <input
                       className="w-48 h-12 text-2xl rounded-r-lg bg-zinc-300 text-black focus:outline-none"
                       id="amount"
-                      type="text"
+                      type="number"
                       maxLength={13}
-                      value={amount}
-                      onChange={handleAmountChange}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -109,8 +165,7 @@ export default function NewTransaction({
                       className="w-48 h-12 rounded-r-lg bg-zinc-300 text-black focus:outline-none"
                       id="notes"
                       type="text"
-                      value={notes}
-                      onChange={({ target: { value } }) => setNotes(value)}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -122,29 +177,10 @@ export default function NewTransaction({
                     <div className="flex justify-center items-center h-12 w-12 bg-zinc-300 text-black rounded-l-lg">
                       <FcIdea size={25} />
                     </div>
-                    <select
-                      className="w-48 h-12 rounded-r-lg bg-zinc-300 text-black focus:outline-none"
-                      id="category"
-                      form="form"
-                      value={selectedCategory}
-                      onChange={({ target: { value } }) => {
-                        setSelectedCategory(value);
-                      }}
-                    >
-                      <option value="">Choose a category</option>
-                      <option className="bg-zinc-300" value="Food">
-                        Food
-                      </option>
-                      <option className="bg-zinc-300" value="Home">
-                        Home
-                      </option>
-                      <option className="bg-zinc-300" value="Car">
-                        Car
-                      </option>
-                      <option className="bg-zinc-300" value="Motorcycle">
-                        Motorcycle
-                      </option>
-                    </select>
+                    <CategoryOptions
+                      category={expenseOrIncomeOption}
+                      handleChange={handleChange}
+                    />
                   </div>
                 </div>
               </div>

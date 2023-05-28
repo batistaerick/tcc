@@ -1,13 +1,15 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import { selectedDateAtom } from '@/recoil/datePickerDialog';
 import { useState } from 'react';
-import { FcCalendar, FcReadingEbook } from 'react-icons/fc';
-import { GiWallet } from 'react-icons/gi';
+import { BiUserCircle } from 'react-icons/bi';
+import { FcCalendar } from 'react-icons/fc';
+import { useRecoilState } from 'recoil';
+import DatePickerDialog from './DatePickerDialog';
 import DropdownMenu from './DropdownMenu';
 
 export default function Header() {
-  const { push } = useRouter();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useRecoilState(selectedDateAtom);
 
   return (
     <header
@@ -16,18 +18,13 @@ export default function Header() {
         flex justify-between items-center
       `}
     >
-      <GiWallet
-        className="cursor-pointer"
-        onClick={() => push('/')}
-        size={25}
-      />
-      <button className="flex items-center gap-2">
-        <FcCalendar size={20} />
-        Jan/2023
-      </button>
+      <div className="flex items-center gap-2">
+        <FcCalendar size={25} />
+        <DatePickerDialog date={selectedDate} setDate={setSelectedDate} />
+      </div>
       <div className="flex">
-        <FcReadingEbook
-          className="cursor-pointer border border-gray-300 rounded-full"
+        <BiUserCircle
+          className="cursor-pointer text-white"
           size={25}
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         />
