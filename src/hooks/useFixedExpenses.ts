@@ -1,13 +1,9 @@
 import fetcher from '@/libs/fetcher';
-import { selectedDateAtom } from '@/recoil/datePickerDialog';
-import { useRecoilState } from 'recoil';
 import useSWR from 'swr';
 
-export default function useExpenseList() {
-  const [selectedDate] = useRecoilState(selectedDateAtom);
-
+export default function useFixedExpenses() {
   const { data, error, isLoading, mutate } = useSWR(
-    selectedDate && `/api/expenses/${selectedDate}`,
+    `/api/fixed-expenses/`,
     fetcher,
     {
       revalidateIfStale: false,

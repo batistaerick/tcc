@@ -2,7 +2,7 @@
 import AddButton from '@/components/AddButton';
 import Balance from '@/components/Balance';
 import Header from '@/components/Header';
-import SpendStatus from '@/components/SpendStatus';
+import Prediction from '@/components/Prediction';
 import Transactions from '@/components/Transactions';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -23,10 +23,10 @@ export default function Home() {
 
   return (
     <RecoilRoot>
-      <div className="flex flex-col h-screen dark:bg-zinc-900 dark:text-gray-300">
+      <div className="flex h-screen flex-col dark:bg-zinc-900 dark:text-gray-300">
         <Header />
         <Balance />
-        <SpendStatus />
+        <Prediction />
         <Transactions />
         <AddButton />
       </div>

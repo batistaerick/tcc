@@ -19,8 +19,8 @@ export default function DropdownMenu({ isOpen }: DropdownMenuProps) {
     <div
       className={`
         ${isOpen ? 'absolute' : 'hidden'}
-        z-10 bg-white divide-y divide-gray-100 rounded-lg
-        shadow w-28 dark:bg-gray-800 mt-9
+        z-10 mt-9 w-28 divide-y divide-gray-100
+        rounded-lg bg-white shadow dark:bg-gray-800
       `}
     >
       <ul className="py-2 text-sm">

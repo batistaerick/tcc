@@ -1,16 +1,16 @@
 'use client';
-import useExpenseList from '@/hooks/useExpenseList';
-import useIncomeList from '@/hooks/useIncomeList';
+import useMonthlyExpenses from '@/hooks/useMonthlyExpenses';
+import useMonthlyIncomes from '@/hooks/useMonthlyIncomes';
 import { Expense, Income } from '@prisma/client';
 import FinancialMovements from './FinancialMovements';
 
 export default function Transactions() {
-  const { data: expenses }: { data: Expense[] } = useExpenseList();
-  const { data: incomes }: { data: Income[] } = useIncomeList();
+  const { data: expenses }: { data: Expense[] } = useMonthlyExpenses();
+  const { data: incomes }: { data: Income[] } = useMonthlyIncomes();
 
   return (
     <div>
-      <div className="flex justify-between mx-5">
+      <div className="mx-5 flex justify-between">
         <div className="font-semibold text-indigo-600">Expenses</div>
         <button className="font-semibold text-indigo-600">View all</button>
       </div>
@@ -23,7 +23,7 @@ export default function Transactions() {
           />
         ))}
       </div>
-      <div className="flex justify-between mx-5">
+      <div className="mx-5 flex justify-between">
         <div className="font-semibold text-indigo-600">Incomes</div>
         <button className="font-semibold text-indigo-600">View all</button>
       </div>

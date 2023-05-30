@@ -1,7 +1,7 @@
 'use client';
 import useCurrentUser from '@/hooks/useCurrentUser';
-import useExpenseList from '@/hooks/useExpenseList';
-import useIncomeList from '@/hooks/useIncomeList';
+import useMonthlyExpenses from '@/hooks/useMonthlyExpenses';
+import useMonthlyIncomes from '@/hooks/useMonthlyIncomes';
 import { Expense, Income } from '@prisma/client';
 import axios from 'axios';
 import {
@@ -38,8 +38,8 @@ export default function NewTransaction({
     notes: '',
     userId: '',
   });
-  const { mutate: mutateExpense } = useExpenseList();
-  const { mutate: mutateIncome } = useIncomeList();
+  const { mutate: mutateExpense } = useMonthlyExpenses();
+  const { mutate: mutateIncome } = useMonthlyIncomes();
   const { data: user, mutate: mutateUser } = useCurrentUser();
 
   useEffect(() => {
@@ -84,28 +84,28 @@ export default function NewTransaction({
   return (
     <>
       {isOpen && (
-        <div className="absolute h-screen w-screen z-20 bg-white">
+        <div className="absolute z-20 h-screen w-screen bg-white">
           <div className="h-screen dark:bg-zinc-900">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-2 mt-5 ml-5">
+            <div className="flex items-center justify-between">
+              <div className="ml-5 mt-5 flex items-center gap-2">
                 <FcCalendar size={20} />
                 <DatePickerDialog date={date} setDate={setDate} />
               </div>
               <AiFillCloseCircle
-                className="cursor-pointer mt-5 mr-5"
+                className="mr-5 mt-5 cursor-pointer"
                 size={30}
                 onClick={() => setIsOpen(!isOpen)}
               />
             </div>
             <form
-              className="flex flex-col gap-10 mt-5"
+              className="mt-5 flex flex-col gap-10"
               id="form"
               onSubmit={onSubmit}
             >
               <div className="grid grid-cols-2 place-items-center">
                 <div className="flex flex-row items-center gap-1">
                   <input
-                    className="accent-indigo-800 w-5 h-5"
+                    className="h-5 w-5 accent-indigo-800"
                     id="expense"
                     type="radio"
                     value="expenses"
@@ -120,7 +120,7 @@ export default function NewTransaction({
                 </div>
                 <div className="flex flex-row items-center gap-1">
                   <input
-                    className="accent-indigo-800 w-5 h-5"
+                    className="h-5 w-5 accent-indigo-800"
                     id="income"
                     type="radio"
                     value="incomes"
@@ -134,15 +134,15 @@ export default function NewTransaction({
                   </label>
                 </div>
               </div>
-              <div className="flex justify-center items-center">
+              <div className="flex items-center justify-center">
                 <div className="flex flex-col">
                   <label htmlFor="amount">Amount</label>
                   <div className="flex">
-                    <div className="flex justify-center items-center h-12 w-12 bg-zinc-300 text-black rounded-l-lg">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-l-lg bg-zinc-300 text-black">
                       <FcCurrencyExchange size={25} />
                     </div>
                     <input
-                      className="w-48 h-12 text-2xl rounded-r-lg bg-zinc-300 text-black focus:outline-none"
+                      className="h-12 w-48 rounded-r-lg bg-zinc-300 text-2xl text-black focus:outline-none"
                       id="amount"
                       type="number"
                       maxLength={13}
@@ -151,15 +151,15 @@ export default function NewTransaction({
                   </div>
                 </div>
               </div>
-              <div className="flex justify-center items-center">
+              <div className="flex items-center justify-center">
                 <div className="flex flex-col">
                   <label htmlFor="notes">Notes (Optional)</label>
                   <div className="flex">
-                    <div className="flex justify-center items-center h-12 w-12 bg-zinc-300 text-black rounded-l-lg">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-l-lg bg-zinc-300 text-black">
                       <FcSurvey size={25} />
                     </div>
                     <input
-                      className="w-48 h-12 rounded-r-lg bg-zinc-300 text-black focus:outline-none"
+                      className="h-12 w-48 rounded-r-lg bg-zinc-300 text-black focus:outline-none"
                       id="notes"
                       type="text"
                       onChange={handleChange}
@@ -167,11 +167,11 @@ export default function NewTransaction({
                   </div>
                 </div>
               </div>
-              <div className="flex justify-center items-center">
+              <div className="flex items-center justify-center">
                 <div className="flex flex-col">
                   <label htmlFor="category">Category</label>
                   <div className="flex">
-                    <div className="flex justify-center items-center h-12 w-12 bg-zinc-300 text-black rounded-l-lg">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-l-lg bg-zinc-300 text-black">
                       <FcIdea size={25} />
                     </div>
                     <CategoryOptions
@@ -183,7 +183,7 @@ export default function NewTransaction({
                   </div>
                 </div>
               </div>
-              <div className="flex justify-center items-center">
+              <div className="flex items-center justify-center">
                 <div className="flex flex-col">
                   <button
                     form="form"
@@ -191,7 +191,7 @@ export default function NewTransaction({
                     disabled={isSaveButtonDisabled}
                     className={`
                       ${isSaveButtonDisabled ? 'bg-slate-400' : 'bg-indigo-800'}
-                      text-black h-12 w-20 rounded-full
+                      h-12 w-20 rounded-full text-black
                     `}
                   >
                     Save

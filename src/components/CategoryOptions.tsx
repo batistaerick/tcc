@@ -26,7 +26,7 @@ export default function CategoryOptions({
 
   return (
     <select
-      className="w-48 h-12 rounded-r-lg bg-zinc-300 text-black focus:outline-none"
+      className="h-12 w-48 rounded-r-lg bg-zinc-300 text-black focus:outline-none"
       id="category"
       form="form"
       onChange={handleChange}

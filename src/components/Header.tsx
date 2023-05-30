@@ -14,13 +14,18 @@ export default function Header() {
   return (
     <header
       className={`
-        sticky h-12 w-full px-5
-        flex justify-between items-center
+        sticky flex h-12 w-full
+        items-center justify-between px-5
       `}
     >
       <div className="flex items-center gap-2">
         <FcCalendar size={25} />
-        <DatePickerDialog date={selectedDate} setDate={setSelectedDate} />
+        <DatePickerDialog
+          date={selectedDate}
+          setDate={setSelectedDate}
+          dateFormat="MM/yyyy"
+          showMonthYearPicker
+        />
       </div>
       <div className="flex">
         <BiUserCircle

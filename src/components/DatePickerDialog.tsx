@@ -7,11 +7,15 @@ import { SetterOrUpdater } from 'recoil';
 interface DatePickerDialogProps {
   date: Date;
   setDate: SetterOrUpdater<Date> | Dispatch<SetStateAction<Date>>;
+  dateFormat?: string;
+  showMonthYearPicker?: boolean;
 }
 
 export default function DatePickerDialog({
   date,
   setDate,
+  dateFormat,
+  showMonthYearPicker,
 }: DatePickerDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -21,19 +25,20 @@ export default function DatePickerDialog({
   };
 
   return (
-    <div className="flex gap-1 justify-center items-center">
+    <div className="flex items-center justify-center gap-1">
       <DatePicker
         className="custom-datepicker"
         selected={date}
         onChange={handleDateChange}
-        dateFormat="dd/MMMM/yyyy"
+        dateFormat={dateFormat ?? 'dd/MMMM/yyyy'}
         showPopperArrow={false}
+        showMonthYearPicker={showMonthYearPicker}
         open={isOpen}
         onFocus={() => setIsOpen(true)}
         onBlur={() => setIsOpen(false)}
         customInput={
           <input
-            className="w-32 text-white bg-inherit focus:outline-none focus:ring-transparent"
+            className="w-32 bg-inherit text-white focus:outline-none focus:ring-transparent"
             value={date?.toString() ?? ''}
             readOnly
           />

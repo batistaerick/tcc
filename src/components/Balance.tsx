@@ -1,13 +1,13 @@
 'use client';
-import useExpenseList from '@/hooks/useExpenseList';
-import useIncomeList from '@/hooks/useIncomeList';
+import useMonthlyExpenses from '@/hooks/useMonthlyExpenses';
+import useMonthlyIncomes from '@/hooks/useMonthlyIncomes';
 import { Expense, Income } from '@prisma/client';
 import { FaChevronRight } from 'react-icons/fa';
 import { FcBearish, FcBullish } from 'react-icons/fc';
 
 export default function Balance() {
-  const { data: expenses }: { data: Expense[] } = useExpenseList();
-  const { data: incomes }: { data: Income[] } = useIncomeList();
+  const { data: expenses }: { data: Expense[] } = useMonthlyExpenses();
+  const { data: incomes }: { data: Income[] } = useMonthlyIncomes();
 
   function totalBalance() {
     if (expenses && incomes) {
@@ -25,8 +25,8 @@ export default function Balance() {
 
   return (
     <div className="flex">
-      <div className="bg-indigo-800 w-full h-40 mx-5 rounded-xl">
-        <div className="px-10 pt-5 flex justify-between items-center">
+      <div className="mx-5 h-40 w-full rounded-xl bg-indigo-800">
+        <div className="flex items-center justify-between px-10 pt-5">
           <button>
             <div className="text-left">Total Balance</div>
             <div className="text-left text-3xl">${totalBalance()}</div>

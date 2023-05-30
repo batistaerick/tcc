@@ -9,7 +9,7 @@ export default function AddButton() {
   return (
     <>
       <IoMdAddCircle
-        className="fixed bottom-4 right-0 p-3 text-indigo-800 cursor-pointer"
+        className="fixed bottom-4 right-0 cursor-pointer p-3 text-indigo-800"
         size={75}
         onClick={() => setIsTransactionOpen(!isTransactionOpen)}
       />

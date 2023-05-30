@@ -46,6 +46,8 @@
     "@storybook/testing-library": "^0.0.14-next.2",
     "@types/bcrypt": "^5.0.0",
     "dotenv": "^16.0.3",
-    "eslint-plugin-storybook": "^0.6.12"
+    "eslint-plugin-storybook": "^0.6.12",
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.3.0"
   }
 }
