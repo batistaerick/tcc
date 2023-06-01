@@ -24,14 +24,14 @@ export default function Balance() {
   }
 
   return (
-    <div className="flex">
+    <div className="flex cursor-default">
       <div className="mx-5 h-40 w-full rounded-xl bg-indigo-800">
         <div className="flex items-center justify-between px-10 pt-5">
-          <button>
+          <div>
             <div className="text-left">Total Balance</div>
             <div className="text-left text-3xl">${totalBalance()}</div>
-          </button>
-          <FaChevronRight className="cursor-pointer" size={25} />
+          </div>
+          <FaChevronRight size={25} />
         </div>
         <div className="flex justify-between px-10 pt-4 text-sm">
           <div className="flex gap-1">

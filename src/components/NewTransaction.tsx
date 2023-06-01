@@ -42,12 +42,14 @@ export default function NewTransaction({
   const { mutate: mutateIncome } = useMonthlyIncomes();
   const { data: user, mutate: mutateUser } = useCurrentUser();
 
-  useEffect(() => {
-    setForm((prevFormState) => ({
-      ...prevFormState,
-      date: date,
-    }));
-  }, [date]);
+  useEffect(
+    () =>
+      setForm((prevFormState) => ({
+        ...prevFormState,
+        date: date,
+      })),
+    [date]
+  );
 
   function handleChange({
     target: { value, id },

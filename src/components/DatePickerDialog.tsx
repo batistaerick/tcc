@@ -25,25 +25,23 @@ export default function DatePickerDialog({
   };
 
   return (
-    <div className="flex items-center justify-center gap-1">
-      <DatePicker
-        className="custom-datepicker"
-        selected={date}
-        onChange={handleDateChange}
-        dateFormat={dateFormat ?? 'dd/MMMM/yyyy'}
-        showPopperArrow={false}
-        showMonthYearPicker={showMonthYearPicker}
-        open={isOpen}
-        onFocus={() => setIsOpen(true)}
-        onBlur={() => setIsOpen(false)}
-        customInput={
-          <input
-            className="w-32 bg-inherit text-white focus:outline-none focus:ring-transparent"
-            value={date?.toString() ?? ''}
-            readOnly
-          />
-        }
-      />
-    </div>
+    <DatePicker
+      className="custom-datepicker"
+      selected={date}
+      onChange={handleDateChange}
+      dateFormat={dateFormat ?? 'dd/MMMM/yyyy'}
+      showPopperArrow={false}
+      showMonthYearPicker={showMonthYearPicker}
+      open={isOpen}
+      onFocus={() => setIsOpen(true)}
+      onBlur={() => setIsOpen(false)}
+      customInput={
+        <input
+          className="w-32 bg-inherit text-white focus:outline-none focus:ring-transparent"
+          value={date?.toString() ?? ''}
+          readOnly
+        />
+      }
+    />
   );
 }

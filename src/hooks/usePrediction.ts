@@ -1,9 +1,9 @@
 import fetcher from '@/libs/fetcher';
 import useSWR from 'swr';
 
-export default function useFixedExpenses() {
-  const { data, error, isLoading, mutate } = useSWR(
-    `/api/fixed-expenses/`,
+export default function usePredictions(endDate: Date) {
+  const { data, error, isLoading } = useSWR(
+    `/api/predictions/${endDate}`,
     fetcher,
     {
       revalidateIfStale: false,
@@ -12,5 +12,5 @@ export default function useFixedExpenses() {
     }
   );
 
-  return { data, error, isLoading, mutate };
+  return { data, error, isLoading };
 }
