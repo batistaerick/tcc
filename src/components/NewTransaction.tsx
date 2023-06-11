@@ -2,6 +2,8 @@
 import useCurrentUser from '@/hooks/useCurrentUser';
 import useMonthlyExpenses from '@/hooks/useMonthlyExpenses';
 import useMonthlyIncomes from '@/hooks/useMonthlyIncomes';
+import usePredictions from '@/hooks/usePrediction';
+import { predictionDateAtom } from '@/recoil/datePickerDialog';
 import { Expense, Income } from '@prisma/client';
 import axios from 'axios';
 import {
@@ -18,6 +20,7 @@ import {
   FcIdea,
   FcSurvey,
 } from 'react-icons/fc';
+import { useRecoilValue } from 'recoil';
 import CategoryOptions from './CategoryOptions';
 import DatePickerDialog from './DatePickerDialog';
 
@@ -30,6 +33,7 @@ export default function NewTransaction({
   isOpen,
   setIsOpen,
 }: NewTransactionProps) {
+  const predictionDate = useRecoilValue(predictionDateAtom);
   const [expenseOrIncomeOption, setExpenseOrIncomeOption] = useState('');
   const [date, setDate] = useState(new Date());
   const [form, setForm] = useState({
@@ -40,6 +44,7 @@ export default function NewTransaction({
   });
   const { mutate: mutateExpense } = useMonthlyExpenses();
   const { mutate: mutateIncome } = useMonthlyIncomes();
+  const { mutate: mutatePrediction } = usePredictions(predictionDate);
   const { data: user, mutate: mutateUser } = useCurrentUser();
 
   useEffect(
@@ -74,9 +79,9 @@ export default function NewTransaction({
       ...user,
       [route]: response,
     }).catch((error) => console.error(error));
-
     await mutateExpense().catch((error) => console.error(error));
     await mutateIncome().catch((error) => console.error(error));
+    await mutatePrediction().catch((error) => console.error(error));
     setIsOpen(false);
   }
 

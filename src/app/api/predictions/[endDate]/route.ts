@@ -16,7 +16,10 @@ export async function GET(request: Request, context: TypeContext) {
 
     const date = new Date();
     const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
-    const numberOfMonths = totalOfMonths(new Date(context.params.endDate));
+    const numberOfMonths = totalOfMonths(
+      startDate,
+      new Date(context.params.endDate)
+    );
     let endDate = addMonths(startDate, numberOfMonths);
     endDate = new Date(endDate.getFullYear(), endDate.getMonth() + 1, 0);
 
@@ -82,10 +85,9 @@ function addMonths(date: Date, numberOfMonths: number): Date {
   return newDate;
 }
 
-function totalOfMonths(endDate: Date) {
-  const start = new Date();
-  const diffInMonths = (endDate.getFullYear() - start.getFullYear()) * 12;
-  const monthDiff = endDate.getMonth() - start.getMonth();
+function totalOfMonths(startDate: Date, endDate: Date) {
+  const diffInMonths = (endDate.getFullYear() - startDate.getFullYear()) * 12;
+  const monthDiff = endDate.getMonth() - startDate.getMonth();
   const amount = diffInMonths + monthDiff;
   return amount;
 }

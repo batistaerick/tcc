@@ -2,7 +2,7 @@ import fetcher from '@/libs/fetcher';
 import useSWR from 'swr';
 
 export default function usePredictions(endDate: Date) {
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading, mutate } = useSWR(
     `/api/predictions/${endDate}`,
     fetcher,
     {
@@ -12,5 +12,5 @@ export default function usePredictions(endDate: Date) {
     }
   );
 
-  return { data, error, isLoading };
+  return { data, error, isLoading, mutate };
 }

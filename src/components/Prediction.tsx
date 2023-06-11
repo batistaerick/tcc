@@ -1,11 +1,13 @@
 'use client';
 import usePredictions from '@/hooks/usePrediction';
-import { useState } from 'react';
+import { predictionDateAtom } from '@/recoil/datePickerDialog';
+import { useRecoilState } from 'recoil';
 import DatePickerDialog from './DatePickerDialog';
 
 export default function Prediction() {
-  const [date, setDate] = useState(new Date());
-  const { data: predictionValue } = usePredictions(date);
+  const [predictionDate, setPredictionDate] =
+    useRecoilState(predictionDateAtom);
+  const { data: predictionValue } = usePredictions(predictionDate);
 
   return (
     <div className="my-3 flex">
@@ -14,8 +16,8 @@ export default function Prediction() {
           <div className="w-20 border-b-2">
             <div className="font-bold text-green-500">Prediction</div>
             <DatePickerDialog
-              date={date}
-              setDate={setDate}
+              date={predictionDate}
+              setDate={setPredictionDate}
               dateFormat="MMMM/yyyy"
               showMonthYearPicker
             />
