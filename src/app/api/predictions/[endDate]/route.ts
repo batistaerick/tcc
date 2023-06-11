@@ -57,8 +57,8 @@ export async function GET(request: Request, context: TypeContext) {
       incomes,
       fixedExpenses,
       fixedIncomes,
-      savedMoney,
-      numberOfMonths
+      numberOfMonths,
+      savedMoney
     );
 
     return new Response(JSON.stringify(total));
@@ -95,26 +95,27 @@ function prediction(
   incomes: Income[],
   fixedExpenses: FixedExpense[],
   fixedIncomes: FixedIncome[],
-  savedMoney: number,
-  numberOfMonths: number
+  numberOfMonths: number = 0,
+  savedMoney: number = 0
 ) {
   const totalExpenses =
     expenses?.reduce((sum, expense) => sum + expense.amount, 0) ?? 0;
   const totalFixedExpenses =
-    fixedExpenses?.reduce((sum, expense) => sum + expense.amount, 0) ?? 0;
+    fixedExpenses?.reduce(
+      (sum, fixedExpense) => sum + fixedExpense.amount,
+      0
+    ) ?? 0;
   const totalIncomes =
-    incomes?.reduce((sum, expense) => sum + expense.amount, 0) ?? 0;
+    incomes?.reduce((sum, income) => sum + income.amount, 0) ?? 0;
   const totalFixedIncomes =
-    fixedIncomes?.reduce((sum, expense) => sum + expense.amount, 0) ?? 0;
-
-  savedMoney ??= 0;
+    fixedIncomes?.reduce((sum, fixedIncome) => sum + fixedIncome.amount, 0) ??
+    0;
 
   const amount =
     savedMoney +
     totalIncomes +
     totalFixedIncomes * numberOfMonths -
-    totalExpenses -
-    totalFixedExpenses * numberOfMonths;
+    (totalExpenses + totalFixedExpenses * numberOfMonths);
 
   return amount;
 }

@@ -2,11 +2,18 @@
 import useMonthlyExpenses from '@/hooks/useMonthlyExpenses';
 import useMonthlyIncomes from '@/hooks/useMonthlyIncomes';
 import { Expense, Income } from '@prisma/client';
+import { KeyedMutator } from 'swr';
 import FinancialMovements from './FinancialMovements';
 
 export default function Transactions() {
-  const { data: expenses }: { data: Expense[] } = useMonthlyExpenses();
-  const { data: incomes }: { data: Income[] } = useMonthlyIncomes();
+  const {
+    data: expenses,
+    mutate: expenseMutate,
+  }: { data: Expense[]; mutate: KeyedMutator<any> } = useMonthlyExpenses();
+  const {
+    data: incomes,
+    mutate: incomeMutate,
+  }: { data: Income[]; mutate: KeyedMutator<any> } = useMonthlyIncomes();
 
   return (
     <div>
@@ -18,8 +25,11 @@ export default function Transactions() {
         {expenses?.map((expense) => (
           <FinancialMovements
             key={expense.id}
+            id={expense.id}
             category={expense.category}
             amount={expense.amount}
+            type="expenses"
+            mutateOnDelete={expenseMutate}
           />
         ))}
       </div>
@@ -31,8 +41,11 @@ export default function Transactions() {
         {incomes?.map((expense) => (
           <FinancialMovements
             key={expense.id}
+            id={expense.id}
             category={expense.category}
             amount={expense.amount}
+            type="incomes"
+            mutateOnDelete={incomeMutate}
           />
         ))}
       </div>
