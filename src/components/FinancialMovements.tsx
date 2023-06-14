@@ -1,3 +1,4 @@
+import usePredictions from '@/hooks/usePrediction';
 import axios from 'axios';
 import { FcFullTrash } from 'react-icons/fc';
 import { KeyedMutator } from 'swr';
@@ -17,10 +18,12 @@ export default function FinancialMovements({
   type,
   mutateOnDelete,
 }: FinancialMovementsProps) {
+  const { mutate: mutatePrediction } = usePredictions();
   async function deleteExpenseOrIncome() {
     try {
       await axios.delete(`/api/${type}`, { params: { id } });
       await mutateOnDelete();
+      await mutatePrediction();
     } catch (error) {
       console.error(error);
     }

@@ -1,9 +1,12 @@
 import fetcher from '@/libs/fetcher';
+import { predictionDateAtom } from '@/recoil/datePickerDialog';
+import { useRecoilValue } from 'recoil';
 import useSWR from 'swr';
 
-export default function usePredictions(endDate: Date) {
+export default function usePredictions() {
+  const predictionDate = useRecoilValue(predictionDateAtom);
   const { data, error, isLoading, mutate } = useSWR(
-    `/api/predictions/${endDate}`,
+    `/api/predictions/${predictionDate}`,
     fetcher,
     {
       revalidateIfStale: false,
@@ -11,6 +14,5 @@ export default function usePredictions(endDate: Date) {
       revalidateOnReconnect: false,
     }
   );
-
   return { data, error, isLoading, mutate };
 }

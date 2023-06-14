@@ -15,6 +15,5 @@ export default function useMonthlyExpenses() {
       revalidateOnReconnect: false,
     }
   );
-
   return { data, error, isLoading, mutate };
 }

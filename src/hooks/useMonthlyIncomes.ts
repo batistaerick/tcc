@@ -15,6 +15,5 @@ export default function useMonthlyIncomes() {
       revalidateOnReconnect: false,
     }
   );
-
   return { data, error, isLoading, mutate };
 }

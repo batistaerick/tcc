@@ -7,7 +7,7 @@ import DatePickerDialog from './DatePickerDialog';
 export default function Prediction() {
   const [predictionDate, setPredictionDate] =
     useRecoilState(predictionDateAtom);
-  const { data: predictionValue } = usePredictions(predictionDate);
+  const { data: predictionValue } = usePredictions();
 
   return (
     <div className="my-3 flex">
