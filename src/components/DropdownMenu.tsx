@@ -1,5 +1,6 @@
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 
 const STYLE_LIST =
   'cursor-pointer block px-4 py-2 hover:text-white hover:bg-gray-100 dark:hover:bg-gray-600';
@@ -9,6 +10,7 @@ interface DropdownMenuProps {
 }
 
 export default function DropdownMenu({ isOpen }: DropdownMenuProps) {
+  const { t } = useTranslation();
   const { push } = useRouter();
 
   function handleSignOut() {
@@ -25,13 +27,13 @@ export default function DropdownMenu({ isOpen }: DropdownMenuProps) {
     >
       <ul className="py-2 text-sm">
         <li className={STYLE_LIST} onClick={() => push('/account')}>
-          Account
+          {t('dropdownMenu:account')}
         </li>
         <li className={STYLE_LIST} onClick={() => push('/settings')}>
-          Settings
+          {t('dropdownMenu:settings')}
         </li>
         <li className={STYLE_LIST} onClick={handleSignOut}>
-          Sign out
+          {t('dropdownMenu:signOut')}
         </li>
       </ul>
     </div>

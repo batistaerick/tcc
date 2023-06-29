@@ -1,4 +1,5 @@
 import { ChangeEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface CategoryOptionsProps {
   category: string;
@@ -15,6 +16,8 @@ export default function CategoryOptions({
   incomeOptions,
   handleChange,
 }: CategoryOptionsProps) {
+  const { t } = useTranslation();
+
   function renderOption() {
     if (category === 'expenses') {
       return expenseOptions;
@@ -32,7 +35,7 @@ export default function CategoryOptions({
       onChange={handleChange}
     >
       <option className="bg-zinc-300" value="">
-        Choose a category
+        {t('categoryOption:chooseCategory')}
       </option>
       {renderOption()?.map((option) => (
         <option key={option} className="bg-zinc-300" value={option}>

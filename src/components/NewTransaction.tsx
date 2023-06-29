@@ -12,6 +12,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import {
   FcCalendar,
@@ -31,6 +32,7 @@ export default function NewTransaction({
   isOpen,
   setIsOpen,
 }: NewTransactionProps) {
+  const { t } = useTranslation();
   const [expenseOrIncomeOption, setExpenseOrIncomeOption] = useState('');
   const [date, setDate] = useState(new Date());
   const [form, setForm] = useState({
@@ -62,12 +64,12 @@ export default function NewTransaction({
     }));
   }
 
-  function onSubmit(event: ChangeEvent<HTMLFormElement>) {
+  function onSubmit(event: ChangeEvent<HTMLFormElement>): void {
     event.preventDefault();
     handleSubmit(expenseOrIncomeOption).catch((error) => console.error(error));
   }
 
-  async function handleSubmit(route: string) {
+  async function handleSubmit(route: string): Promise<void> {
     const response: Expense | Income = await axios.post(`/api/${route}`, {
       ...form,
     });
@@ -120,7 +122,7 @@ export default function NewTransaction({
                     }
                   />
                   <label className="text-lg" htmlFor="expense">
-                    Expense
+                    {t('newTransaction:expenseOption')}
                   </label>
                 </div>
                 <div className="flex flex-row items-center gap-1">
@@ -135,13 +137,13 @@ export default function NewTransaction({
                     }
                   />
                   <label className="text-lg" htmlFor="income">
-                    Income
+                    {t('newTransaction:incomeOption')}
                   </label>
                 </div>
               </div>
               <div className="flex items-center justify-center">
                 <div className="flex flex-col">
-                  <label htmlFor="amount">Amount</label>
+                  <label htmlFor="amount">{t('newTransaction:amount')}</label>
                   <div className="flex">
                     <div className="flex h-12 w-12 items-center justify-center rounded-l-lg bg-zinc-300 text-black">
                       <FcCurrencyExchange size={25} />
@@ -158,7 +160,7 @@ export default function NewTransaction({
               </div>
               <div className="flex items-center justify-center">
                 <div className="flex flex-col">
-                  <label htmlFor="notes">Notes (Optional)</label>
+                  <label htmlFor="notes">{t('newTransaction:notes')}</label>
                   <div className="flex">
                     <div className="flex h-12 w-12 items-center justify-center rounded-l-lg bg-zinc-300 text-black">
                       <FcSurvey size={25} />
@@ -174,7 +176,9 @@ export default function NewTransaction({
               </div>
               <div className="flex items-center justify-center">
                 <div className="flex flex-col">
-                  <label htmlFor="category">Category</label>
+                  <label htmlFor="category">
+                    {t('newTransaction:category')}
+                  </label>
                   <div className="flex">
                     <div className="flex h-12 w-12 items-center justify-center rounded-l-lg bg-zinc-300 text-black">
                       <FcIdea size={25} />
@@ -199,7 +203,7 @@ export default function NewTransaction({
                       h-12 w-20 rounded-full text-black
                     `}
                   >
-                    Save
+                    {t('newTransaction:save')}
                   </button>
                 </div>
               </div>
