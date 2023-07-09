@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BiUserCircle } from 'react-icons/bi';
 import { FcCalendar } from 'react-icons/fc';
-import { MdLanguage } from 'react-icons/md';
+import { SiMicrosofttranslator } from 'react-icons/si';
 import { useRecoilState } from 'recoil';
 import DatePickerDialog from './DatePickerDialog';
 import DropdownMenu from './DropdownMenu';
@@ -40,10 +40,10 @@ export default function Header() {
           showMonthYearPicker
         />
       </div>
-      <div className="flex">
-        <MdLanguage
+      <div className="flex items-center gap-2">
+        <SiMicrosofttranslator
           className="cursor-pointer"
-          size={25}
+          size={20}
           onClick={handleChangeLanguage}
         />
         <BiUserCircle

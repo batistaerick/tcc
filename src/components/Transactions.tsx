@@ -19,13 +19,8 @@ export default function Transactions() {
 
   return (
     <div>
-      <div className="mx-5 flex justify-between">
-        <div className="font-semibold text-indigo-600">
-          {t('transactions:expenses')}
-        </div>
-        <button className="font-semibold text-indigo-600">
-          {t('transactions:viewAll')}
-        </button>
+      <div className="mx-5 font-semibold text-indigo-600">
+        {t('transactions:expenses')}
       </div>
       <div className="h-52 overflow-y-auto">
         {expenses?.map((expense) => (
@@ -39,13 +34,8 @@ export default function Transactions() {
           />
         ))}
       </div>
-      <div className="mx-5 flex justify-between">
-        <div className="font-semibold text-indigo-600">
-          {t('transactions:incomes')}
-        </div>
-        <button className="font-semibold text-indigo-600">
-          {t('transactions:expenses')}
-        </button>
+      <div className="mx-5 font-semibold text-indigo-600">
+        {t('transactions:incomes')}
       </div>
       <div className="h-52 overflow-y-auto">
         {incomes?.map((expense) => (

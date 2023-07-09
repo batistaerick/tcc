@@ -26,7 +26,6 @@ const pt: LanguageMap = {
   transactions: {
     expenses: 'Despesas',
     incomes: 'Receitas',
-    viewAll: 'Ver tudo',
   },
 };
 

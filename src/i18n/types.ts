@@ -24,6 +24,5 @@ export interface LanguageMap {
   transactions: {
     expenses: string;
     incomes: string;
-    viewAll: string;
   };
 }

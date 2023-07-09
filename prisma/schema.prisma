@@ -13,8 +13,6 @@ model User {
   image String?
   email String @unique
   savedMoney Float
-  expenseOptions String[]
-  incomeOptions String[]
   emailVerified DateTime?
   hashedPassword String? @db.VarChar
   createdAt DateTime @default(now()) @db.Timestamp

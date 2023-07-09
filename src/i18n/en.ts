@@ -26,7 +26,6 @@ const en: LanguageMap = {
   transactions: {
     expenses: 'Expenses',
     incomes: 'Incomes',
-    viewAll: 'View all',
   },
 };
 

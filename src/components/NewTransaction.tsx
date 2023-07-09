@@ -20,7 +20,6 @@ import {
   FcIdea,
   FcSurvey,
 } from 'react-icons/fc';
-import CategoryOptions from './CategoryOptions';
 import DatePickerDialog from './DatePickerDialog';
 
 interface NewTransactionProps {
@@ -183,11 +182,11 @@ export default function NewTransaction({
                     <div className="flex h-12 w-12 items-center justify-center rounded-l-lg bg-zinc-300 text-black">
                       <FcIdea size={25} />
                     </div>
-                    <CategoryOptions
-                      category={expenseOrIncomeOption}
-                      expenseOptions={user.expenseOptions}
-                      incomeOptions={user.incomeOptions}
-                      handleChange={handleChange}
+                    <input
+                      className="h-12 w-48 rounded-r-lg bg-zinc-300 text-black focus:outline-none"
+                      id="category"
+                      type="text"
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
