@@ -10,15 +10,15 @@ export default function Language() {
 
   const [currentLanguage, setCurrentLanguage] = useState(language);
 
-  function handleChangeLanguage() {
+  async function handleChangeLanguage() {
     const newLanguage = currentLanguage === 'en' ? 'pt' : 'en';
-    changeLanguage(newLanguage);
+    await changeLanguage(newLanguage);
     setCurrentLanguage(newLanguage);
   }
 
   return (
     <SiMicrosofttranslator
-      className="cursor-pointer"
+      className="cursor-pointer text-white"
       size={20}
       onClick={handleChangeLanguage}
     />

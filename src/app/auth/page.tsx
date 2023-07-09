@@ -1,5 +1,6 @@
 'use client';
 import Input from '@/components/Input';
+import Language from '@/components/Language';
 import Loading from '@/components/Loading';
 import '@/i18n/i18n';
 import axios from 'axios';
@@ -171,6 +172,9 @@ export default function Auth() {
                 {variant === 'login' ? t('auth:signUp') : t('auth:login')}
               </span>
             </p>
+            <div className="mt-5 flex items-center justify-center">
+              <Language />
+            </div>
           </div>
         </div>
       </div>
