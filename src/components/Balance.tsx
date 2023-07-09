@@ -1,28 +1,30 @@
 'use client';
-import useMonthlyExpenses from '@/hooks/useMonthlyExpenses';
-import useMonthlyIncomes from '@/hooks/useMonthlyIncomes';
+import useMonthlyTransaction from '@/hooks/useMonthlyTransaction';
 import { Expense, Income } from '@prisma/client';
 import { useTranslation } from 'react-i18next';
 import { FaChevronRight } from 'react-icons/fa';
 import { FcBearish, FcBullish } from 'react-icons/fc';
 
+type hookDataType = {
+  data: { incomes: Income[]; expenses: Expense[] };
+};
+
 export default function Balance() {
   const { t } = useTranslation();
-  const { data: expenses }: { data: Expense[] } = useMonthlyExpenses();
-  const { data: incomes }: { data: Income[] } = useMonthlyIncomes();
+  const { data }: hookDataType = useMonthlyTransaction();
 
   function totalBalance() {
-    if (expenses && incomes) {
+    if (data?.expenses && data?.incomes) {
       return (totalIncomes() - totalExpenses()).toFixed(2);
     }
   }
 
   function totalExpenses() {
-    return expenses?.reduce((sum, expense) => sum + expense.amount, 0);
+    return data?.expenses?.reduce((sum, expense) => sum + expense.amount, 0);
   }
 
   function totalIncomes() {
-    return incomes?.reduce((sum, expense) => sum + expense.amount, 0);
+    return data?.incomes?.reduce((sum, expense) => sum + expense.amount, 0);
   }
 
   return (
@@ -31,7 +33,7 @@ export default function Balance() {
         <div className="flex items-center justify-between px-10 pt-5">
           <div>
             <div className="text-left">{t('balance:totalBalance')}</div>
-            <div className="text-left text-3xl">${totalBalance()}</div>
+            <div className="text-left text-3xl">${totalBalance() ?? 0}</div>
           </div>
           <FaChevronRight size={25} />
         </div>
@@ -40,14 +42,14 @@ export default function Balance() {
             <FcBearish size={35} />
             <div>
               <div>{t('balance:expense')}</div>
-              <div>${totalExpenses() ?? ''}</div>
+              <div>${totalExpenses() ?? 0}</div>
             </div>
           </div>
           <div className="flex gap-1">
             <FcBullish size={35} />
             <div>
               <div>{t('balance:income')}</div>
-              <div>${totalIncomes() ?? ''}</div>
+              <div>${totalIncomes() ?? 0}</div>
             </div>
           </div>
         </div>

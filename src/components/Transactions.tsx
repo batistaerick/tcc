@@ -1,21 +1,18 @@
 'use client';
-import useMonthlyExpenses from '@/hooks/useMonthlyExpenses';
-import useMonthlyIncomes from '@/hooks/useMonthlyIncomes';
+import useMonthlyTransaction from '@/hooks/useMonthlyTransaction';
 import { Expense, Income } from '@prisma/client';
 import { useTranslation } from 'react-i18next';
 import { KeyedMutator } from 'swr';
 import FinancialMovements from './FinancialMovements';
 
+type hookType = {
+  data: { incomes: Income[]; expenses: Expense[] };
+  mutate: KeyedMutator<any>;
+};
+
 export default function Transactions() {
   const { t } = useTranslation();
-  const {
-    data: expenses,
-    mutate: expenseMutate,
-  }: { data: Expense[]; mutate: KeyedMutator<any> } = useMonthlyExpenses();
-  const {
-    data: incomes,
-    mutate: incomeMutate,
-  }: { data: Income[]; mutate: KeyedMutator<any> } = useMonthlyIncomes();
+  const { data, mutate }: hookType = useMonthlyTransaction();
 
   return (
     <div>
@@ -23,14 +20,14 @@ export default function Transactions() {
         {t('transactions:expenses')}
       </div>
       <div className="h-52 overflow-y-auto">
-        {expenses?.map((expense) => (
+        {data?.expenses?.map((expense) => (
           <FinancialMovements
             key={expense.id}
             id={expense.id}
             category={expense.category}
             amount={expense.amount}
             type="expenses"
-            mutateOnDelete={expenseMutate}
+            mutateOnDelete={mutate}
           />
         ))}
       </div>
@@ -38,14 +35,14 @@ export default function Transactions() {
         {t('transactions:incomes')}
       </div>
       <div className="h-52 overflow-y-auto">
-        {incomes?.map((expense) => (
+        {data?.incomes?.map((income) => (
           <FinancialMovements
-            key={expense.id}
-            id={expense.id}
-            category={expense.category}
-            amount={expense.amount}
+            key={income.id}
+            id={income.id}
+            category={income.category}
+            amount={income.amount}
             type="incomes"
-            mutateOnDelete={incomeMutate}
+            mutateOnDelete={mutate}
           />
         ))}
       </div>

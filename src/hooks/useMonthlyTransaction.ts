@@ -3,11 +3,11 @@ import { selectedDateAtom } from '@/recoil/datePickerDialog';
 import { useRecoilState } from 'recoil';
 import useSWR from 'swr';
 
-export default function useMonthlyExpenses() {
+export default function useMonthlyTransaction() {
   const [selectedDate] = useRecoilState(selectedDateAtom);
 
   const { data, error, isLoading, mutate } = useSWR(
-    `/api/expenses/${selectedDate}`,
+    `/api/transactions/${selectedDate}`,
     fetcher,
     {
       revalidateIfStale: false,

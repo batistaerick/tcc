@@ -1,7 +1,6 @@
 'use client';
 import useCurrentUser from '@/hooks/useCurrentUser';
-import useMonthlyExpenses from '@/hooks/useMonthlyExpenses';
-import useMonthlyIncomes from '@/hooks/useMonthlyIncomes';
+import useMonthlyTransaction from '@/hooks/useMonthlyTransaction';
 import usePredictions from '@/hooks/usePrediction';
 import '@/i18n/i18n';
 import { Expense, Income } from '@prisma/client';
@@ -28,13 +27,13 @@ export default function NewTransaction() {
     amount: undefined,
     category: '',
     notes: '',
+    type: '',
     userId: '',
   });
 
   const { push } = useRouter();
   const { t } = useTranslation();
-  const { mutate: mutateExpense } = useMonthlyExpenses();
-  const { mutate: mutateIncome } = useMonthlyIncomes();
+  const { mutate: mutateTransactions } = useMonthlyTransaction();
   const { mutate: mutatePrediction } = usePredictions();
   const { data: user, mutate: mutateUser } = useCurrentUser();
 
@@ -43,8 +42,9 @@ export default function NewTransaction() {
       setForm((prevFormState) => ({
         ...prevFormState,
         date: date,
+        type: expenseOrIncomeOption,
       })),
-    [date]
+    [date, expenseOrIncomeOption]
   );
 
   function handleChange({
@@ -58,21 +58,21 @@ export default function NewTransaction() {
 
   function onSubmit(event: ChangeEvent<HTMLFormElement>): void {
     event.preventDefault();
-    handleSubmit(expenseOrIncomeOption);
+    handleSubmit();
     push('/');
   }
 
-  async function handleSubmit(route: string): Promise<void> {
-    const response: Expense | Income = await axios.post(`/api/${route}`, {
+  async function handleSubmit(): Promise<void> {
+    const response: Expense | Income = await axios.post(`/api/transactions`, {
       ...form,
     });
 
     await mutateUser({
       ...user,
-      [route]: response,
+      [expenseOrIncomeOption]: response,
     });
-    await mutateExpense();
-    await mutateIncome();
+
+    await mutateTransactions();
     await mutatePrediction();
     setDate(new Date());
   }

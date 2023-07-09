@@ -14,20 +14,26 @@ export async function GET(request: Request, context: TypeContext) {
     } = await serverAuth();
 
     const date = new Date(context.params.date);
-    const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
-    const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    const gte = new Date(date.getFullYear(), date.getMonth(), 1);
+    const lte = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
     const expenses = await prismadb.expense.findMany({
       where: {
         userId,
-        date: {
-          gte: startDate,
-          lte: endDate,
-        },
+        date: { gte, lte },
       },
     });
 
-    return new Response(JSON.stringify(expenses));
+    const incomes = await prismadb.income.findMany({
+      where: {
+        userId,
+        date: { gte, lte },
+      },
+    });
+
+    const response = { expenses, incomes };
+
+    return new Response(JSON.stringify(response));
   } catch (error) {
     console.error(error);
   }
