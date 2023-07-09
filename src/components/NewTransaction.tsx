@@ -3,15 +3,11 @@ import useCurrentUser from '@/hooks/useCurrentUser';
 import useMonthlyExpenses from '@/hooks/useMonthlyExpenses';
 import useMonthlyIncomes from '@/hooks/useMonthlyIncomes';
 import usePredictions from '@/hooks/usePrediction';
+import '@/i18n/i18n';
 import { Expense, Income } from '@prisma/client';
 import axios from 'axios';
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react';
+import { useRouter } from 'next/navigation';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AiFillCloseCircle } from 'react-icons/ai';
 import {
@@ -21,25 +17,22 @@ import {
   FcSurvey,
 } from 'react-icons/fc';
 import DatePickerDialog from './DatePickerDialog';
+import Input from './Input';
 
-interface NewTransactionProps {
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
-}
-
-export default function NewTransaction({
-  isOpen,
-  setIsOpen,
-}: NewTransactionProps) {
-  const { t } = useTranslation();
-  const [expenseOrIncomeOption, setExpenseOrIncomeOption] = useState('');
-  const [date, setDate] = useState(new Date());
+export default function NewTransaction() {
+  const [expenseOrIncomeOption, setExpenseOrIncomeOption] =
+    useState<string>('');
+  const [isFixed, setIsFixed] = useState<boolean>(false);
+  const [date, setDate] = useState<Date>(new Date());
   const [form, setForm] = useState({
-    amount: 0,
+    amount: undefined,
     category: '',
     notes: '',
     userId: '',
   });
+
+  const { push } = useRouter();
+  const { t } = useTranslation();
   const { mutate: mutateExpense } = useMonthlyExpenses();
   const { mutate: mutateIncome } = useMonthlyIncomes();
   const { mutate: mutatePrediction } = usePredictions();
@@ -55,7 +48,7 @@ export default function NewTransaction({
   );
 
   function handleChange({
-    target: { value, id },
+    currentTarget: { value, id },
   }: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     setForm((prevForm) => ({
       ...prevForm,
@@ -65,7 +58,8 @@ export default function NewTransaction({
 
   function onSubmit(event: ChangeEvent<HTMLFormElement>): void {
     event.preventDefault();
-    handleSubmit(expenseOrIncomeOption).catch((error) => console.error(error));
+    handleSubmit(expenseOrIncomeOption);
+    push('/');
   }
 
   async function handleSubmit(route: string): Promise<void> {
@@ -81,135 +75,127 @@ export default function NewTransaction({
     await mutateIncome();
     await mutatePrediction();
     setDate(new Date());
-    setIsOpen(false);
   }
 
   const isSaveButtonDisabled =
     form.amount === 0 || form.category === '' || expenseOrIncomeOption === '';
 
   return (
-    <>
-      {isOpen && (
-        <div className="absolute z-20 h-screen w-screen bg-white">
-          <div className="h-screen dark:bg-zinc-900">
-            <div className="flex items-center justify-between">
-              <div className="ml-5 mt-5 flex items-center gap-2">
-                <FcCalendar size={20} />
-                <DatePickerDialog date={date} setDate={setDate} />
-              </div>
-              <AiFillCloseCircle
-                className="mr-5 mt-5 cursor-pointer"
-                size={30}
-                onClick={() => setIsOpen(!isOpen)}
+    <div className="absolute z-20 h-screen w-screen bg-white">
+      <div className="h-screen dark:bg-zinc-900">
+        <div className="flex items-center justify-between">
+          <div className="ml-5 mt-5 flex items-center gap-2">
+            <FcCalendar size={20} />
+            <DatePickerDialog date={date} setDate={setDate} />
+          </div>
+          <AiFillCloseCircle
+            className="mr-5 mt-5 cursor-pointer text-white"
+            size={30}
+            onClick={() => push('/')}
+          />
+        </div>
+        <form
+          className="mt-5 flex flex-col gap-10"
+          id="form"
+          onSubmit={onSubmit}
+        >
+          <div className="grid grid-cols-2 place-items-center">
+            <div className="flex flex-row items-center gap-1">
+              <input
+                className="h-5 w-5 accent-indigo-800"
+                id="expense"
+                type="radio"
+                value="expenses"
+                checked={expenseOrIncomeOption === 'expenses'}
+                onChange={({ currentTarget: { value } }) =>
+                  setExpenseOrIncomeOption(value)
+                }
+              />
+              <label className="text-lg text-white" htmlFor="expense">
+                {t('newTransaction:expenseOption')}
+              </label>
+            </div>
+            <div className="flex flex-row items-center gap-1">
+              <input
+                className="h-5 w-5 accent-indigo-800"
+                id="income"
+                type="radio"
+                value="incomes"
+                checked={expenseOrIncomeOption === 'incomes'}
+                onChange={({ currentTarget: { value } }) =>
+                  setExpenseOrIncomeOption(value)
+                }
+              />
+              <label className="text-lg text-white" htmlFor="income">
+                {t('newTransaction:incomeOption')}
+              </label>
+            </div>
+          </div>
+          <div className="flex items-center justify-center">
+            <div>
+              <FcCurrencyExchange className="mb-1" size={25} />
+              <Input
+                id="amount"
+                label={t('newTransaction:amount')}
+                type="number"
+                value={form.amount}
+                onChange={handleChange}
               />
             </div>
-            <form
-              className="mt-5 flex flex-col gap-10"
-              id="form"
-              onSubmit={onSubmit}
-            >
-              <div className="grid grid-cols-2 place-items-center">
-                <div className="flex flex-row items-center gap-1">
-                  <input
-                    className="h-5 w-5 accent-indigo-800"
-                    id="expense"
-                    type="radio"
-                    value="expenses"
-                    checked={expenseOrIncomeOption === 'expenses'}
-                    onChange={({ target: { value } }) =>
-                      setExpenseOrIncomeOption(value)
-                    }
-                  />
-                  <label className="text-lg" htmlFor="expense">
-                    {t('newTransaction:expenseOption')}
-                  </label>
-                </div>
-                <div className="flex flex-row items-center gap-1">
-                  <input
-                    className="h-5 w-5 accent-indigo-800"
-                    id="income"
-                    type="radio"
-                    value="incomes"
-                    checked={expenseOrIncomeOption === 'incomes'}
-                    onChange={({ target: { value } }) =>
-                      setExpenseOrIncomeOption(value)
-                    }
-                  />
-                  <label className="text-lg" htmlFor="income">
-                    {t('newTransaction:incomeOption')}
-                  </label>
-                </div>
-              </div>
-              <div className="flex items-center justify-center">
-                <div className="flex flex-col">
-                  <label htmlFor="amount">{t('newTransaction:amount')}</label>
-                  <div className="flex">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-l-lg bg-zinc-300 text-black">
-                      <FcCurrencyExchange size={25} />
-                    </div>
-                    <input
-                      className="h-12 w-48 rounded-r-lg bg-zinc-300 text-2xl text-black focus:outline-none"
-                      id="amount"
-                      type="number"
-                      maxLength={13}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center">
-                <div className="flex flex-col">
-                  <label htmlFor="notes">{t('newTransaction:notes')}</label>
-                  <div className="flex">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-l-lg bg-zinc-300 text-black">
-                      <FcSurvey size={25} />
-                    </div>
-                    <input
-                      className="h-12 w-48 rounded-r-lg bg-zinc-300 text-black focus:outline-none"
-                      id="notes"
-                      type="text"
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center">
-                <div className="flex flex-col">
-                  <label htmlFor="category">
-                    {t('newTransaction:category')}
-                  </label>
-                  <div className="flex">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-l-lg bg-zinc-300 text-black">
-                      <FcIdea size={25} />
-                    </div>
-                    <input
-                      className="h-12 w-48 rounded-r-lg bg-zinc-300 text-black focus:outline-none"
-                      id="category"
-                      type="text"
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center">
-                <div className="flex flex-col">
-                  <button
-                    form="form"
-                    type="submit"
-                    disabled={isSaveButtonDisabled}
-                    className={`
-                      ${isSaveButtonDisabled ? 'bg-slate-400' : 'bg-indigo-800'}
-                      h-12 w-20 rounded-full text-black
-                    `}
-                  >
-                    {t('newTransaction:save')}
-                  </button>
-                </div>
-              </div>
-            </form>
           </div>
-        </div>
-      )}
-    </>
+          <div className="flex items-center justify-center">
+            <div>
+              <FcSurvey className="mb-1" size={25} />
+              <Input
+                id="notes"
+                label={t('newTransaction:notes')}
+                type="text"
+                value={form.notes}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className="flex items-center justify-center">
+            <div>
+              <FcIdea className="mb-1" size={25} />
+              <Input
+                id="category"
+                label={t('newTransaction:category')}
+                type="text"
+                value={form.category}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+          <div className="flex items-center justify-center gap-1">
+            <input
+              className=""
+              id="fixed"
+              type="checkbox"
+              checked={isFixed}
+              onChange={({ currentTarget: { checked } }) => setIsFixed(checked)}
+            />
+            <label className="text-white" htmlFor="fixed">
+              {t('newTransaction:fixed')}
+            </label>
+          </div>
+          <div className="flex items-center justify-center">
+            <div className="flex flex-col">
+              <button
+                form="form"
+                type="submit"
+                disabled={isSaveButtonDisabled}
+                className={`
+                  h-12 w-20 rounded-full text-black
+                  ${isSaveButtonDisabled ? 'bg-slate-400' : 'bg-indigo-800'}
+                `}
+              >
+                {t('newTransaction:save')}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }

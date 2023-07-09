@@ -1,8 +1,23 @@
 export interface LanguageMap {
+  api: {
+    authorize: {
+      wrongCredentials: string;
+    };
+  };
+  auth: {
+    alreadyHaveAccount: string;
+    email: string;
+    login: string;
+    newInHere: string;
+    password: string;
+    signIn: string;
+    signUp: string;
+    username: string;
+  };
   balance: {
-    totalBalance: string;
     expense: string;
     income: string;
+    totalBalance: string;
   };
   categoryOption: {
     chooseCategory: string;
@@ -13,11 +28,12 @@ export interface LanguageMap {
     signOut: string;
   };
   newTransaction: {
-    expenseOption: string;
-    incomeOption: string;
     amount: string;
-    notes: string;
     category: string;
+    expenseOption: string;
+    fixed: string;
+    incomeOption: string;
+    notes: string;
     save: string;
   };
   prediction: string;

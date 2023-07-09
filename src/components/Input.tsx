@@ -2,7 +2,7 @@ import { ChangeEvent, KeyboardEvent } from 'react';
 
 interface InputProps {
   id: string;
-  value: string;
+  value: string | number | undefined;
   label: string;
   type?: string;
   onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void;

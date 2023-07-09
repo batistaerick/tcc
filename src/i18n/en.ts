@@ -1,10 +1,26 @@
 import { LanguageMap } from './types';
 
 const en: LanguageMap = {
+  api: {
+    authorize: {
+      wrongCredentials:
+        'Invalid email or password. Please make sure you have entered the correct credentials.',
+    },
+  },
+  auth: {
+    alreadyHaveAccount: 'Already have an account?',
+    email: 'Email',
+    login: 'Login',
+    newInHere: 'New in here?',
+    password: 'Password',
+    signIn: 'Sign in',
+    signUp: 'Sign up',
+    username: 'Username',
+  },
   balance: {
-    totalBalance: 'Total Balance',
     expense: 'Expense',
     income: 'Income',
+    totalBalance: 'Total Balance',
   },
   categoryOption: {
     chooseCategory: 'Choose a category',
@@ -15,11 +31,12 @@ const en: LanguageMap = {
     signOut: 'Sign out',
   },
   newTransaction: {
-    expenseOption: 'Expense',
-    incomeOption: 'Income',
     amount: 'Amount',
-    notes: 'Notes (Optional)',
     category: 'Category',
+    expenseOption: 'Expense',
+    fixed: 'Is it a fixed expense/income?',
+    incomeOption: 'Income',
+    notes: 'Notes (Optional)',
     save: 'Save',
   },
   prediction: 'Prediction',
