@@ -2,6 +2,7 @@
 import AddButton from '@/components/AddButton';
 import Balance from '@/components/Balance';
 import Header from '@/components/Header';
+import Loading from '@/components/Loading';
 import Prediction from '@/components/Prediction';
 import Transactions from '@/components/Transactions';
 import '@/i18n/i18n';
@@ -19,18 +20,18 @@ export default function Home() {
   });
 
   if (status === 'loading') {
-    return <></>;
+    return <Loading />;
+  } else {
+    return (
+      <RecoilRoot>
+        <div className="flex h-screen flex-col dark:bg-zinc-900 dark:text-gray-300">
+          <Header />
+          <Balance />
+          <Prediction />
+          <Transactions />
+          <AddButton />
+        </div>
+      </RecoilRoot>
+    );
   }
-
-  return (
-    <RecoilRoot>
-      <div className="flex h-screen flex-col dark:bg-zinc-900 dark:text-gray-300">
-        <Header />
-        <Balance />
-        <Prediction />
-        <Transactions />
-        <AddButton />
-      </div>
-    </RecoilRoot>
-  );
 }

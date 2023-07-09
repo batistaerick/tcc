@@ -32,6 +32,7 @@ export default function Input({
           pb-1
           pt-6
           text-white
+          outline-none
           focus:ring-0
         `}
         placeholder=" "
