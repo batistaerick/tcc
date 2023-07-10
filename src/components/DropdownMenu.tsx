@@ -13,8 +13,8 @@ export default function DropdownMenu({ isOpen }: DropdownMenuProps) {
   const { t } = useTranslation();
   const { push } = useRouter();
 
-  function handleSignOut() {
-    signOut().catch((error) => console.error(error));
+  async function handleSignOut() {
+    await signOut();
   }
 
   return (

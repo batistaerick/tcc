@@ -21,13 +21,9 @@ export default function FinancialMovements({
   const { mutate: mutatePrediction } = usePredictions();
 
   async function deleteExpenseOrIncome() {
-    try {
-      await axios.delete(`/api/transactions`, { params: { id, type } });
-      await mutateOnDelete();
-      await mutatePrediction();
-    } catch (error) {
-      console.error(error);
-    }
+    await axios.delete(`/api/transactions`, { params: { id, type } });
+    await mutateOnDelete();
+    await mutatePrediction();
   }
 
   return (

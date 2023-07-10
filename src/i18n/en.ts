@@ -18,8 +18,8 @@ const en: LanguageMap = {
     username: 'Username',
   },
   balance: {
-    expense: 'Expense',
-    income: 'Income',
+    expense: 'Total Expense',
+    income: 'Total Income',
     totalBalance: 'Total Balance',
   },
   categoryOption: {

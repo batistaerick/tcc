@@ -2,7 +2,6 @@
 import Balance from '@/components/Balance';
 import Header from '@/components/Header';
 import Loading from '@/components/Loading';
-import Prediction from '@/components/Prediction';
 import Transactions from '@/components/Transactions';
 import '@/i18n/i18n';
 import { useSession } from 'next-auth/react';
@@ -24,14 +23,18 @@ export default function Home() {
   }
   return (
     <RecoilRoot>
-      <div className="flex h-screen flex-col dark:bg-zinc-900 dark:text-gray-300">
+      <div
+        className={`
+          flex h-screen flex-col gap-2 bg-white
+          dark:bg-zinc-900 dark:text-gray-300
+        `}
+      >
         <Header />
         <Balance />
-        <Prediction />
         <Transactions />
         <IoMdAddCircle
-          className="fixed bottom-4 right-0 cursor-pointer p-3 text-indigo-800"
-          size={75}
+          className="fixed bottom-0 right-0 m-3 cursor-pointer text-indigo-800"
+          size={45}
           onClick={() => push('/transactions')}
         />
       </div>

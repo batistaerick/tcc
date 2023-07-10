@@ -63,7 +63,8 @@ export default function Auth() {
 
   if (status === 'loading') {
     return <Loading />;
-  } else if (status === 'authenticated') {
+  }
+  if (status === 'authenticated') {
     push('/');
     return <Loading />;
   }

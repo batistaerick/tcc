@@ -15,44 +15,35 @@ export async function GET(request: Request, context: TypeContext) {
     } = await serverAuth();
 
     const date = new Date();
-    const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
-    const numberOfMonths = totalOfMonths(
-      startDate,
-      new Date(context.params.endDate)
+    const gte = new Date(date.getFullYear(), date.getMonth(), 1);
+    const numberOfMonths = totalOfMonths(gte, new Date(context.params.endDate));
+    const monthsAdded = addMonths(gte, numberOfMonths);
+    const lte = new Date(
+      monthsAdded.getFullYear(),
+      monthsAdded.getMonth() + 1,
+      0
     );
-    let endDate = addMonths(startDate, numberOfMonths);
-    endDate = new Date(endDate.getFullYear(), endDate.getMonth() + 1, 0);
 
     const expenses = await prismadb.expense.findMany({
       where: {
         userId,
-        date: {
-          gte: startDate,
-          lte: endDate,
-        },
+        date: { gte, lte },
       },
     });
 
     const incomes = await prismadb.income.findMany({
       where: {
         userId,
-        date: {
-          gte: startDate,
-          lte: endDate,
-        },
+        date: { gte, lte },
       },
     });
 
     const fixedExpenses = await prismadb.fixedExpense.findMany({
-      where: {
-        userId,
-      },
+      where: { userId },
     });
 
     const fixedIncomes = await prismadb.fixedIncome.findMany({
-      where: {
-        userId,
-      },
+      where: { userId },
     });
 
     const total = prediction(
