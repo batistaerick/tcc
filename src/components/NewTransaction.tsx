@@ -3,7 +3,7 @@ import useCurrentUser from '@/hooks/useCurrentUser';
 import useMonthlyTransactions from '@/hooks/useMonthlyTransactions';
 import usePredictions from '@/hooks/usePrediction';
 import '@/i18n/i18n';
-import { Expense, Income } from '@prisma/client';
+import { Expense, FixedExpense, FixedIncome, Income } from '@prisma/client';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
@@ -63,16 +63,30 @@ export default function NewTransaction() {
   }
 
   async function handleSubmit(): Promise<void> {
-    const response: Expense | Income = await axios.post(`/api/transactions`, {
-      ...form,
-    });
+    if (isFixed) {
+      const response: FixedExpense | FixedIncome = await axios.post(
+        `/api/fixed-transactions`,
+        { ...form }
+      );
 
-    console.log('Here: --------->', expenseOrIncomeOption);
+      const fixed =
+        expenseOrIncomeOption === 'incomes' ? 'fixedIncomes' : 'fixedExpenses';
 
-    await mutateUser({
-      ...user,
-      [expenseOrIncomeOption]: response,
-    });
+      await mutateUser({
+        ...user,
+        [fixed]: response,
+      });
+    } else {
+      const response: Expense | Income = await axios.post('/api/transactions', {
+        ...form,
+      });
+
+      await mutateUser({
+        ...user,
+        [expenseOrIncomeOption]: response,
+      });
+    }
+
     await mutateTransactions();
     await mutatePrediction();
 

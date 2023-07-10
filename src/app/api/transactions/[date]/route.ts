@@ -31,9 +31,7 @@ export async function GET(request: Request, context: TypeContext) {
       },
     });
 
-    const response = { expenses, incomes };
-
-    return new Response(JSON.stringify(response));
+    return new Response(JSON.stringify({ expenses, incomes }));
   } catch (error) {
     console.error(error);
   }

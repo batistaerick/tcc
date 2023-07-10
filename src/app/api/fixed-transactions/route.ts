@@ -1,13 +1,12 @@
 import { prismadb } from '@/libs/prismadb';
 import serverAuth from '@/libs/serverAuth';
-import { Expense, Income } from '@prisma/client';
+import { FixedExpense, FixedIncome } from '@prisma/client';
 
 interface Form {
   id: string;
   userId: string;
   category: string;
   notes: string;
-  date: Date;
   type: string;
   amount: number;
 }
@@ -21,25 +20,43 @@ export async function POST(request: Request) {
     const form: Form = await request.json();
     form.userId = userId;
     form.amount = Number(form.amount);
-    form.date = new Date(form.date);
 
     const { type, ...data } = form;
 
     if (type !== 'incomes' && type !== 'expenses') {
       throw new Error('Invalid transaction type');
     }
-    let transaction: Expense | Income;
+    let transaction: FixedExpense | FixedIncome;
 
     if (type === 'incomes') {
-      transaction = await prismadb.income.create({ data });
+      transaction = await prismadb.fixedIncome.create({ data });
     } else {
-      transaction = await prismadb.expense.create({ data });
+      transaction = await prismadb.fixedExpense.create({ data });
     }
     return new Response(JSON.stringify(transaction));
   } catch (error) {
     return new Response(JSON.stringify({ error }), {
       status: 500,
     });
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+    const {
+      currentUser: { id: userId },
+    } = await serverAuth();
+
+    const fixedIncomes = await prismadb.fixedIncome.findMany({
+      where: { userId },
+    });
+
+    const fixedExpenses = await prismadb.fixedExpense.findMany({
+      where: { userId },
+    });
+    return new Response(JSON.stringify({ fixedExpenses, fixedIncomes }));
+  } catch (error) {
+    console.error(error);
   }
 }
 
@@ -58,7 +75,7 @@ export async function DELETE(request: Request) {
     if (type !== 'incomes' && type !== 'expenses') {
       throw new Error('Invalid transaction type');
     }
-    const transactionType = type === 'incomes' ? 'income' : 'expense';
+    const transactionType = type === 'incomes' ? 'fixedIncome' : 'fixedExpense';
 
     const existingTransaction = await prismadb[transactionType].findUnique({
       where: { id },
