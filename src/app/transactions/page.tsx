@@ -19,7 +19,9 @@ export default function Transactions() {
   }
   return (
     <RecoilRoot>
-      <NewTransaction></NewTransaction>
+      <div className="h-screen w-screen bg-zinc-900">
+        <NewTransaction />
+      </div>
     </RecoilRoot>
   );
 }

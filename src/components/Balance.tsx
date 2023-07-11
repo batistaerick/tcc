@@ -27,19 +27,12 @@ export default function Balance() {
   }
 
   return (
-    <div className="flex cursor-default">
-      <div className="mx-5 h-48 w-full rounded-xl bg-indigo-800">
+    <div className="flex cursor-default justify-center">
+      <div className="h-48 w-[350px] rounded-xl bg-indigo-800 md:w-[700px]">
         <div className="flex items-center justify-between px-10 pt-5">
           <div>
             <div className="text-left">{t('balance:totalBalance')}</div>
-            <div
-              className={`
-                text-left text-3xl
-                ${predictionValue < 0 ? 'text-rose-500' : 'text-green-400'}
-              `}
-            >
-              ${predictionValue}
-            </div>
+            <div className="text-left text-3xl">${predictionValue}</div>
           </div>
         </div>
         <div className="flex justify-between px-10 pt-4 text-sm">

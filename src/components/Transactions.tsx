@@ -15,9 +15,9 @@ export default function Transactions() {
   const { data, mutate }: HookType = useMonthlyTransactions();
 
   return (
-    <div className="mx-5 flex flex-col gap-2">
-      <div className="rounded-xl bg-slate-800">
-        <div className="mx-5 flex items-center justify-center font-semibold text-rose-500">
+    <div className="flex flex-col items-center gap-2">
+      <div className="w-[350px] rounded-xl bg-slate-800 md:w-[700px]">
+        <div className="flex items-center justify-center font-semibold text-rose-500">
           {t('transactions:expenses')}
         </div>
         <div className="h-60 overflow-y-auto">
@@ -33,8 +33,8 @@ export default function Transactions() {
           ))}
         </div>
       </div>
-      <div className="rounded-xl bg-slate-800">
-        <div className="mx-5 flex items-center justify-center font-semibold text-green-400">
+      <div className="w-[350px] rounded-xl bg-slate-800 md:w-[700px]">
+        <div className="flex items-center justify-center font-semibold text-green-400">
           {t('transactions:incomes')}
         </div>
         <div className="h-60 overflow-y-auto">

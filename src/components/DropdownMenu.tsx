@@ -21,7 +21,7 @@ export default function DropdownMenu({ isOpen }: DropdownMenuProps) {
     <div
       className={`
         ${isOpen ? 'absolute' : 'hidden'}
-        z-10 mt-9 w-28 divide-y divide-gray-100
+        z-10 mt-8 w-28 divide-y divide-gray-100
         rounded-lg bg-white shadow dark:bg-gray-800
       `}
     >

@@ -72,18 +72,18 @@ export default function Auth() {
     <div
       className={`
         relative h-screen w-screen
-        bg-cover bg-fixed bg-center bg-no-repeat
+        bg-zinc-900 bg-cover bg-fixed bg-center bg-no-repeat 
       `}
     >
-      <div className="h-full w-full bg-zinc-900 lg:bg-opacity-50">
-        <nav className="flex items-center justify-center px-12 py-10">
+      <div className="h-full w-full lg:bg-opacity-50">
+        <nav className="flex items-center justify-center py-10">
           <Image src={wallet} alt="Logo" width={48} height={48} />
         </nav>
         <div className="flex justify-center">
           <div
             className={`
-              lg: mt-2 w-full max-w-md self-center rounded-md
-              bg-opacity-70 px-16 pb-16 pt-5 lg:w-2/5
+              w-full max-w-md self-center rounded-md bg-opacity-70
+              px-16 pb-16 pt-5 lg:mt-2 lg:w-2/5
             `}
           >
             <h2 className="mb-8 flex items-center justify-center text-4xl font-semibold text-white">
@@ -135,7 +135,7 @@ export default function Auth() {
               </div>
             </div>
             <button
-              className="mt-10 w-full rounded-md bg-indigo-800 py-3 text-white transition hover:bg-red-700"
+              className="mt-10 w-full rounded-md bg-indigo-800 py-3 text-white transition hover:bg-indigo-900"
               onClick={variant === 'login' ? login : register}
             >
               {variant === 'login' ? t('auth:login') : t('auth:signUp')}

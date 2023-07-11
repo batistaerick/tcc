@@ -97,20 +97,27 @@ export default function NewTransaction() {
     form.amount === 0 || form.category === '' || expenseOrIncomeOption === '';
 
   return (
-    <div className="h-screen w-screen bg-zinc-900">
-      <div className="flex items-center justify-between">
-        <div className="ml-5 mt-5 flex items-center gap-2">
+    <div className="flex flex-col items-center justify-center">
+      <div className="flex w-[320px] items-center justify-between md:w-[450px]">
+        <div className="z-20 mt-5 flex items-center gap-2">
           <FcCalendar size={20} />
           <DatePickerDialog date={date} setDate={setDate} />
         </div>
         <AiFillCloseCircle
-          className="mr-5 mt-5 cursor-pointer text-white"
+          className={`
+            mt-5 cursor-pointer text-slate-200
+            transition-colors duration-500 hover:text-slate-400
+          `}
           size={30}
           onClick={() => push('/')}
         />
       </div>
-      <form className="mt-5 flex flex-col gap-10" id="form" onSubmit={onSubmit}>
-        <div className="grid grid-cols-2 place-items-center">
+      <form
+        className="mt-5 flex w-[320px] flex-col gap-10 md:w-[450px]"
+        id="form"
+        onSubmit={onSubmit}
+      >
+        <div className="flex items-center justify-evenly">
           <div className="flex flex-row items-center gap-1">
             <input
               className="h-5 w-5 accent-indigo-800"
@@ -142,45 +149,38 @@ export default function NewTransaction() {
             </label>
           </div>
         </div>
-        <div className="flex items-center justify-center">
-          <div>
-            <FcCurrencyExchange className="mb-1" size={25} />
-            <Input
-              id="amount"
-              label={t('newTransaction:amount')}
-              type="number"
-              value={form.amount}
-              onChange={handleChange}
-            />
-          </div>
+        <div>
+          <FcCurrencyExchange className="mb-1" size={25} />
+          <Input
+            id="amount"
+            label={t('newTransaction:amount')}
+            type="number"
+            value={form.amount}
+            onChange={handleChange}
+          />
         </div>
-        <div className="flex items-center justify-center">
-          <div>
-            <FcSurvey className="mb-1" size={25} />
-            <Input
-              id="notes"
-              label={t('newTransaction:notes')}
-              type="text"
-              value={form.notes}
-              onChange={handleChange}
-            />
-          </div>
+        <div>
+          <FcSurvey className="mb-1" size={25} />
+          <Input
+            id="notes"
+            label={t('newTransaction:notes')}
+            type="text"
+            value={form.notes}
+            onChange={handleChange}
+          />
         </div>
-        <div className="flex items-center justify-center">
-          <div>
-            <FcIdea className="mb-1" size={25} />
-            <Input
-              id="category"
-              label={t('newTransaction:category')}
-              type="text"
-              value={form.category}
-              onChange={handleChange}
-            />
-          </div>
+        <div>
+          <FcIdea className="mb-1" size={25} />
+          <Input
+            id="category"
+            label={t('newTransaction:category')}
+            type="text"
+            value={form.category}
+            onChange={handleChange}
+          />
         </div>
         <div className="flex items-center justify-center gap-1">
           <input
-            className=""
             id="fixed"
             type="checkbox"
             checked={isFixed}
@@ -197,8 +197,13 @@ export default function NewTransaction() {
               type="submit"
               disabled={isSaveButtonDisabled}
               className={`
-                  h-12 w-20 rounded-full text-black
-                  ${isSaveButtonDisabled ? 'bg-slate-400' : 'bg-indigo-800'}
+                  h-12 w-24 rounded-full text-black
+                  transition-colors duration-500
+                  ${
+                    isSaveButtonDisabled
+                      ? 'bg-slate-400'
+                      : 'bg-indigo-800 hover:bg-indigo-900'
+                  }
                 `}
             >
               {t('newTransaction:save')}
