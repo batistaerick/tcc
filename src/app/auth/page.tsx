@@ -40,6 +40,7 @@ export default function Auth() {
       redirect: false,
     });
     setUnauthorized(response?.error === 'Error');
+    setTimeout(() => setUnauthorized(false), 10000);
   }, [email, password]);
 
   const register = useCallback(async () => {
@@ -89,11 +90,6 @@ export default function Auth() {
             <h2 className="mb-8 flex items-center justify-center text-4xl font-semibold text-white">
               {variant === 'login' ? t('auth:signIn') : t('auth:signUp')}
             </h2>
-            {unauthorized && (
-              <div className="text-white">
-                {unauthorized && t('api:authorize:wrongCredentials')}
-              </div>
-            )}
             <div className="flex flex-col gap-4">
               {variant === 'register' && (
                 <Input
@@ -133,6 +129,11 @@ export default function Auth() {
                   onKeyDown={onKeyDown}
                 />
               </div>
+              {unauthorized && (
+                <div className="text-white">
+                  {unauthorized && t('api:authorize:wrongCredentials')}
+                </div>
+              )}
             </div>
             <button
               className="mt-10 w-full rounded-md bg-indigo-800 py-3 text-white transition hover:bg-indigo-900"
