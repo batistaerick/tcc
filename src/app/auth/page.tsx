@@ -40,7 +40,7 @@ export default function Auth() {
       redirect: false,
     });
     setUnauthorized(response?.error === 'Error');
-    setTimeout(() => setUnauthorized(false), 10000);
+    setTimeout(() => setUnauthorized(false), 15000);
   }, [email, password]);
 
   const register = useCallback(async () => {
@@ -60,6 +60,10 @@ export default function Auth() {
         ? login().catch((error) => console.error(error))
         : register().catch((error) => console.error(error));
     }
+  }
+
+  function isValidEmail() {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
   if (status === 'loading') {
@@ -136,8 +140,17 @@ export default function Auth() {
               )}
             </div>
             <button
-              className="mt-10 w-full rounded-md bg-indigo-800 py-3 text-white transition hover:bg-indigo-900"
+              className={`
+                mt-10 w-full rounded-md py-3 text-white
+                transition duration-500
+                ${
+                  email && isValidEmail()
+                    ? 'bg-indigo-800 hover:bg-indigo-900'
+                    : 'bg-indigo-500'
+                }
+              `}
               onClick={variant === 'login' ? login : register}
+              disabled={email === '' && password === ''}
             >
               {variant === 'login' ? t('auth:login') : t('auth:signUp')}
             </button>

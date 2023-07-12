@@ -17,6 +17,7 @@ import {
 } from 'react-icons/fc';
 import DatePickerDialog from './DatePickerDialog';
 import Input from './Input';
+import Language from './Language';
 
 export default function NewTransaction() {
   const [expenseOrIncomeOption, setExpenseOrIncomeOption] =
@@ -98,19 +99,22 @@ export default function NewTransaction() {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="flex w-[320px] items-center justify-between md:w-[450px]">
-        <div className="z-20 mt-5 flex items-center gap-2">
+      <div className="mt-5 flex w-[320px] items-center justify-between md:w-[450px]">
+        <div className="z-20 flex items-center gap-2">
           <FcCalendar size={20} />
           <DatePickerDialog date={date} setDate={setDate} />
         </div>
-        <AiFillCloseCircle
-          className={`
-            mt-5 cursor-pointer text-slate-200
+        <div className="flex items-center justify-center gap-2">
+          <Language />
+          <AiFillCloseCircle
+            className={`
+            cursor-pointer text-slate-200
             transition-colors duration-500 hover:text-slate-400
           `}
-          size={30}
-          onClick={() => push('/')}
-        />
+            size={30}
+            onClick={() => push('/')}
+          />
+        </div>
       </div>
       <form
         className="mt-5 flex w-[320px] flex-col gap-10 md:w-[450px]"
