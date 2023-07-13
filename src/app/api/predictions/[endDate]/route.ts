@@ -24,34 +24,22 @@ export async function GET(request: Request, context: TypeContext) {
       0
     );
 
-    const expenses = await prismadb.expense.findMany({
-      where: {
-        userId,
-        date: { gte, lte },
+    const user = await prismadb.user.findUnique({
+      where: { id: userId },
+      include: {
+        expenses: { where: { date: { gte, lte } } },
+        incomes: { where: { date: { gte, lte } } },
+        fixedExpenses: true,
+        fixedIncomes: true,
       },
-    });
-
-    const incomes = await prismadb.income.findMany({
-      where: {
-        userId,
-        date: { gte, lte },
-      },
-    });
-
-    const fixedExpenses = await prismadb.fixedExpense.findMany({
-      where: { userId },
-    });
-
-    const fixedIncomes = await prismadb.fixedIncome.findMany({
-      where: { userId },
     });
 
     const total = prediction(
-      expenses,
-      incomes,
-      fixedExpenses,
-      fixedIncomes,
-      numberOfMonths
+      user?.expenses,
+      user?.incomes,
+      user?.fixedExpenses,
+      user?.fixedIncomes,
+      numberOfMonths === 0 ? 1 : numberOfMonths
     );
 
     return new Response(JSON.stringify(total));
@@ -85,24 +73,30 @@ function totalOfMonths(startDate: Date, endDate: Date) {
 }
 
 function prediction(
-  expenses: Expense[],
-  incomes: Income[],
-  fixedExpenses: FixedExpense[],
-  fixedIncomes: FixedIncome[],
-  numberOfMonths: number = 0
+  expenses?: Expense[],
+  incomes?: Income[],
+  fixedExpenses?: FixedExpense[],
+  fixedIncomes?: FixedIncome[],
+  numberOfMonths: number = 1
 ) {
   const totalExpenses =
-    expenses?.reduce((sum, expense) => sum + expense.amount, 0) ?? 0;
+    expenses?.reduce(
+      (accumulator, expense) => accumulator + expense.amount,
+      0
+    ) ?? 0;
   const totalFixedExpenses =
     fixedExpenses?.reduce(
-      (sum, fixedExpense) => sum + fixedExpense.amount,
+      (accumulator, fixedExpense) => accumulator + fixedExpense.amount,
       0
     ) ?? 0;
   const totalIncomes =
-    incomes?.reduce((sum, income) => sum + income.amount, 0) ?? 0;
-  const totalFixedIncomes =
-    fixedIncomes?.reduce((sum, fixedIncome) => sum + fixedIncome.amount, 0) ??
+    incomes?.reduce((accumulator, income) => accumulator + income.amount, 0) ??
     0;
+  const totalFixedIncomes =
+    fixedIncomes?.reduce(
+      (accumulator, fixedIncome) => accumulator + fixedIncome.amount,
+      0
+    ) ?? 0;
 
   const amount =
     totalIncomes +
