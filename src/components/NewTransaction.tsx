@@ -1,20 +1,19 @@
 'use client';
 import useCurrentUser from '@/hooks/useCurrentUser';
-import useMonthlyTransactions from '@/hooks/useMonthlyTransactions';
 import usePredictions from '@/hooks/usePrediction';
 import '@/i18n/i18n';
-import { Expense, FixedExpense, FixedIncome, Income } from '@prisma/client';
+import { selectedDateAtom } from '@/recoil/datePickerDialog';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AiFillCloseCircle } from 'react-icons/ai';
 import {
   FcCalendar,
   FcCurrencyExchange,
   FcIdea,
   FcSurvey,
 } from 'react-icons/fc';
+import { useRecoilState } from 'recoil';
 import DatePickerDialog from './DatePickerDialog';
 import Input from './Input';
 import Language from './Language';
@@ -23,18 +22,18 @@ export default function NewTransaction() {
   const [expenseOrIncomeOption, setExpenseOrIncomeOption] =
     useState<string>('');
   const [isFixed, setIsFixed] = useState<boolean>(false);
-  const [date, setDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = useRecoilState(selectedDateAtom);
   const [form, setForm] = useState({
     amount: undefined,
     category: '',
     notes: '',
+    date: selectedDate,
     type: '',
     userId: '',
   });
 
   const { push } = useRouter();
   const { t } = useTranslation();
-  const { mutate: mutateTransactions } = useMonthlyTransactions();
   const { mutate: mutatePrediction } = usePredictions();
   const { data: user, mutate: mutateUser } = useCurrentUser();
 
@@ -42,10 +41,10 @@ export default function NewTransaction() {
     () =>
       setForm((prevFormState) => ({
         ...prevFormState,
-        date: date,
+        date: selectedDate,
         type: expenseOrIncomeOption,
       })),
-    [date, expenseOrIncomeOption]
+    [selectedDate, expenseOrIncomeOption]
   );
 
   function handleChange({
@@ -63,35 +62,34 @@ export default function NewTransaction() {
     push('/');
   }
 
-  async function handleSubmit(): Promise<void> {
-    if (isFixed) {
-      const response: FixedExpense | FixedIncome = await axios.post(
-        `/api/fixed-transactions`,
-        { ...form }
-      );
+  async function handleSubmit() {
+    const { data } = await axios.post(
+      `/api/${isFixed ? 'fixed-' : ''}transactions`,
+      { ...form }
+    );
 
-      const fixed =
-        expenseOrIncomeOption === 'incomes' ? 'fixedIncomes' : 'fixedExpenses';
+    const type = checkType();
 
-      await mutateUser({
-        ...user,
-        [fixed]: response,
-      });
-    } else {
-      const response: Expense | Income = await axios.post('/api/transactions', {
-        ...form,
-      });
-
-      await mutateUser({
-        ...user,
-        [expenseOrIncomeOption]: response,
-      });
-    }
-
-    await mutateTransactions();
+    await mutateUser({
+      ...user,
+      [type]: [...user[type], data],
+    });
     await mutatePrediction();
+  }
 
-    setDate(new Date());
+  function checkType() {
+    if (form.type === 'expense') {
+      if (isFixed) {
+        return 'fixedExpenses';
+      }
+      return 'expenses';
+    }
+    if (form.type === 'income') {
+      if (isFixed) {
+        return 'fixedIncomes';
+      }
+    }
+    return 'incomes';
   }
 
   const isSaveButtonDisabled =
@@ -99,56 +97,43 @@ export default function NewTransaction() {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="mt-5 flex w-[320px] items-center justify-between md:w-[450px]">
-        <div className="z-20 flex items-center gap-2">
-          <FcCalendar size={20} />
-          <DatePickerDialog date={date} setDate={setDate} />
-        </div>
-        <div className="flex items-center justify-center gap-2">
-          <Language />
-          <AiFillCloseCircle
-            className={`
-            cursor-pointer text-slate-200
-            transition-colors duration-500 hover:text-slate-400
-          `}
-            size={30}
-            onClick={() => push('/')}
-          />
-        </div>
+      <div className="z-20 mt-5 flex w-[320px] items-center justify-end gap-1 md:w-[450px]">
+        <FcCalendar size={20} />
+        <DatePickerDialog date={selectedDate} setDate={setSelectedDate} />
       </div>
       <form
         className="mt-5 flex w-[320px] flex-col gap-10 md:w-[450px]"
         id="form"
         onSubmit={onSubmit}
       >
-        <div className="flex items-center justify-evenly">
+        <div className="mt-4 flex items-center gap-14">
           <div className="flex flex-row items-center gap-1">
             <input
               className="h-5 w-5 accent-indigo-800"
-              id="expense"
+              id="expenses"
               type="radio"
-              value="expenses"
-              checked={expenseOrIncomeOption === 'expenses'}
+              value="expense"
+              checked={expenseOrIncomeOption === 'expense'}
               onChange={({ currentTarget: { value } }) =>
                 setExpenseOrIncomeOption(value)
               }
             />
-            <label className="text-lg text-white" htmlFor="expense">
+            <label className="text-lg text-white" htmlFor="expenses">
               {t('newTransaction:expenseOption')}
             </label>
           </div>
           <div className="flex flex-row items-center gap-1">
             <input
               className="h-5 w-5 accent-indigo-800"
-              id="income"
+              id="incomes"
               type="radio"
-              value="incomes"
-              checked={expenseOrIncomeOption === 'incomes'}
+              value="income"
+              checked={expenseOrIncomeOption === 'income'}
               onChange={({ currentTarget: { value } }) =>
                 setExpenseOrIncomeOption(value)
               }
             />
-            <label className="text-lg text-white" htmlFor="income">
+            <label className="text-lg text-white" htmlFor="incomes">
               {t('newTransaction:incomeOption')}
             </label>
           </div>
@@ -194,27 +179,37 @@ export default function NewTransaction() {
             {t('newTransaction:fixed')}
           </label>
         </div>
-        <div className="flex items-center justify-center">
-          <div className="flex flex-col">
-            <button
-              form="form"
-              type="submit"
-              disabled={isSaveButtonDisabled}
-              className={`
-                  h-12 w-24 rounded-full text-black
-                  transition-colors duration-500
-                  ${
-                    isSaveButtonDisabled
-                      ? 'bg-slate-400'
-                      : 'bg-indigo-800 hover:bg-indigo-900'
-                  }
-                `}
-            >
-              {t('newTransaction:save')}
-            </button>
-          </div>
+        <div className="flex items-center justify-center gap-3">
+          <button
+            type="button"
+            className={`
+              h-12 w-24 rounded-full bg-indigo-800
+              transition-colors duration-500 hover:bg-indigo-900
+            `}
+            onClick={() => push('/')}
+          >
+            {t('newTransaction:cancel')}
+          </button>
+          <button
+            form="form"
+            type="submit"
+            disabled={isSaveButtonDisabled}
+            className={`
+              h-12 w-24 rounded-full transition-colors duration-500
+              ${
+                isSaveButtonDisabled
+                  ? 'bg-slate-400'
+                  : 'bg-indigo-800 hover:bg-indigo-900'
+              }
+            `}
+          >
+            {t('newTransaction:save')}
+          </button>
         </div>
       </form>
+      <div className="mt-10">
+        <Language />
+      </div>
     </div>
   );
 }

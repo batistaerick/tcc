@@ -12,7 +12,6 @@ model User {
   name String
   image String?
   email String @unique
-  savedMoney Float
   emailVerified DateTime?
   hashedPassword String? @db.VarChar
   createdAt DateTime @default(now()) @db.Timestamp
@@ -22,7 +21,7 @@ model User {
   expenses Expense[]
   incomes Income[]
   fixedExpenses FixedExpense[]
-  fixedIncome FixedIncome[]
+  fixedIncomes FixedIncome[]
 }
 
 model Session {

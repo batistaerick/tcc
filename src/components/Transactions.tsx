@@ -1,18 +1,12 @@
 'use client';
-import useMonthlyTransactions from '@/hooks/useMonthlyTransactions';
-import { Expense, Income } from '@prisma/client';
+import useCurrentUser from '@/hooks/useCurrentUser';
+import { Expense, FixedExpense, FixedIncome, Income } from '@prisma/client';
 import { useTranslation } from 'react-i18next';
-import { KeyedMutator } from 'swr';
 import FinancialMovements from './FinancialMovements';
-
-interface HookType {
-  data: { incomes: Income[]; expenses: Expense[] };
-  mutate: KeyedMutator<any>;
-}
 
 export default function Transactions() {
   const { t } = useTranslation();
-  const { data, mutate }: HookType = useMonthlyTransactions();
+  const { data: currentUser, mutate } = useCurrentUser();
 
   return (
     <div className="flex flex-col items-center gap-2">
@@ -21,13 +15,23 @@ export default function Transactions() {
           {t('transactions:expenses')}
         </div>
         <div className="h-60 overflow-y-auto">
-          {data?.expenses?.map((expense) => (
+          {currentUser?.expenses?.map((expense: Expense) => (
             <FinancialMovements
               key={expense.id}
               id={expense.id}
               category={expense.category}
               amount={expense.amount}
-              type="expenses"
+              type="expense"
+              mutateOnDelete={mutate}
+            />
+          ))}
+          {currentUser?.fixedExpenses?.map((fixedExpense: FixedExpense) => (
+            <FinancialMovements
+              key={fixedExpense.id}
+              id={fixedExpense.id}
+              category={fixedExpense.category}
+              amount={fixedExpense.amount}
+              type="fixedExpense"
               mutateOnDelete={mutate}
             />
           ))}
@@ -38,13 +42,23 @@ export default function Transactions() {
           {t('transactions:incomes')}
         </div>
         <div className="h-60 overflow-y-auto">
-          {data?.incomes?.map((income) => (
+          {currentUser?.incomes?.map((income: Income) => (
             <FinancialMovements
               key={income.id}
               id={income.id}
               category={income.category}
               amount={income.amount}
-              type="incomes"
+              type="income"
+              mutateOnDelete={mutate}
+            />
+          ))}
+          {currentUser?.fixedIncomes?.map((fixedIncome: FixedIncome) => (
+            <FinancialMovements
+              key={fixedIncome.id}
+              id={fixedIncome.id}
+              category={fixedIncome.category}
+              amount={fixedIncome.amount}
+              type="fixedIncome"
               mutateOnDelete={mutate}
             />
           ))}

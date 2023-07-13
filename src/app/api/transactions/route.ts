@@ -21,23 +21,22 @@ export async function POST(request: Request) {
     const form: Form = await request.json();
     form.userId = userId;
     form.amount = Number(form.amount);
-    form.date = new Date(form.date);
 
     const { type, ...data } = form;
 
-    if (type !== 'incomes' && type !== 'expenses') {
+    if (type !== 'income' && type !== 'expense') {
       throw new Error('Invalid transaction type');
     }
     let transaction: Expense | Income;
 
-    if (type === 'incomes') {
+    if (type === 'income') {
       transaction = await prismadb.income.create({ data });
     } else {
       transaction = await prismadb.expense.create({ data });
     }
     return new Response(JSON.stringify(transaction));
   } catch (error) {
-    return new Response(JSON.stringify({ error }), {
+    return new Response(`Something went wrong: ${error}`, {
       status: 500,
     });
   }
@@ -55,14 +54,20 @@ export async function DELETE(request: Request) {
     if (!id) {
       throw new Error('Invalid ID');
     }
-    if (type !== 'incomes' && type !== 'expenses') {
+    if (type !== 'income' && type !== 'expense') {
       throw new Error('Invalid transaction type');
     }
-    const transactionType = type === 'incomes' ? 'income' : 'expense';
+    let existingTransaction;
 
-    const existingTransaction = await prismadb[transactionType].findUnique({
-      where: { id },
-    });
+    if (type === 'expense') {
+      existingTransaction = await prismadb.expense.findUnique({
+        where: { id },
+      });
+    } else {
+      existingTransaction = await prismadb.income.findUnique({
+        where: { id },
+      });
+    }
 
     if (!existingTransaction) {
       throw new Error('Invalid ID');
@@ -70,14 +75,16 @@ export async function DELETE(request: Request) {
     if (existingTransaction.userId !== userId) {
       throw new Error('Only the owner can delete');
     }
+    let deletedExpense;
 
-    const deletedExpense = await prismadb[transactionType].delete({
-      where: { id },
-    });
-
+    if (type === 'expense') {
+      deletedExpense = await prismadb.expense.delete({ where: { id } });
+    } else {
+      deletedExpense = await prismadb.income.delete({ where: { id } });
+    }
     return new Response(JSON.stringify(deletedExpense));
   } catch (error) {
-    return new Response(JSON.stringify({ error }), {
+    return new Response(`Something went wrong: ${error}`, {
       status: 500,
     });
   }

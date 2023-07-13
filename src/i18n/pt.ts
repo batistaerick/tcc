@@ -7,6 +7,9 @@ const pt: LanguageMap = {
         'E-mail ou senha inválidos. Certifique-se de que inseriu as credenciais corretamente.',
     },
   },
+  addButton: {
+    addTransaction: 'Adicionar Transação',
+  },
   auth: {
     alreadyHaveAccount: 'Já tem uma conta?',
     email: 'E-mail',
@@ -32,9 +35,10 @@ const pt: LanguageMap = {
   },
   newTransaction: {
     amount: 'Total',
+    cancel: 'Cancelar',
     category: 'Categoria',
     expenseOption: 'Despesa',
-    fixed: 'É uma despesa/receita fixa?',
+    fixed: 'É uma despesa ou receita fixa?',
     incomeOption: 'Receita',
     notes: 'Notas (Opcional)',
     save: 'Salvar',

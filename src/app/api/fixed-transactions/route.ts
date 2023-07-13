@@ -7,6 +7,7 @@ interface Form {
   userId: string;
   category: string;
   notes: string;
+  date: Date;
   type: string;
   amount: number;
 }
@@ -21,21 +22,21 @@ export async function POST(request: Request) {
     form.userId = userId;
     form.amount = Number(form.amount);
 
-    const { type, ...data } = form;
+    const { type, date, ...data } = form;
 
-    if (type !== 'incomes' && type !== 'expenses') {
+    if (type !== 'income' && type !== 'expense') {
       throw new Error('Invalid transaction type');
     }
     let transaction: FixedExpense | FixedIncome;
 
-    if (type === 'incomes') {
+    if (type === 'income') {
       transaction = await prismadb.fixedIncome.create({ data });
     } else {
       transaction = await prismadb.fixedExpense.create({ data });
     }
     return new Response(JSON.stringify(transaction));
   } catch (error) {
-    return new Response(JSON.stringify({ error }), {
+    return new Response(`Something went wrong: ${error}`, {
       status: 500,
     });
   }
@@ -56,7 +57,9 @@ export async function GET(request: Request) {
     });
     return new Response(JSON.stringify({ fixedExpenses, fixedIncomes }));
   } catch (error) {
-    console.error(error);
+    return new Response(`Something went wrong: ${error}`, {
+      status: 500,
+    });
   }
 }
 
@@ -72,14 +75,20 @@ export async function DELETE(request: Request) {
     if (!id) {
       throw new Error('Invalid ID');
     }
-    if (type !== 'incomes' && type !== 'expenses') {
+    if (type !== 'fixedExpense' && type !== 'fixedIncome') {
       throw new Error('Invalid transaction type');
     }
-    const transactionType = type === 'incomes' ? 'fixedIncome' : 'fixedExpense';
+    let existingTransaction;
 
-    const existingTransaction = await prismadb[transactionType].findUnique({
-      where: { id },
-    });
+    if (type === 'fixedExpense') {
+      existingTransaction = await prismadb.fixedExpense.findUnique({
+        where: { id },
+      });
+    } else {
+      existingTransaction = await prismadb.fixedIncome.findUnique({
+        where: { id },
+      });
+    }
 
     if (!existingTransaction) {
       throw new Error('Invalid ID');
@@ -87,14 +96,20 @@ export async function DELETE(request: Request) {
     if (existingTransaction.userId !== userId) {
       throw new Error('Only the owner can delete');
     }
+    let deletedExpense;
 
-    const deletedExpense = await prismadb[transactionType].delete({
-      where: { id },
-    });
-
+    if (type === 'fixedExpense') {
+      deletedExpense = await prismadb.fixedExpense.delete({
+        where: { id },
+      });
+    } else {
+      deletedExpense = await prismadb.fixedIncome.delete({
+        where: { id },
+      });
+    }
     return new Response(JSON.stringify(deletedExpense));
   } catch (error) {
-    return new Response(JSON.stringify({ error }), {
+    return new Response(`Something went wrong: ${error}`, {
       status: 500,
     });
   }

@@ -7,6 +7,9 @@ const en: LanguageMap = {
         'Invalid email or password. Please make sure you have entered the correct credentials.',
     },
   },
+  addButton: {
+    addTransaction: 'Add Transaction',
+  },
   auth: {
     alreadyHaveAccount: 'Already have an account?',
     email: 'Email',
@@ -32,9 +35,10 @@ const en: LanguageMap = {
   },
   newTransaction: {
     amount: 'Amount',
+    cancel: 'Cancel',
     category: 'Category',
     expenseOption: 'Expense',
-    fixed: 'Is it a fixed expense/income?',
+    fixed: 'Is it a fixed expense or income?',
     incomeOption: 'Income',
     notes: 'Notes (Optional)',
     save: 'Save',

@@ -1,28 +1,30 @@
 'use client';
-import useMonthlyTransactions from '@/hooks/useMonthlyTransactions';
+import useCurrentUser from '@/hooks/useCurrentUser';
 import usePredictions from '@/hooks/usePrediction';
 import { Expense, Income } from '@prisma/client';
 import { useTranslation } from 'react-i18next';
 import { FcBearish, FcBullish } from 'react-icons/fc';
 
-interface HookDataType {
-  data: { incomes: Income[]; expenses: Expense[] };
-}
-
 export default function Balance() {
   const { t } = useTranslation();
-  const { data }: HookDataType = useMonthlyTransactions();
+  const { data: currentUser } = useCurrentUser();
   const { data: predictionValue } = usePredictions();
 
   function totalExpenses() {
     return (
-      data?.expenses?.reduce((sum, expense) => sum + expense.amount, 0) ?? 0
+      currentUser?.expenses?.reduce(
+        (sum: number, expense: Expense) => sum + expense.amount,
+        0
+      ) ?? 0
     );
   }
 
   function totalIncomes() {
     return (
-      data?.incomes?.reduce((sum, expense) => sum + expense.amount, 0) ?? 0
+      currentUser?.incomes?.reduce(
+        (sum: number, income: Income) => sum + income.amount,
+        0
+      ) ?? 0
     );
   }
 

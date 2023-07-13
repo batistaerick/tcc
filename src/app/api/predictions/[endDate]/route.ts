@@ -11,7 +11,7 @@ interface TypeContext {
 export async function GET(request: Request, context: TypeContext) {
   try {
     const {
-      currentUser: { id: userId, savedMoney },
+      currentUser: { id: userId },
     } = await serverAuth();
 
     const date = new Date();
@@ -51,13 +51,14 @@ export async function GET(request: Request, context: TypeContext) {
       incomes,
       fixedExpenses,
       fixedIncomes,
-      numberOfMonths,
-      savedMoney
+      numberOfMonths
     );
 
     return new Response(JSON.stringify(total));
   } catch (error) {
-    console.error(error);
+    return new Response(`Something went wrong: ${error}`, {
+      status: 500,
+    });
   }
 }
 
@@ -88,8 +89,7 @@ function prediction(
   incomes: Income[],
   fixedExpenses: FixedExpense[],
   fixedIncomes: FixedIncome[],
-  numberOfMonths: number = 0,
-  savedMoney: number = 0
+  numberOfMonths: number = 0
 ) {
   const totalExpenses =
     expenses?.reduce((sum, expense) => sum + expense.amount, 0) ?? 0;
@@ -105,7 +105,6 @@ function prediction(
     0;
 
   const amount =
-    savedMoney +
     totalIncomes +
     totalFixedIncomes * numberOfMonths -
     (totalExpenses + totalFixedExpenses * numberOfMonths);

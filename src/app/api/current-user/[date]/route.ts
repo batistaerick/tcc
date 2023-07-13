@@ -10,29 +10,27 @@ interface TypeContext {
 export async function GET(request: Request, context: TypeContext) {
   try {
     const {
-      currentUser: { id: userId },
+      currentUser: { id },
     } = await serverAuth();
 
     const date = new Date(context.params.date);
     const gte = new Date(date.getFullYear(), date.getMonth(), 1);
     const lte = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-    const expenses = await prismadb.expense.findMany({
-      where: {
-        userId,
-        date: { gte, lte },
+    const user = await prismadb.user.findUnique({
+      where: { id },
+      include: {
+        expenses: { where: { date: { gte, lte } } },
+        incomes: { where: { date: { gte, lte } } },
+        fixedExpenses: true,
+        fixedIncomes: true,
       },
     });
 
-    const incomes = await prismadb.income.findMany({
-      where: {
-        userId,
-        date: { gte, lte },
-      },
-    });
-
-    return new Response(JSON.stringify({ expenses, incomes }));
+    return new Response(JSON.stringify(user));
   } catch (error) {
-    console.error(error);
+    return new Response(`Something went wrong: ${error}`, {
+      status: 500,
+    });
   }
 }

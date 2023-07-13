@@ -4,6 +4,9 @@ export interface LanguageMap {
       wrongCredentials: string;
     };
   };
+  addButton: {
+    addTransaction: string;
+  };
   auth: {
     alreadyHaveAccount: string;
     email: string;
@@ -29,6 +32,7 @@ export interface LanguageMap {
   };
   newTransaction: {
     amount: string;
+    cancel: string;
     category: string;
     expenseOption: string;
     fixed: string;

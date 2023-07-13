@@ -1,12 +1,14 @@
 import fetcher from '@/libs/fetcher';
+import { selectedDateAtom } from '@/recoil/datePickerDialog';
+import { useRecoilState } from 'recoil';
 import useSWR from 'swr';
 
 export default function useCurrentUser() {
-  const { data, error, isLoading, mutate } = useSWR('/api/current', fetcher);
-  return {
-    data,
-    error,
-    isLoading,
-    mutate,
-  };
+  const [selectedDate] = useRecoilState(selectedDateAtom);
+
+  const { data, error, isLoading, mutate } = useSWR(
+    `/api/current-user/${selectedDate}`,
+    fetcher
+  );
+  return { data, error, isLoading, mutate };
 }

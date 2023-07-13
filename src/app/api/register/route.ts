@@ -20,12 +20,13 @@ export async function POST(request: Request) {
         name,
         hashedPassword,
         image: '',
-        savedMoney: 0,
         emailVerified: new Date(),
       },
     });
     return new Response(JSON.stringify(user));
   } catch (error) {
-    console.error(error);
+    return new Response(`Something went wrong: ${error}`, {
+      status: 500,
+    });
   }
 }
