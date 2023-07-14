@@ -3,8 +3,10 @@ import { LanguageMap } from './types';
 const en: LanguageMap = {
   api: {
     authorize: {
-      wrongCredentials:
-        'Invalid email or password. Please make sure you have entered the correct credentials.',
+      wrongCredentials: `
+        Invalid email or password.
+        Please make sure you have entered the correct credentials.
+      `,
     },
   },
   addButton: {
@@ -13,6 +15,10 @@ const en: LanguageMap = {
   auth: {
     alreadyHaveAccount: 'Already have an account?',
     email: 'Email',
+    invalidPassword: `
+      Password must have at least 7 characters,
+      1 uppercase letter, and 1 special character.
+    `,
     login: 'Login',
     newInHere: 'New in here?',
     password: 'Password',

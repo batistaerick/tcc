@@ -13,6 +13,10 @@ const pt: LanguageMap = {
   auth: {
     alreadyHaveAccount: 'Já tem uma conta?',
     email: 'E-mail',
+    invalidPassword: `
+      A senha deve ter pelo menos 7 caracteres,
+      1 letra maiúscula e 1 caractere especial.
+    `,
     login: 'Conecte-se',
     newInHere: 'Novo aqui?',
     password: 'Senha',

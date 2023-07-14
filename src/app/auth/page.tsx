@@ -54,16 +54,28 @@ export default function Auth() {
       .catch((error) => console.error(error));
   }, [email, password, name, login]);
 
-  function onKeyDown({ key }: KeyboardEvent<HTMLInputElement>) {
+  async function onClick() {
+    if (variant === 'login') {
+      await login();
+    } else {
+      if (isValidEmail() && isValidPassword()) {
+        await register();
+      }
+    }
+  }
+
+  async function onKeyDown({ key }: KeyboardEvent<HTMLInputElement>) {
     if (key === 'Enter') {
-      variant === 'login'
-        ? login().catch((error) => console.error(error))
-        : register().catch((error) => console.error(error));
+      onClick();
     }
   }
 
   function isValidEmail() {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function isValidPassword() {
+    return /^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{7,}$/.test(password);
   }
 
   if (status === 'loading') {
@@ -133,6 +145,11 @@ export default function Auth() {
                   onKeyDown={onKeyDown}
                 />
               </div>
+              {!isValidPassword() &&
+                isValidEmail() &&
+                variant === 'register' && (
+                  <div className="text-white">{t('auth:invalidPassword')}</div>
+                )}
               {unauthorized && (
                 <div className="text-white">
                   {unauthorized && t('api:authorize:wrongCredentials')}
@@ -144,13 +161,13 @@ export default function Auth() {
                 mt-10 w-full rounded-md py-3 text-white
                 transition duration-500
                 ${
-                  email && isValidEmail()
+                  password.length > 0 && isValidEmail()
                     ? 'bg-indigo-800 hover:bg-indigo-900'
                     : 'bg-indigo-500'
                 }
               `}
-              onClick={variant === 'login' ? login : register}
-              disabled={email === '' && password === ''}
+              onClick={onClick}
+              disabled={!isValidEmail() || password.length === 0}
             >
               {variant === 'login' ? t('auth:login') : t('auth:signUp')}
             </button>

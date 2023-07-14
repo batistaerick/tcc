@@ -10,6 +10,7 @@ export interface LanguageMap {
   auth: {
     alreadyHaveAccount: string;
     email: string;
+    invalidPassword: string;
     login: string;
     newInHere: string;
     password: string;
