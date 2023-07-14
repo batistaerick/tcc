@@ -2,6 +2,7 @@ import usePredictions from '@/hooks/usePrediction';
 import axios from 'axios';
 import { FcFullTrash } from 'react-icons/fc';
 import { KeyedMutator } from 'swr';
+import Money from './Money';
 
 interface FinancialMovementsProps {
   id: string;
@@ -33,7 +34,7 @@ export default function FinancialMovements({
     <div className="mx-5 my-5 flex items-center justify-between border-b-2 border-gray-500 text-lg">
       {category}
       <div className="flex items-center justify-center gap-1">
-        ${amount?.toFixed(2)}
+        <Money value={amount ?? 0} />
         <FcFullTrash
           className="cursor-pointer text-indigo-400"
           size={22}

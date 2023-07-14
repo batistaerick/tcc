@@ -1,30 +1,26 @@
-'use client';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import usePredictions from '@/hooks/usePrediction';
 import { Expense, Income } from '@prisma/client';
 import { useTranslation } from 'react-i18next';
 import { FcBearish, FcBullish } from 'react-icons/fc';
+import Money from './Money';
 
 export default function Balance() {
   const { t } = useTranslation();
   const { data: currentUser } = useCurrentUser();
   const { data: predictionValue } = usePredictions();
 
-  function totalExpenses() {
-    return (
-      currentUser?.expenses?.reduce(
-        (sum: number, expense: Expense) => sum + expense.amount,
-        0
-      ) ?? 0
+  function totalExpenses(): number {
+    return currentUser?.expenses?.reduce(
+      (sum: number, expense: Expense) => sum + expense.amount,
+      0
     );
   }
 
-  function totalIncomes() {
-    return (
-      currentUser?.incomes?.reduce(
-        (sum: number, income: Income) => sum + income.amount,
-        0
-      ) ?? 0
+  function totalIncomes(): number {
+    return currentUser?.incomes?.reduce(
+      (sum: number, income: Income) => sum + income.amount,
+      0
     );
   }
 
@@ -34,7 +30,10 @@ export default function Balance() {
         <div className="flex items-center justify-between px-10 pt-5">
           <div>
             <div className="text-left">{t('balance:totalBalance')}</div>
-            <div className="text-left text-3xl">${predictionValue}</div>
+            <Money
+              className="text-left text-3xl"
+              value={predictionValue ?? 0}
+            />
           </div>
         </div>
         <div className="flex justify-between px-10 pt-4 text-sm">
@@ -43,7 +42,7 @@ export default function Balance() {
             <div className="flex items-center justify-start gap-1">
               <FcBearish size={35} />
               <div>
-                <div>${totalExpenses()}</div>
+                <Money value={totalExpenses() ?? 0} />
               </div>
             </div>
           </div>
@@ -52,7 +51,7 @@ export default function Balance() {
               <div>{t('balance:income')}</div>
               <div className="flex items-center justify-end gap-1">
                 <FcBullish size={35} />
-                <div>${totalIncomes()}</div>
+                <Money value={totalIncomes() ?? 0} />
               </div>
             </div>
           </div>

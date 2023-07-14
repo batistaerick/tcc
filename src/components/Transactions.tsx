@@ -1,4 +1,3 @@
-'use client';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import { Expense, FixedExpense, FixedIncome, Income } from '@prisma/client';
 import { useTranslation } from 'react-i18next';

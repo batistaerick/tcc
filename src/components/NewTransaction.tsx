@@ -3,9 +3,10 @@ import useCurrentUser from '@/hooks/useCurrentUser';
 import usePredictions from '@/hooks/usePrediction';
 import '@/i18n/i18n';
 import { selectedDateAtom } from '@/recoil/datePickerDialog';
+import { FormType } from '@/types/types';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   FcCalendar,
@@ -19,12 +20,12 @@ import Input from './Input';
 import Language from './Language';
 
 export default function NewTransaction() {
+  const [selectedDate, setSelectedDate] = useRecoilState(selectedDateAtom);
   const [expenseOrIncomeOption, setExpenseOrIncomeOption] =
     useState<string>('');
   const [isFixed, setIsFixed] = useState<boolean>(false);
-  const [selectedDate, setSelectedDate] = useRecoilState(selectedDateAtom);
-  const [form, setForm] = useState({
-    amount: undefined,
+  const [form, setForm] = useState<FormType>({
+    amount: '',
     category: '',
     notes: '',
     date: selectedDate,
@@ -92,8 +93,11 @@ export default function NewTransaction() {
     return 'incomes';
   }
 
-  const isSaveButtonDisabled =
-    form.amount === 0 || form.category === '' || expenseOrIncomeOption === '';
+  const isSaveButtonDisabled = useMemo(
+    () =>
+      form.amount === 0 || form.category === '' || expenseOrIncomeOption === '',
+    [expenseOrIncomeOption, form.amount, form.category]
+  );
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -141,6 +145,7 @@ export default function NewTransaction() {
         <div>
           <FcCurrencyExchange className="mb-1" size={25} />
           <Input
+            key="Testing"
             id="amount"
             label={t('newTransaction:amount')}
             type="number"

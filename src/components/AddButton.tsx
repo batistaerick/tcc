@@ -13,7 +13,7 @@ export default function AddButton() {
             h-12 w-[350px] rounded-xl bg-indigo-800 transition-colors
             duration-500 hover:bg-indigo-900 md:w-[700px]
           `}
-          onClick={() => push('/transactions')}
+          onClick={() => push('/new-transaction')}
         >
           {t('addButton:addTransaction')}
         </button>

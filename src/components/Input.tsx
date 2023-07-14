@@ -30,6 +30,24 @@ export default function Input({
     return type;
   }
 
+  function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (
+      type === 'number' &&
+      !RegExp(/^[\d.]$/).exec(event.key) &&
+      event.key !== 'Backspace' &&
+      event.key !== 'Delete' &&
+      event.key !== 'ArrowLeft' &&
+      event.key !== 'ArrowRight' &&
+      event.key !== 'Home' &&
+      event.key !== 'End'
+    ) {
+      event.preventDefault();
+    }
+    if (onKeyDown) {
+      onKeyDown(event);
+    }
+  }
+
   return (
     <div className="relative">
       <input
@@ -52,7 +70,7 @@ export default function Input({
         id={id}
         type={handleType()}
         value={value}
-        onKeyDown={onKeyDown}
+        onKeyDown={handleKeyPress}
         onChange={onChange}
       />
       <label
