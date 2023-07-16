@@ -2,10 +2,15 @@ import { LanguageMap } from './types';
 
 const pt: LanguageMap = {
   api: {
-    authorize: {
-      wrongCredentials:
-        'E-mail ou senha inválidos. Certifique-se de que inseriu as credenciais corretamente.',
-    },
+    emailTaken:
+      'O e-mail que você forneceu já está cadastrado. Por favor, use um endereço de e-mail diferente para se inscrever.',
+    invalidEmail:
+      'O formato de e-mail fornecido é inválido. Por favor insira um endereço de e-mail válido.',
+    invalidPassword:
+      'A senha deve ter pelo menos 7 caracteres, 1 letra maiúscula e 1 caractere especial.',
+    missingCredentials: 'Forneça seu e-mail e senha.',
+    wrongCredentials:
+      'Credenciais inválidas. Verifique novamente seu e-mail e senha e tente novamente.',
   },
   addButton: {
     addTransaction: 'Adicionar Transação',
@@ -13,10 +18,6 @@ const pt: LanguageMap = {
   auth: {
     alreadyHaveAccount: 'Já tem uma conta?',
     email: 'E-mail',
-    invalidPassword: `
-      A senha deve ter pelo menos 7 caracteres,
-      1 letra maiúscula e 1 caractere especial.
-    `,
     login: 'Conecte-se',
     newInHere: 'Novo aqui?',
     password: 'Senha',

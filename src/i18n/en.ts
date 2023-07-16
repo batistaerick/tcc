@@ -2,12 +2,15 @@ import { LanguageMap } from './types';
 
 const en: LanguageMap = {
   api: {
-    authorize: {
-      wrongCredentials: `
-        Invalid email or password.
-        Please make sure you have entered the correct credentials.
-      `,
-    },
+    emailTaken:
+      'The email you provided is already registered. Please use a different email address to sign up.',
+    invalidEmail:
+      'The email format you provided is invalid. Please enter a valid email address.',
+    invalidPassword:
+      'Password must have at least 7 characters, 1 uppercase letter and 1 special character.',
+    missingCredentials: 'Please provide both your email and password.',
+    wrongCredentials:
+      'Invalid credentials. Please double-check your email and password and try again.',
   },
   addButton: {
     addTransaction: 'Add Transaction',
@@ -15,10 +18,6 @@ const en: LanguageMap = {
   auth: {
     alreadyHaveAccount: 'Already have an account?',
     email: 'Email',
-    invalidPassword: `
-      Password must have at least 7 characters,
-      1 uppercase letter, and 1 special character.
-    `,
     login: 'Login',
     newInHere: 'New in here?',
     password: 'Password',

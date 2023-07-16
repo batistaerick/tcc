@@ -3,6 +3,7 @@ import Input from '@/components/Input';
 import Language from '@/components/Language';
 import Loading from '@/components/Loading';
 import '@/i18n/i18n';
+import { isValidEmail } from '@/utils/credentialsChecker';
 import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -18,7 +19,7 @@ export default function Auth() {
   const [password, setPassword] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [variant, setVariant] = useState<string>('login');
-  const [unauthorized, setUnauthorized] = useState<boolean>(false);
+  const [unauthorized, setUnauthorized] = useState<string | undefined>();
 
   const { t } = useTranslation();
   const { push } = useRouter();
@@ -39,28 +40,30 @@ export default function Auth() {
       callbackUrl: '/',
       redirect: false,
     });
-    setUnauthorized(response?.error === 'Error');
-    setTimeout(() => setUnauthorized(false), 15000);
+    setUnauthorized(response?.error);
+    setTimeout(() => setUnauthorized(undefined), 15000);
   }, [email, password]);
 
   const register = useCallback(async () => {
-    await axios
-      .post('/api/register', {
-        email,
-        name,
-        password,
-      })
-      .then(login)
-      .catch((error) => console.error(error));
+    try {
+      await axios
+        .post('/api/register', {
+          email,
+          name,
+          password,
+        })
+        .then(login);
+    } catch (error: any) {
+      setUnauthorized(error.response.data);
+      setTimeout(() => setUnauthorized(undefined), 15000);
+    }
   }, [email, password, name, login]);
 
   async function onClick() {
     if (variant === 'login') {
       await login();
     } else {
-      if (isValidEmail() && isValidPassword()) {
-        await register();
-      }
+      await register();
     }
   }
 
@@ -68,14 +71,6 @@ export default function Auth() {
     if (key === 'Enter') {
       onClick();
     }
-  }
-
-  function isValidEmail() {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  }
-
-  function isValidPassword() {
-    return /^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{7,}$/.test(password);
   }
 
   if (status === 'loading') {
@@ -127,6 +122,7 @@ export default function Auth() {
                   type="email"
                   value={email}
                   onChange={({ currentTarget: { value } }) => setEmail(value)}
+                  onKeyDown={onKeyDown}
                 />
               </div>
               <div
@@ -145,15 +141,8 @@ export default function Auth() {
                   onKeyDown={onKeyDown}
                 />
               </div>
-              {!isValidPassword() &&
-                isValidEmail() &&
-                variant === 'register' && (
-                  <div className="text-white">{t('auth:invalidPassword')}</div>
-                )}
               {unauthorized && (
-                <div className="text-white">
-                  {unauthorized && t('api:authorize:wrongCredentials')}
-                </div>
+                <div className="text-white">{t(`api:${unauthorized}`)}</div>
               )}
             </div>
             <button
@@ -161,13 +150,13 @@ export default function Auth() {
                 mt-10 w-full rounded-md py-3 text-white
                 transition duration-500
                 ${
-                  password.length > 0 && isValidEmail()
+                  password.length > 0 && isValidEmail(email)
                     ? 'bg-indigo-800 hover:bg-indigo-900'
                     : 'bg-indigo-500'
                 }
               `}
               onClick={onClick}
-              disabled={!isValidEmail() || password.length === 0}
+              disabled={!isValidEmail(email) || password.length === 0}
             >
               {variant === 'login' ? t('auth:login') : t('auth:signUp')}
             </button>
