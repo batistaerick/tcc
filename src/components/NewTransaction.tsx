@@ -15,6 +15,7 @@ import {
   FcSurvey,
 } from 'react-icons/fc';
 import { useRecoilState } from 'recoil';
+import Button from './Button';
 import DatePickerDialog from './DatePickerDialog';
 import Input from './Input';
 import Language from './Language';
@@ -185,31 +186,21 @@ export default function NewTransaction() {
           </label>
         </div>
         <div className="flex items-center justify-center gap-3">
-          <button
+          <Button
             type="button"
-            className={`
-              h-12 w-24 rounded-full bg-indigo-800
-              transition-colors duration-500 hover:bg-indigo-900
-            `}
+            height="h-12"
+            width="w-full"
+            translation={t('newTransaction:cancel')}
             onClick={() => push('/')}
-          >
-            {t('newTransaction:cancel')}
-          </button>
-          <button
-            form="form"
+          />
+          <Button
             type="submit"
+            form="form"
+            height="h-12"
+            width="w-full"
+            translation={t('newTransaction:save')}
             disabled={isSaveButtonDisabled}
-            className={`
-              h-12 w-24 rounded-full transition-colors duration-500
-              ${
-                isSaveButtonDisabled
-                  ? 'bg-slate-400'
-                  : 'bg-indigo-800 hover:bg-indigo-900'
-              }
-            `}
-          >
-            {t('newTransaction:save')}
-          </button>
+          />
         </div>
       </form>
       <div className="mt-10">

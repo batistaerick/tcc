@@ -25,7 +25,7 @@ export default function Balance() {
   }
 
   return (
-    <div className="flex cursor-default justify-center">
+    <div className="flex cursor-default">
       <div className="h-48 w-[350px] rounded-xl bg-indigo-800 md:w-[700px]">
         <div className="flex items-center justify-between px-10 pt-5">
           <div>

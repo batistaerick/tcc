@@ -1,4 +1,5 @@
 'use client';
+import Button from '@/components/Button';
 import Input from '@/components/Input';
 import Language from '@/components/Language';
 import Loading from '@/components/Loading';
@@ -145,21 +146,17 @@ export default function Auth() {
                 <div className="text-white">{t(`api:${unauthorized}`)}</div>
               )}
             </div>
-            <button
-              className={`
-                mt-10 w-full rounded-md py-3 text-white
-                transition duration-500
-                ${
-                  password.length > 0 && isValidEmail(email)
-                    ? 'bg-indigo-800 hover:bg-indigo-900'
-                    : 'bg-indigo-500'
+            <div className="mt-10">
+              <Button
+                height="h-12"
+                width="w-full"
+                disabled={!isValidEmail(email) || password.length === 0}
+                onClick={onClick}
+                translation={
+                  variant === 'login' ? t('auth:login') : t('auth:signUp')
                 }
-              `}
-              onClick={onClick}
-              disabled={!isValidEmail(email) || password.length === 0}
-            >
-              {variant === 'login' ? t('auth:login') : t('auth:signUp')}
-            </button>
+              />
+            </div>
             <div className="mt-8 flex flex-row items-center justify-center gap-4">
               <div
                 className={`

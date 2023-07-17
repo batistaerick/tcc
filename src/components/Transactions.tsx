@@ -8,7 +8,7 @@ export default function Transactions() {
   const { data: currentUser, mutate } = useCurrentUser();
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col gap-2">
       <div className="w-[350px] rounded-xl bg-slate-800 md:w-[700px]">
         <div className="flex items-center justify-center font-semibold text-rose-500">
           {t('transactions:expenses')}
