@@ -2,11 +2,11 @@
 import useCurrentUser from '@/hooks/useCurrentUser';
 import usePredictions from '@/hooks/usePrediction';
 import '@/i18n/i18n';
-import { selectedDateAtom } from '@/recoil/datePickerDialog';
 import { FormType } from '@/types/types';
+import { typeChecker } from '@/utils/typeChecker';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   FcCalendar,
@@ -14,22 +14,18 @@ import {
   FcIdea,
   FcSurvey,
 } from 'react-icons/fc';
-import { useRecoilState } from 'recoil';
 import Button from './Button';
 import DatePickerDialog from './DatePickerDialog';
 import Input from './Input';
 import Language from './Language';
 
 export default function NewTransaction() {
-  const [selectedDate, setSelectedDate] = useRecoilState(selectedDateAtom);
-  const [expenseOrIncomeOption, setExpenseOrIncomeOption] =
-    useState<string>('');
   const [isFixed, setIsFixed] = useState<boolean>(false);
   const [form, setForm] = useState<FormType>({
     amount: '',
     category: '',
     notes: '',
-    date: selectedDate,
+    date: new Date(),
     type: '',
     userId: '',
   });
@@ -38,25 +34,6 @@ export default function NewTransaction() {
   const { t } = useTranslation();
   const { mutate: mutatePrediction } = usePredictions();
   const { data: user, mutate: mutateUser } = useCurrentUser();
-
-  useEffect(
-    () =>
-      setForm((prevFormState) => ({
-        ...prevFormState,
-        date: selectedDate,
-        type: expenseOrIncomeOption,
-      })),
-    [selectedDate, expenseOrIncomeOption]
-  );
-
-  function handleChange({
-    currentTarget: { value, id },
-  }: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-    setForm((prevForm) => ({
-      ...prevForm,
-      [id]: value,
-    }));
-  }
 
   async function onSubmit(event: ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -70,7 +47,7 @@ export default function NewTransaction() {
       { ...form }
     );
 
-    const type = checkType();
+    const type = typeChecker(form.type, isFixed);
 
     await mutateUser({
       ...user,
@@ -79,32 +56,27 @@ export default function NewTransaction() {
     await mutatePrediction();
   }
 
-  function checkType() {
-    if (form.type === 'expense') {
-      if (isFixed) {
-        return 'fixedExpenses';
-      }
-      return 'expenses';
-    }
-    if (form.type === 'income') {
-      if (isFixed) {
-        return 'fixedIncomes';
-      }
-    }
-    return 'incomes';
+  function handleChange({
+    currentTarget: { value, id },
+  }: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+    setForm((prevForm) => ({
+      ...prevForm,
+      [id]: value,
+    }));
   }
 
-  const isSaveButtonDisabled = useMemo(
-    () =>
-      form.amount === 0 || form.category === '' || expenseOrIncomeOption === '',
-    [expenseOrIncomeOption, form.amount, form.category]
-  );
+  function handleChangeDate(date: Date | ((currVal: Date) => Date)) {
+    setForm((prevFormState) => ({
+      ...prevFormState,
+      date: typeof date === 'function' ? date(form.date) : date,
+    }));
+  }
 
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="z-20 mt-5 flex w-[320px] items-center justify-end gap-1 md:w-[450px]">
         <FcCalendar size={20} />
-        <DatePickerDialog date={selectedDate} setDate={setSelectedDate} />
+        <DatePickerDialog date={form.date} setDate={handleChangeDate} />
       </div>
       <form
         className="mt-5 flex w-[320px] flex-col gap-10 md:w-[450px]"
@@ -115,13 +87,11 @@ export default function NewTransaction() {
           <div className="flex flex-row items-center gap-1">
             <input
               className="h-5 w-5 accent-indigo-800"
-              id="expenses"
+              id="type"
               type="radio"
               value="expense"
-              checked={expenseOrIncomeOption === 'expense'}
-              onChange={({ currentTarget: { value } }) =>
-                setExpenseOrIncomeOption(value)
-              }
+              checked={form.type === 'expense'}
+              onChange={handleChange}
             />
             <label className="text-lg text-white" htmlFor="expenses">
               {t('newTransaction:expenseOption')}
@@ -130,13 +100,11 @@ export default function NewTransaction() {
           <div className="flex flex-row items-center gap-1">
             <input
               className="h-5 w-5 accent-indigo-800"
-              id="incomes"
+              id="type"
               type="radio"
               value="income"
-              checked={expenseOrIncomeOption === 'income'}
-              onChange={({ currentTarget: { value } }) =>
-                setExpenseOrIncomeOption(value)
-              }
+              checked={form.type === 'income'}
+              onChange={handleChange}
             />
             <label className="text-lg text-white" htmlFor="incomes">
               {t('newTransaction:incomeOption')}
@@ -199,7 +167,9 @@ export default function NewTransaction() {
             height="h-12"
             width="w-full"
             translation={t('newTransaction:save')}
-            disabled={isSaveButtonDisabled}
+            disabled={
+              form.amount === 0 || form.category === '' || form.type === ''
+            }
           />
         </div>
       </form>

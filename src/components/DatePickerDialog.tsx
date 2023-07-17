@@ -37,7 +37,7 @@ export default function DatePickerDialog({
       onBlur={() => setIsOpen(false)}
       customInput={
         <input
-          className="w-32 bg-inherit text-white focus:outline-none focus:ring-transparent"
+          className="bg-inherit text-white focus:outline-none focus:ring-transparent"
           value={date?.toString() ?? ''}
           readOnly
         />
