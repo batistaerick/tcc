@@ -12,9 +12,6 @@ const en: LanguageMap = {
     wrongCredentials:
       'Invalid credentials. Please double-check your email and password and try again.',
   },
-  addButton: {
-    addTransaction: 'Add Transaction',
-  },
   auth: {
     alreadyHaveAccount: 'Already have an account?',
     email: 'Email',
@@ -29,6 +26,9 @@ const en: LanguageMap = {
     expense: 'Total Expense',
     income: 'Total Income',
     totalBalance: 'Total Balance',
+  },
+  button: {
+    newTransaction: 'New Transaction',
   },
   categoryOption: {
     chooseCategory: 'Choose a category',

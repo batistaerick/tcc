@@ -6,9 +6,6 @@ export interface LanguageMap {
     missingCredentials: string;
     wrongCredentials: string;
   };
-  addButton: {
-    addTransaction: string;
-  };
   auth: {
     alreadyHaveAccount: string;
     email: string;
@@ -23,6 +20,9 @@ export interface LanguageMap {
     expense: string;
     income: string;
     totalBalance: string;
+  };
+  button: {
+    newTransaction: string;
   };
   categoryOption: {
     chooseCategory: string;

@@ -12,9 +12,6 @@ const pt: LanguageMap = {
     wrongCredentials:
       'Credenciais inválidas. Verifique novamente seu e-mail e senha e tente novamente.',
   },
-  addButton: {
-    addTransaction: 'Adicionar Transação',
-  },
   auth: {
     alreadyHaveAccount: 'Já tem uma conta?',
     email: 'E-mail',
@@ -29,6 +26,9 @@ const pt: LanguageMap = {
     expense: 'Total de Despesas',
     income: 'Total de Receitas',
     totalBalance: 'Balanço',
+  },
+  button: {
+    newTransaction: 'Nova Transação',
   },
   categoryOption: {
     chooseCategory: 'Escolha uma categoria',

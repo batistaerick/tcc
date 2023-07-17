@@ -37,7 +37,7 @@ export default function Home() {
         <Button
           height="h-12"
           width="w-[350px] md:w-[700px]"
-          translation={t('addButton:addTransaction')}
+          translation={t('button:newTransaction')}
           onClick={() => push('new-transaction')}
         />
       </div>
