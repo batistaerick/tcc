@@ -36,6 +36,7 @@ export default function FinancialMovements({
       <div className="flex items-center justify-center gap-1">
         <Money value={amount ?? 0} />
         <FcFullTrash
+          data-testid="delete-icon"
           className="cursor-pointer text-indigo-400"
           size={22}
           onClick={deleteExpenseOrIncome}
