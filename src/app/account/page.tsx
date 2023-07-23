@@ -1,11 +1,11 @@
 'use client';
 import Loading from '@/components/Loading';
-import NewTransaction from '@/components/NewTransaction';
+import Profile from '@/components/Profile';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { RecoilRoot } from 'recoil';
 
-export default function Transactions() {
+export default function Account() {
   const { push } = useRouter();
   const { status } = useSession({
     required: true,
@@ -20,7 +20,7 @@ export default function Transactions() {
   return (
     <RecoilRoot>
       <div className="h-screen w-screen bg-slate-800">
-        <NewTransaction />
+        <Profile />
       </div>
     </RecoilRoot>
   );

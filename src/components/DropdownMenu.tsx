@@ -22,15 +22,12 @@ export default function DropdownMenu({ isOpen }: DropdownMenuProps) {
       className={`
         ${isOpen ? 'absolute' : 'hidden'}
         z-10 mt-8 w-28 divide-y divide-gray-100
-        rounded-lg bg-white shadow dark:bg-gray-800
+        rounded-lg bg-white shadow dark:bg-slate-600
       `}
     >
       <ul className="py-2 text-sm">
         <li className={STYLE_LIST} onClick={() => push('/account')}>
           {t('dropdownMenu:account')}
-        </li>
-        <li className={STYLE_LIST} onClick={() => push('/settings')}>
-          {t('dropdownMenu:settings')}
         </li>
         <li className={STYLE_LIST} onClick={handleSignOut}>
           {t('dropdownMenu:signOut')}

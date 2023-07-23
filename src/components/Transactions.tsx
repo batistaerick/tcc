@@ -9,11 +9,11 @@ export default function Transactions() {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="w-[350px] rounded-xl bg-slate-800 md:w-[700px]">
+      <div className="w-[350px] rounded-xl bg-blue-950 md:w-[700px]">
         <div className="flex items-center justify-center font-semibold text-rose-500">
           {t('transactions:expenses')}
         </div>
-        <div className="h-60 overflow-y-auto">
+        <div className="h-56 overflow-y-auto">
           {currentUser?.expenses?.map((expense: Expense) => (
             <FinancialMovements
               key={expense.id}
@@ -36,11 +36,11 @@ export default function Transactions() {
           ))}
         </div>
       </div>
-      <div className="w-[350px] rounded-xl bg-slate-800 md:w-[700px]">
+      <div className="w-[350px] rounded-xl bg-blue-950 md:w-[700px]">
         <div className="flex items-center justify-center font-semibold text-green-400">
           {t('transactions:incomes')}
         </div>
-        <div className="h-60 overflow-y-auto">
+        <div className="h-56 overflow-y-auto">
           {currentUser?.incomes?.map((income: Income) => (
             <FinancialMovements
               key={income.id}

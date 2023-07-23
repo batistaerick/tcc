@@ -37,7 +37,7 @@ export default function FinancialMovements({
         <Money value={amount ?? 0} />
         <FcFullTrash
           data-testid="delete-icon"
-          className="cursor-pointer text-indigo-400"
+          className="cursor-pointer"
           size={22}
           onClick={deleteExpenseOrIncome}
         />

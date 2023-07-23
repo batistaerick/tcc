@@ -10,18 +10,25 @@ datasource db {
 model User {
   id String @id @default(uuid()) @map("id")
   name String
-  image String?
   email String @unique
   emailVerified DateTime?
   hashedPassword String? @db.VarChar
   createdAt DateTime @default(now()) @db.Timestamp
   updateAt DateTime @updatedAt @db.Timestamp
+  userImage UserImage?
   sessions Session[]
   accounts Account[]
   expenses Expense[]
   incomes Income[]
   fixedExpenses FixedExpense[]
   fixedIncomes FixedIncome[]
+}
+
+model UserImage {
+  id String @id @default(uuid()) @map("id")
+  user User @relation(fields: [userId], references: [id])
+  userId String @map("user_id") @unique
+  image String? @db.Text()
 }
 
 model Session {
@@ -31,6 +38,7 @@ model Session {
   expires DateTime  @db.Timestamp
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
 model Account {
   id String @id @default(uuid()) @map("id")
   userId String @map("user_id")

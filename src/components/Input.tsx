@@ -7,6 +7,7 @@ interface InputProps {
   value: string | number | undefined;
   label: string;
   type: string;
+  accept?: string;
   onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
@@ -16,6 +17,7 @@ export default function Input({
   value,
   label,
   type,
+  accept,
   onKeyDown,
   onChange,
 }: InputProps) {
@@ -70,6 +72,7 @@ export default function Input({
         id={id}
         type={handleType()}
         value={value}
+        accept={accept}
         onKeyDown={handleKeyPress}
         onChange={onChange}
       />

@@ -24,6 +24,7 @@ export async function GET(request: Request, context: TypeContext) {
         incomes: { where: { date: { gte, lte } } },
         fixedExpenses: true,
         fixedIncomes: true,
+        userImage: true,
       },
     });
 

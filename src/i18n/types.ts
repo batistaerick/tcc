@@ -1,10 +1,17 @@
 export interface LanguageMap {
   api: {
+    differentPasswords: string;
     emailTaken: string;
     invalidEmail: string;
     invalidPassword: string;
+    invalidUsername: string;
     missingCredentials: string;
     wrongCredentials: string;
+  };
+  account: {
+    username: string;
+    newPassword: string;
+    confirmPassword: string;
   };
   auth: {
     alreadyHaveAccount: string;
@@ -29,7 +36,6 @@ export interface LanguageMap {
   };
   dropdownMenu: {
     account: string;
-    settings: string;
     signOut: string;
   };
   newTransaction: {

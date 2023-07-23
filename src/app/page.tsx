@@ -28,7 +28,7 @@ export default function Home() {
       <div
         className={`
           flex h-screen w-screen flex-col items-center
-          gap-2 bg-white dark:bg-zinc-900 dark:text-gray-300
+          gap-2 bg-white dark:bg-slate-800 dark:text-gray-300
         `}
       >
         <Header />

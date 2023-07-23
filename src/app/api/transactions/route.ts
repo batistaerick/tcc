@@ -18,8 +18,7 @@ export async function POST(request: Request) {
       currentUser: { id: userId },
     } = await serverAuth();
 
-    const form: Form = await request.json();
-    form.userId = userId;
+    const form: Form = { ...(await request.json()), userId };
     form.amount = Number(form.amount);
 
     const { type, ...data } = form;

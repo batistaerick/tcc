@@ -7,7 +7,7 @@ export default function useCurrentUser() {
   const [selectedDate] = useRecoilState(selectedDateAtom);
 
   const { data, error, isLoading, mutate } = useSWR(
-    `/api/current-user/${selectedDate}`,
+    `/api/users/${selectedDate}`,
     fetcher
   );
   return { data, error, isLoading, mutate };

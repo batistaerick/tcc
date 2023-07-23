@@ -48,7 +48,7 @@ export default function Auth() {
   const register = useCallback(async () => {
     try {
       await axios
-        .post('/api/register', {
+        .post('/api/users', {
           email,
           name,
           password,

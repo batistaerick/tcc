@@ -2,8 +2,8 @@
 import useCurrentUser from '@/hooks/useCurrentUser';
 import usePredictions from '@/hooks/usePrediction';
 import '@/i18n/i18n';
-import { FormType } from '@/types/types';
-import { typeChecker } from '@/utils/typeChecker';
+import { NewTransactionFormType } from '@/types/types';
+import { typeChecker } from '@/utils/checkers';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState } from 'react';
@@ -21,13 +21,12 @@ import Language from './Language';
 
 export default function NewTransaction() {
   const [isFixed, setIsFixed] = useState<boolean>(false);
-  const [form, setForm] = useState<FormType>({
+  const [form, setForm] = useState<NewTransactionFormType>({
     amount: '',
     category: '',
     notes: '',
     date: new Date(),
     type: '',
-    userId: '',
   });
 
   const { push } = useRouter();
@@ -37,16 +36,11 @@ export default function NewTransaction() {
 
   async function onSubmit(event: ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
-    await handleSubmit();
-    push('/');
-  }
 
-  async function handleSubmit() {
     const { data } = await axios.post(
       `/api/${isFixed ? 'fixed-' : ''}transactions`,
-      { ...form }
+      form
     );
-
     const type = typeChecker(form.type, isFixed);
 
     await mutateUser({
@@ -54,6 +48,7 @@ export default function NewTransaction() {
       [type]: [...user[type], data],
     });
     await mutatePrediction();
+    push('/');
   }
 
   function handleChange({
@@ -74,13 +69,13 @@ export default function NewTransaction() {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="z-20 mt-5 flex w-[320px] items-center justify-end gap-1 md:w-[450px]">
+      <div className="z-20 mt-5 flex w-[320px] items-center gap-1 md:w-[450px]">
         <FcCalendar size={20} />
         <DatePickerDialog date={form.date} setDate={handleChangeDate} />
       </div>
       <form
         className="mt-5 flex w-[320px] flex-col gap-10 md:w-[450px]"
-        id="form"
+        id="newTransactionForm"
         onSubmit={onSubmit}
       >
         <div className="mt-4 flex items-center gap-14">
@@ -114,7 +109,6 @@ export default function NewTransaction() {
         <div>
           <FcCurrencyExchange className="mb-1" size={25} />
           <Input
-            key="Testing"
             id="amount"
             label={t('newTransaction:amount')}
             type="number"
@@ -163,7 +157,7 @@ export default function NewTransaction() {
           />
           <Button
             type="submit"
-            form="form"
+            form="newTransactionForm"
             height="h-12"
             width="w-full"
             translation={t('newTransaction:save')}
