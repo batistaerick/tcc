@@ -12,6 +12,8 @@ export default function Transactions() {
     useFixedExpenses();
   const { data: fixedIncomes, mutate: fixedIncomesMutate } = useFixedIncomes();
 
+  console.log(transactions);
+
   return (
     <div className="flex flex-col gap-2">
       <div className="w-[350px] rounded-xl bg-blue-950 md:w-[700px]">

@@ -1,11 +1,11 @@
 import { RoleName, TransactionType } from '@/enums/enums';
 
 export interface NewTransactionFormType {
-  amount: number | string;
+  value: number | string;
   category: string;
   notes: string;
   date: Date;
-  type: string;
+  transactionType: string;
 }
 
 export interface UpdatedUserType {
@@ -33,7 +33,7 @@ export interface Transaction {
   user: User;
   category: string;
   notes?: string | null;
-  date: string;
+  date: Date;
   value: number;
   transactionType: TransactionType;
 }

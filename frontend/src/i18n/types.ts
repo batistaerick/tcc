@@ -39,7 +39,7 @@ export interface LanguageMap {
     signOut: string;
   };
   newTransaction: {
-    amount: string;
+    value: string;
     cancel: string;
     category: string;
     expenseOption: string;

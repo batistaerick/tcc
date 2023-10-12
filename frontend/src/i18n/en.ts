@@ -46,7 +46,7 @@ const en: LanguageMap = {
     signOut: 'Sign out',
   },
   newTransaction: {
-    amount: 'Amount',
+    value: 'Value',
     cancel: 'Cancel',
     category: 'Category',
     expenseOption: 'Expense',

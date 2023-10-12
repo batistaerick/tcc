@@ -12,32 +12,26 @@ export default function Balance() {
   const { data: transactions } = useTransactions();
   const { data: predictionValue } = usePredictions();
 
-  function totalExpenses(): number {
-    return (
-      transactions
-        ?.filter(
-          (transaction) =>
-            transaction.transactionType === TransactionType.EXPENSE
-        )
-        ?.reduce?.(
-          (sum: number, transaction: Transaction) => sum + transaction.value,
-          0
-        ) ?? 0
-    );
+  function totalExpenses() {
+    return transactions
+      ?.filter(
+        (transaction) => transaction.transactionType === TransactionType.EXPENSE
+      )
+      ?.reduce?.(
+        (sum: number, transaction: Transaction) => sum + transaction.value,
+        0
+      );
   }
 
-  function totalIncomes(): number {
-    return (
-      transactions
-        ?.filter(
-          (transaction) =>
-            transaction.transactionType === TransactionType.INCOME
-        )
-        ?.reduce(
-          (sum: number, transaction: Transaction) => sum + transaction.value,
-          0
-        ) ?? 0
-    );
+  function totalIncomes() {
+    return transactions
+      ?.filter(
+        (transaction) => transaction.transactionType === TransactionType.INCOME
+      )
+      ?.reduce(
+        (sum: number, transaction: Transaction) => sum + transaction.value,
+        0
+      );
   }
 
   return (
@@ -58,7 +52,7 @@ export default function Balance() {
             <div className="flex items-center justify-start gap-1">
               <FcBearish size={35} />
               <div>
-                <Money value={totalExpenses()} />
+                <Money value={totalExpenses() ?? 0} />
               </div>
             </div>
           </div>
@@ -67,7 +61,7 @@ export default function Balance() {
               <div>{t('balance:income')}</div>
               <div className="flex items-center justify-end gap-1">
                 <FcBullish size={35} />
-                <Money value={totalIncomes()} />
+                <Money value={totalIncomes() ?? 0} />
               </div>
             </div>
           </div>

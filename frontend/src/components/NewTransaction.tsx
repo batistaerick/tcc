@@ -1,10 +1,12 @@
 'use client';
-import useCurrentUser from '@/hooks/useCurrentUser';
+import { TransactionType } from '@/enums/enums';
 import usePredictions from '@/hooks/usePrediction';
+import useTransactions from '@/hooks/useTransactions';
 import '@/i18n/i18n';
-import { NewTransactionFormType } from '@/types/types';
-import { typeChecker } from '@/utils/checkers';
+import { NewTransactionFormType, Transaction } from '@/types/types';
+import { buildHeadersAuthorization } from '@/utils/headerToken';
 import axios from 'axios';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,34 +22,48 @@ import Input from './Input';
 import Language from './Language';
 
 export default function NewTransaction() {
+  const { data: session } = useSession();
   const [isFixed, setIsFixed] = useState<boolean>(false);
   const [form, setForm] = useState<NewTransactionFormType>({
-    amount: '',
+    value: '',
     category: '',
     notes: '',
     date: new Date(),
-    type: '',
+    transactionType: '',
   });
 
   const { push } = useRouter();
   const { t } = useTranslation();
-  const { mutate: mutatePrediction } = usePredictions();
-  const { data: user, mutate: mutateUser } = useCurrentUser();
+  const { mutate: predictionMutate } = usePredictions();
+  const { data: transactions, mutate: transactionsMutate } = useTransactions();
 
   async function onSubmit(event: ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const { data } = await axios.post(
-      `/api/${isFixed ? 'fixed-' : ''}transactions`,
-      form
-    );
-    const type = typeChecker(form.type, isFixed);
+    const config = buildHeadersAuthorization(session?.user.accessToken);
 
-    await mutateUser({
-      ...user,
-      [type]: [...user[type], data],
-    });
-    await mutatePrediction();
+    if (isFixed) {
+      if (form.transactionType === TransactionType.EXPENSE) {
+        setForm((prevForm) => ({
+          ...prevForm,
+          transactionType: TransactionType.FIXED_EXPENSE.toString(),
+        }));
+      } else {
+        setForm((prevForm) => ({
+          ...prevForm,
+          transactionType: TransactionType.FIXED_INCOME.toString(),
+        }));
+      }
+    }
+
+    const { data: transaction } = await axios.post<Transaction>(
+      `http://localhost:8080/transactions`,
+      form,
+      config
+    );
+
+    await transactionsMutate(transactions?.concat(transaction));
+    await predictionMutate();
     push('/');
   }
 
@@ -67,6 +83,8 @@ export default function NewTransaction() {
     }));
   }
 
+  console.log(form);
+
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="z-20 mt-5 flex w-[320px] items-center gap-1 md:w-[450px]">
@@ -82,10 +100,10 @@ export default function NewTransaction() {
           <div className="flex flex-row items-center gap-1">
             <input
               className="h-5 w-5 accent-indigo-800"
-              id="type"
+              id="transactionType"
               type="radio"
-              value="expense"
-              checked={form.type === 'expense'}
+              value="EXPENSE"
+              checked={form.transactionType === 'EXPENSE'}
               onChange={handleChange}
             />
             <label className="text-lg text-white" htmlFor="expenses">
@@ -95,10 +113,10 @@ export default function NewTransaction() {
           <div className="flex flex-row items-center gap-1">
             <input
               className="h-5 w-5 accent-indigo-800"
-              id="type"
+              id="transactionType"
               type="radio"
-              value="income"
-              checked={form.type === 'income'}
+              value="INCOME"
+              checked={form.transactionType === 'INCOME'}
               onChange={handleChange}
             />
             <label className="text-lg text-white" htmlFor="incomes">
@@ -109,10 +127,10 @@ export default function NewTransaction() {
         <div>
           <FcCurrencyExchange className="mb-1" size={25} />
           <Input
-            id="amount"
-            label={t('newTransaction:amount')}
+            id="value"
+            label={t('newTransaction:value')}
             type="number"
-            value={form.amount}
+            value={form.value}
             onChange={handleChange}
           />
         </div>
@@ -162,7 +180,9 @@ export default function NewTransaction() {
             width="w-full"
             translation={t('newTransaction:save')}
             disabled={
-              form.amount === 0 || form.category === '' || form.type === ''
+              form.value === 0 ||
+              form.category === '' ||
+              form.transactionType === ''
             }
           />
         </div>

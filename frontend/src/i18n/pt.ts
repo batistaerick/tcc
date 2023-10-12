@@ -46,7 +46,7 @@ const pt: LanguageMap = {
     signOut: 'Sair',
   },
   newTransaction: {
-    amount: 'Total',
+    value: 'Valor',
     cancel: 'Cancelar',
     category: 'Categoria',
     expenseOption: 'Despesa',
