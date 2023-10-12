@@ -1,5 +1,6 @@
 import useCurrentUser from '@/hooks/useCurrentUser';
 import '@/i18n/i18n';
+import { putFetcher } from '@/libs/fetcher';
 import { UpdatedUserType } from '@/types/types';
 import { arePasswordsEqual, hasValueInside } from '@/utils/checkers';
 import axios from 'axios';
@@ -40,13 +41,15 @@ export default function Profile() {
       if (
         (updatedUser?.confirmPassword &&
           updatedUser.confirmPassword.length > 0) ||
+        (updatedUser?.image && updatedUser.image.length > 0) ||
         updatedUser?.username
       ) {
         const newUserData = {
           name: updatedUser?.username,
-          hashedPassword: updatedUser?.confirmPassword,
+          password: updatedUser?.confirmPassword,
+          profileImage: updatedUser?.image,
         };
-        await axios.put('/api/users', newUserData);
+        await putFetcher('/users', newUserData);
       }
 
       await mutateUser();
@@ -93,16 +96,6 @@ export default function Profile() {
     );
   }
 
-  function imageToRender() {
-    if (updatedUser?.image) {
-      return updatedUser.image;
-    }
-    if (user?.userImage?.image && user.userImage.image.length > 0) {
-      return user.userImage.image;
-    }
-    return '';
-  }
-
   return (
     <div className="flex flex-col items-center justify-center gap-5 pt-5">
       <div className="flex items-center justify-center gap-5 text-white">
@@ -120,9 +113,9 @@ export default function Profile() {
               accept="image/png, image/jpeg"
               onChange={handleChangeImage}
             />
-            {imageToRender().length > 0 ? (
+            {updatedUser?.image || user?.profileImage ? (
               <Image
-                src={imageToRender()}
+                src={updatedUser?.image ?? user?.profileImage.toString() ?? ''}
                 className="flex h-32 w-32 items-center rounded-xl object-cover"
                 width={0}
                 height={0}

@@ -1,21 +1,11 @@
-import { prismadb } from '@/libs/prismadb';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { compare } from 'bcrypt';
+import { User } from '@/types/types';
+import { buildAuth } from '@/utils/headerToken';
+import axios from 'axios';
 import NextAuth, { type NextAuthOptions } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import GithubProvider from 'next-auth/providers/github';
-import GoogleProvider from 'next-auth/providers/google';
 
 export const authOptions: NextAuthOptions = {
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID ?? '',
-      clientSecret: process.env.GITHUB_SECRET ?? '',
-    }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
-    }),
     Credentials({
       name: 'Sign in',
       credentials: {
@@ -33,30 +23,30 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.email || !credentials?.password) {
           throw new Error('missingCredentials');
         }
-        const user = await prismadb.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
-        });
-        if (!user?.hashedPassword) {
-          throw new Error('wrongCredentials');
-        }
-        const isCorrectPassword = await compare(
-          credentials.password,
-          user.hashedPassword
+        const { data: user }: { data: User } = await axios.post(
+          `${process.env.URL}/auth/login`,
+          {},
+          buildAuth(credentials.email, credentials.password)
         );
-        if (!isCorrectPassword) {
-          throw new Error('wrongCredentials');
+        if (user) {
+          return user;
         }
-        return user;
+        return null;
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      return { ...token, ...user };
+    },
+    async session({ session, token }) {
+      session.user = token as any;
+      return session;
+    },
+  },
   pages: {
     signIn: '/auth',
   },
-  debug: process.env.NODE_ENV === 'development',
-  adapter: PrismaAdapter(prismadb),
   session: {
     strategy: 'jwt',
   },

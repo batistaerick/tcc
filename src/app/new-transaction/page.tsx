@@ -1,6 +1,7 @@
 'use client';
 import Loading from '@/components/Loading';
 import NewTransaction from '@/components/NewTransaction';
+import '@/i18n/i18n';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { RecoilRoot } from 'recoil';

@@ -1,26 +1,42 @@
-import useCurrentUser from '@/hooks/useCurrentUser';
+'use client';
+import { TransactionType } from '@/enums/enums';
 import usePredictions from '@/hooks/usePrediction';
-import { Expense, Income } from '@prisma/client';
+import useTransactions from '@/hooks/useTransactions';
+import { Transaction } from '@/types/types';
 import { useTranslation } from 'react-i18next';
 import { FcBearish, FcBullish } from 'react-icons/fc';
 import Money from './Money';
 
 export default function Balance() {
   const { t } = useTranslation();
-  const { data: currentUser } = useCurrentUser();
+  const { data: transactions } = useTransactions();
   const { data: predictionValue } = usePredictions();
 
   function totalExpenses(): number {
-    return currentUser?.expenses?.reduce(
-      (sum: number, expense: Expense) => sum + expense.amount,
-      0
+    return (
+      transactions
+        ?.filter(
+          (transaction) =>
+            transaction.transactionType === TransactionType.EXPENSE
+        )
+        ?.reduce?.(
+          (sum: number, transaction: Transaction) => sum + transaction.value,
+          0
+        ) ?? 0
     );
   }
 
   function totalIncomes(): number {
-    return currentUser?.incomes?.reduce(
-      (sum: number, income: Income) => sum + income.amount,
-      0
+    return (
+      transactions
+        ?.filter(
+          (transaction) =>
+            transaction.transactionType === TransactionType.INCOME
+        )
+        ?.reduce(
+          (sum: number, transaction: Transaction) => sum + transaction.value,
+          0
+        ) ?? 0
     );
   }
 
@@ -42,7 +58,7 @@ export default function Balance() {
             <div className="flex items-center justify-start gap-1">
               <FcBearish size={35} />
               <div>
-                <Money value={totalExpenses() ?? 0} />
+                <Money value={totalExpenses()} />
               </div>
             </div>
           </div>
@@ -51,7 +67,7 @@ export default function Balance() {
               <div>{t('balance:income')}</div>
               <div className="flex items-center justify-end gap-1">
                 <FcBullish size={35} />
-                <Money value={totalIncomes() ?? 0} />
+                <Money value={totalIncomes()} />
               </div>
             </div>
           </div>

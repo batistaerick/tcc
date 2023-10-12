@@ -1,11 +1,16 @@
-import useCurrentUser from '@/hooks/useCurrentUser';
-import { Expense, FixedExpense, FixedIncome, Income } from '@prisma/client';
+import { TransactionType } from '@/enums/enums';
+import useFixedExpenses from '@/hooks/useFixedExpenses';
+import useFixedIncomes from '@/hooks/useFixedIncomes';
+import useTransactions from '@/hooks/useTransactions';
 import { useTranslation } from 'react-i18next';
 import FinancialMovements from './FinancialMovements';
 
 export default function Transactions() {
   const { t } = useTranslation();
-  const { data: currentUser, mutate } = useCurrentUser();
+  const { data: transactions, mutate: transactionsMutate } = useTransactions();
+  const { data: fixedExpenses, mutate: fixedExpensesMutate } =
+    useFixedExpenses();
+  const { data: fixedIncomes, mutate: fixedIncomesMutate } = useFixedIncomes();
 
   return (
     <div className="flex flex-col gap-2">
@@ -14,24 +19,29 @@ export default function Transactions() {
           {t('transactions:expenses')}
         </div>
         <div className="h-56 overflow-y-auto">
-          {currentUser?.expenses?.map((expense: Expense) => (
+          {transactions
+            ?.filter(
+              (transaction) =>
+                transaction.transactionType === TransactionType.EXPENSE
+            )
+            ?.map((transaction) => (
+              <FinancialMovements
+                key={transaction.id}
+                id={transaction.id}
+                category={transaction.category}
+                amount={transaction.value}
+                type="expense"
+                mutateOnDelete={transactionsMutate}
+              />
+            ))}
+          {fixedExpenses?.map((transaction) => (
             <FinancialMovements
-              key={expense.id}
-              id={expense.id}
-              category={expense.category}
-              amount={expense.amount}
-              type="expense"
-              mutateOnDelete={mutate}
-            />
-          ))}
-          {currentUser?.fixedExpenses?.map((fixedExpense: FixedExpense) => (
-            <FinancialMovements
-              key={fixedExpense.id}
-              id={fixedExpense.id}
-              category={fixedExpense.category}
-              amount={fixedExpense.amount}
+              key={transaction.id}
+              id={transaction.id}
+              category={transaction.category}
+              amount={transaction.value}
               type="fixedExpense"
-              mutateOnDelete={mutate}
+              mutateOnDelete={fixedExpensesMutate}
             />
           ))}
         </div>
@@ -41,24 +51,29 @@ export default function Transactions() {
           {t('transactions:incomes')}
         </div>
         <div className="h-56 overflow-y-auto">
-          {currentUser?.incomes?.map((income: Income) => (
+          {transactions
+            ?.filter(
+              (transaction) =>
+                transaction.transactionType === TransactionType.INCOME
+            )
+            ?.map((transaction) => (
+              <FinancialMovements
+                key={transaction.id}
+                id={transaction.id}
+                category={transaction.category}
+                amount={transaction.value}
+                type="expense"
+                mutateOnDelete={transactionsMutate}
+              />
+            ))}
+          {fixedIncomes?.map((transaction) => (
             <FinancialMovements
-              key={income.id}
-              id={income.id}
-              category={income.category}
-              amount={income.amount}
-              type="income"
-              mutateOnDelete={mutate}
-            />
-          ))}
-          {currentUser?.fixedIncomes?.map((fixedIncome: FixedIncome) => (
-            <FinancialMovements
-              key={fixedIncome.id}
-              id={fixedIncome.id}
-              category={fixedIncome.category}
-              amount={fixedIncome.amount}
-              type="fixedIncome"
-              mutateOnDelete={mutate}
+              key={transaction.id}
+              id={transaction.id}
+              category={transaction.category}
+              amount={transaction.value}
+              type="fixedExpense"
+              mutateOnDelete={fixedIncomesMutate}
             />
           ))}
         </div>

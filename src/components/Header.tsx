@@ -1,3 +1,4 @@
+'use client';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import { selectedDateAtom } from '@/recoil/datePickerDialog';
 import Image from 'next/image';
@@ -27,17 +28,17 @@ export default function Header() {
       </div>
       <div className="flex items-center gap-2">
         <Language />
-        {user?.userImage?.image && (
+        {user?.profileImage && (
           <Image
             className="flex h-7 w-7 cursor-pointer items-center rounded-md object-cover"
-            src={user.userImage.image}
+            src={user.profileImage.toString()}
             alt=""
             height={0}
             width={0}
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           />
         )}
-        {!user?.userImage?.image && (
+        {!user?.profileImage && (
           <BiUserCircle
             className="cursor-pointer text-white"
             size={27}

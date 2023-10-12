@@ -4,7 +4,7 @@ import Input from '@/components/Input';
 import Language from '@/components/Language';
 import Loading from '@/components/Loading';
 import '@/i18n/i18n';
-import { isValidEmail } from '@/utils/credentialsChecker';
+import { isValidEmail } from '@/utils/checkers';
 import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -20,7 +20,7 @@ export default function Auth() {
   const [password, setPassword] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [variant, setVariant] = useState<string>('login');
-  const [unauthorized, setUnauthorized] = useState<string | undefined>();
+  const [unauthorized, setUnauthorized] = useState<string | undefined | null>();
 
   const { t } = useTranslation();
   const { push } = useRouter();
@@ -48,14 +48,14 @@ export default function Auth() {
   const register = useCallback(async () => {
     try {
       await axios
-        .post('/api/users', {
+        .post(`http://localhost:8080/users`, {
           email,
           name,
           password,
         })
         .then(login);
     } catch (error: any) {
-      setUnauthorized(error.response.data);
+      setUnauthorized(error?.response?.data);
       setTimeout(() => setUnauthorized(undefined), 15000);
     }
   }, [email, password, name, login]);
@@ -164,7 +164,7 @@ export default function Auth() {
                   items-center justify-center rounded-full
                   bg-white transition hover:opacity-80
                 `}
-                onClick={() => signIn('google', { callbackUrl: '/' })}
+                onClick={() => {}}
               >
                 <FcGoogle size={30} />
               </div>
@@ -174,7 +174,7 @@ export default function Auth() {
                   items-center justify-center rounded-full
                   bg-white transition hover:opacity-80
                 `}
-                onClick={() => signIn('github', { callbackUrl: '/' })}
+                onClick={() => {}}
               >
                 <FaGithub size={30} />
               </div>

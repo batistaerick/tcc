@@ -1,5 +1,7 @@
 import usePredictions from '@/hooks/usePrediction';
-import axios from 'axios';
+import { deleteFetcher } from '@/libs/fetcher';
+import { buildHeadersAuthorization } from '@/utils/headerToken';
+import { useSession } from 'next-auth/react';
 import { FcFullTrash } from 'react-icons/fc';
 import { KeyedMutator } from 'swr';
 import Money from './Money';
@@ -19,13 +21,12 @@ export default function FinancialMovements({
   type,
   mutateOnDelete,
 }: FinancialMovementsProps) {
+  const { data: session } = useSession();
   const { mutate: mutatePrediction } = usePredictions();
 
-  async function deleteExpenseOrIncome() {
-    await axios.delete(
-      `/api/${type.startsWith('fixed') ? 'fixed-' : ''}transactions`,
-      { params: { id, type } }
-    );
+  async function deleteTransaction() {
+    const config = buildHeadersAuthorization(session?.user.accessToken);
+    await deleteFetcher(`/transactions/${id}`, config);
     await mutateOnDelete();
     await mutatePrediction();
   }
@@ -39,7 +40,7 @@ export default function FinancialMovements({
           data-testid="delete-icon"
           className="cursor-pointer"
           size={22}
-          onClick={deleteExpenseOrIncome}
+          onClick={deleteTransaction}
         />
       </div>
     </div>

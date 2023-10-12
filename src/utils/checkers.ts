@@ -1,19 +1,20 @@
-export function typeChecker(
-  type: string,
-  isFixed: boolean
-): 'fixedExpenses' | 'expenses' | 'fixedIncomes' | 'incomes' {
-  if (type === 'expense') {
-    if (isFixed) {
-      return 'fixedExpenses';
-    }
-    return 'expenses';
-  }
-  if (type === 'income') {
-    if (isFixed) {
-      return 'fixedIncomes';
-    }
-  }
-  return 'incomes';
+export function isValidEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+export function isValidPassword(password: string): boolean {
+  return /^(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{7,}$/.test(password);
+}
+
+export function isValidUsername(username: string): boolean {
+  return /^[A-Za-z0-9-_]{1,30}$/.test(username);
+}
+
+export function arePasswordsEqual(
+  newPassword: string | undefined,
+  confirmPassword: string | undefined
+): boolean {
+  return newPassword === confirmPassword;
 }
 
 export function hasValueInside(data: object): boolean {
@@ -24,11 +25,4 @@ export function hasValueInside(data: object): boolean {
       String(data[key]).length !== 0
     );
   });
-}
-
-export function arePasswordsEqual(
-  newPassword: string | undefined,
-  confirmPassword: string | undefined
-): boolean {
-  return newPassword === confirmPassword;
 }

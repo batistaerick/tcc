@@ -32,7 +32,7 @@ export default function Input({
     return type;
   }
 
-  function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+  function handleKeyPress(event: KeyboardEvent<HTMLInputElement>) {
     if (
       type === 'number' &&
       !RegExp(/^[\d.]$/).exec(event.key) &&
