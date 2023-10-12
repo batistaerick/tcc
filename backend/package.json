@@ -1,0 +1,20 @@
+{
+    "name": "budget",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint",
+        "storybook": "storybook dev -p 6006",
+        "build-storybook": "storybook build",
+        "test": "jest",
+        "test:ci": "jest --ci",
+        "test:coverage": "jest --coverage"
+    },
+    "dependencies": {
+        "prettier": "^2.8.8",
+        "prettier-plugin-java": "^2.3.1"
+    }
+}
