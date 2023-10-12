@@ -38,10 +38,13 @@ public class UserService {
     }
 
     public UserDto findByAuthenticatedEmail() {
-        return repository
+        UserDto userDto = repository
             .findByEmail(UserSession.getAuthenticatedEmail())
             .map(converter::entityToDto)
             .orElseThrow(EmailNotFoundException::new);
+        userDto.setPassword(null);
+
+        return userDto;
     }
 
     public void update(User updatedUser) {
