@@ -111,27 +111,36 @@ public class TransactionService {
             .stream()
             .mapToDouble(Transaction::getValue)
             .sum();
-        double totalOfFixedExpenses = repository
-            .findByUserEmailAndTransactionType(
-                userEmail,
-                TransactionType.FIXED_EXPENSE
-            )
+        double totalOfFixedExpenses = findAllByTransactionType(
+            TransactionType.FIXED_EXPENSE
+        )
             .stream()
-            .mapToDouble(Transaction::getValue)
+            .mapToDouble(TransactionDto::getValue)
             .sum();
-        double totalOfFixedIncomes = repository
-            .findByUserEmailAndTransactionType(
-                userEmail,
-                TransactionType.FIXED_INCOME
-            )
+        double totalOfFixedIncomes = findAllByTransactionType(
+            TransactionType.FIXED_INCOME
+        )
             .stream()
-            .mapToDouble(Transaction::getValue)
+            .mapToDouble(TransactionDto::getValue)
             .sum();
-        int numberOfMonths = Period.between(startDate, endDate).getMonths();
+        int numberOfMonths = getNumberOfMonths(startDate, endDate);
 
         return (
-            (totalOfIncomes + totalOfFixedIncomes * numberOfMonths) -
-            (totalOfExpenses + totalOfFixedExpenses * numberOfMonths)
+            (totalOfIncomes +
+                totalOfFixedIncomes *
+                    (numberOfMonths == 0 ? 1 : numberOfMonths)) -
+            (totalOfExpenses + totalOfFixedExpenses * numberOfMonths == 0
+                    ? 1
+                    : numberOfMonths)
         );
+    }
+
+    private Integer getNumberOfMonths(LocalDate startDate, LocalDate endDate) {
+        int numberOfMonths = Period.between(startDate, endDate).getMonths();
+
+        if (numberOfMonths <= 0) {
+            return 1;
+        }
+        return numberOfMonths + 1;
     }
 }
