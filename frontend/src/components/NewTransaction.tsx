@@ -29,7 +29,7 @@ export default function NewTransaction() {
     category: '',
     notes: '',
     date: new Date(),
-    transactionType: '',
+    transactionType: undefined,
   });
 
   const { push } = useRouter();
@@ -41,19 +41,8 @@ export default function NewTransaction() {
     event.preventDefault();
 
     const config = buildHeadersAuthorization(session?.user.accessToken);
-
     if (isFixed) {
-      if (form.transactionType === TransactionType.EXPENSE) {
-        setForm((prevForm) => ({
-          ...prevForm,
-          transactionType: TransactionType.FIXED_EXPENSE.toString(),
-        }));
-      } else {
-        setForm((prevForm) => ({
-          ...prevForm,
-          transactionType: TransactionType.FIXED_INCOME.toString(),
-        }));
-      }
+      setForm((prevForm) => ({ ...prevForm, date: null }));
     }
 
     const { data: transaction } = await axios.post<Transaction>(
@@ -79,17 +68,58 @@ export default function NewTransaction() {
   function handleChangeDate(date: Date | ((currVal: Date) => Date)) {
     setForm((prevFormState) => ({
       ...prevFormState,
-      date: typeof date === 'function' ? date(form.date) : date,
+      date: typeof date === 'function' ? date(form.date ?? new Date()) : date,
     }));
   }
 
-  console.log(form);
+  function handleChangeFixed(checked: boolean) {
+    if (checked) {
+      if (
+        form.transactionType === TransactionType.EXPENSE ||
+        form.transactionType === TransactionType.FIXED_EXPENSE
+      ) {
+        setForm((prevForm) => ({
+          ...prevForm,
+          transactionType: TransactionType.FIXED_EXPENSE,
+          date: null,
+        }));
+      } else {
+        setForm((prevForm) => ({
+          ...prevForm,
+          transactionType: TransactionType.FIXED_INCOME,
+          date: null,
+        }));
+      }
+    }
+    if (!checked) {
+      if (
+        form.transactionType === TransactionType.EXPENSE ||
+        form.transactionType === TransactionType.FIXED_EXPENSE
+      ) {
+        setForm((prevForm) => ({
+          ...prevForm,
+          transactionType: TransactionType.EXPENSE,
+          date: null,
+        }));
+      } else {
+        setForm((prevForm) => ({
+          ...prevForm,
+          transactionType: TransactionType.INCOME,
+          date: null,
+        }));
+      }
+    }
+    setIsFixed(checked);
+  }
 
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="z-20 mt-5 flex w-[320px] items-center gap-1 md:w-[450px]">
         <FcCalendar size={20} />
-        <DatePickerDialog date={form.date} setDate={handleChangeDate} />
+        <DatePickerDialog
+          date={form.date ?? new Date()}
+          setDate={handleChangeDate}
+        />
       </div>
       <form
         className="mt-5 flex w-[320px] flex-col gap-10 md:w-[450px]"
@@ -159,7 +189,9 @@ export default function NewTransaction() {
             id="fixed"
             type="checkbox"
             checked={isFixed}
-            onChange={({ currentTarget: { checked } }) => setIsFixed(checked)}
+            onChange={({ currentTarget: { checked } }) =>
+              handleChangeFixed(checked)
+            }
           />
           <label className="text-white" htmlFor="fixed">
             {t('newTransaction:fixed')}
@@ -182,7 +214,7 @@ export default function NewTransaction() {
             disabled={
               form.value === 0 ||
               form.category === '' ||
-              form.transactionType === ''
+              form.transactionType === undefined
             }
           />
         </div>

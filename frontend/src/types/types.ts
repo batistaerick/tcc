@@ -4,8 +4,8 @@ export interface NewTransactionFormType {
   value: number | string;
   category: string;
   notes: string;
-  date: Date;
-  transactionType: string;
+  date: Date | null;
+  transactionType: TransactionType | undefined;
 }
 
 export interface UpdatedUserType {
@@ -33,7 +33,7 @@ export interface Transaction {
   user: User;
   category: string;
   notes?: string | null;
-  date: Date;
+  date: Date | undefined;
   value: number;
   transactionType: TransactionType;
 }
