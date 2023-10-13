@@ -3,9 +3,7 @@
 1. [Introduction](#introduction)
 2. [Prerequisites](#prerequisites)
 3. [How to use](#how-to-use)
-   - [With Docker](#with-docker)
-   - [With Maven](#with-maven)
-4. [Swagger](#swagger)
+4. [Backend Swagger](#backend-swagger)
 5. [Credits](#credits)
 
 # Introduction
@@ -28,7 +26,7 @@ To run locally you need:
 Before launching the backend application, you need to create the .pem files with the following commands:
 
 ```bash
-cd src/main/resources/certs/
+cd backend/src/main/resources/certs/
 openssl genrsa -out keypair.pem 2048
 openssl rsa -in keypair.pem -pubout -out public.pem
 openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem
@@ -37,6 +35,7 @@ openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out priv
 Then you can start the backend with the command:
 
 ```bash
+cd backend
 mvn spring-boot:run
 ```
 
@@ -45,10 +44,11 @@ mvn spring-boot:run
 Before launching the frontend application, you need to download the dependencies with the command (**Using yarn**):
 
 ```bash
+cd frontend
 yarn
 ```
 
-After starting the backend and downloading the frontend dependencies, you can start the frontend with the command:
+After starting the backend and downloading the frontend dependencies, you can start the frontend with the command (Make sure you're inside the frontend folder):
 
 ```bash
 yarn dev
