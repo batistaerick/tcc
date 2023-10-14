@@ -43,7 +43,7 @@ rsa.public-key=classpath:certs/public.pem
 
 ### Frontend
 
-You need to create a new file called **_.env.local_** inside the **_frontend_** folder file and then set it with the following environments. You may need to modify it for your specific configurations.
+You need to create a new file called **_.env.local_** inside the **_frontend_** folder and then set it with the following environments. You may need to modify it for your specific configurations.
 
 ```env
 URL=http://localhost
