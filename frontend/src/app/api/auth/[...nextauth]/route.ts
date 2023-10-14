@@ -24,7 +24,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error('missingCredentials');
         }
         const { data: user }: { data: User } = await axios.post(
-          `${process.env.URL}/auth/login`,
+          `http://localhost:8080/auth/login`,
           {},
           buildAuth(credentials.email, credentials.password)
         );
