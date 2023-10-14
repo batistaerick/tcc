@@ -129,9 +129,9 @@ public class TransactionService {
             (totalOfIncomes +
                 totalOfFixedIncomes *
                     (numberOfMonths == 0 ? 1 : numberOfMonths)) -
-            (totalOfExpenses + totalOfFixedExpenses * numberOfMonths == 0
-                    ? 1
-                    : numberOfMonths)
+            (totalOfExpenses +
+                totalOfFixedExpenses *
+                    (numberOfMonths == 0 ? 1 : numberOfMonths))
         );
     }
 
