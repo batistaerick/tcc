@@ -29,7 +29,7 @@ To run this application locally, you will need the following:
 
 ### Backend
 
-You may have to change it for you specific configurations.
+You may need to modify it for your specific configurations.
 
 ```env
 spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
@@ -43,7 +43,7 @@ rsa.public-key=classpath:certs/public.pem
 
 ### Frontend
 
-You may have to change it for you specific configurations.
+You may need to modify it for your specific configurations.
 
 ```env
 URL=http://localhost
@@ -93,13 +93,19 @@ mvn spring-boot:run
 
 After starting the backend, **make sure you're inside the _`frontend`_ folder** and run the following command:
 
+#### YARN
+
 ```bash
 yarn dev
 ```
 
-### Using the application
+#### NPM
 
-Once you have completed the setup, you can access and use the application by navigating to [**http://localhost:3000**](http://localhost:8080/api-doc), Enjoy! 😊
+```bash
+npm run dev
+```
+
+#### Once you have completed the setup, you can access and use the application by navigating to [http://localhost:3000](http://localhost:8080/api-doc), Enjoy! 😊
 
 # Backend Swagger
 
