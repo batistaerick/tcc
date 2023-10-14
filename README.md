@@ -29,7 +29,7 @@ To run this application locally, you will need the following:
 
 ### Backend
 
-You may need to modify it for your specific configurations.
+Inside the **_resources/application.properties_** file, you will find the following environments. _You may need to modify it for your specific configurations_.
 
 ```env
 spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
@@ -43,7 +43,7 @@ rsa.public-key=classpath:certs/public.pem
 
 ### Frontend
 
-You may need to modify it for your specific configurations.
+You need to create a new file called **_.env.local_** inside the **_frontend_** folder file and then set it with the following environments. You may need to modify it for your specific configurations.
 
 ```env
 URL=http://localhost
