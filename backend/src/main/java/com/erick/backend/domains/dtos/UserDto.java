@@ -1,5 +1,6 @@
 package com.erick.backend.domains.dtos;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,7 +22,9 @@ public class UserDto {
     private String password;
     private byte[] profileImage;
     private String refreshToken;
+    private Instant refreshTokenExpires;
     private String accessToken;
+    private Instant accessTokenExpires;
     private Set<RoleDto> roles = new HashSet<>();
     private List<TransactionDto> transactions;
 }

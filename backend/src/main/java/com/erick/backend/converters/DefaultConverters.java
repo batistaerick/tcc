@@ -23,6 +23,8 @@ public class DefaultConverters {
             user.getName(),
             user.getEmail(),
             user.getPassword(),
+            user.getProfileImage(),
+            null,
             null,
             null,
             null,

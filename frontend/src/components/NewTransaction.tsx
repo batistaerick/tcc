@@ -3,9 +3,9 @@ import { TransactionType } from '@/enums/enums';
 import usePredictions from '@/hooks/usePrediction';
 import useTransactions from '@/hooks/useTransactions';
 import '@/i18n/i18n';
+import { postFetcher } from '@/libs/fetcher';
 import { NewTransactionFormType, Transaction } from '@/types/types';
 import { buildHeadersAuthorization } from '@/utils/headerToken';
-import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState } from 'react';
@@ -22,20 +22,20 @@ import Input from './Input';
 import Language from './Language';
 
 export default function NewTransaction() {
+  const { push } = useRouter();
+  const { t } = useTranslation();
   const { data: session } = useSession();
+  const { mutate: predictionMutate } = usePredictions();
+  const { data: transactions, mutate: transactionsMutate } = useTransactions();
+
   const [isFixed, setIsFixed] = useState<boolean>(false);
   const [form, setForm] = useState<NewTransactionFormType>({
-    value: '',
+    value: undefined,
     category: '',
     notes: '',
     date: new Date(),
     transactionType: undefined,
   });
-
-  const { push } = useRouter();
-  const { t } = useTranslation();
-  const { mutate: predictionMutate } = usePredictions();
-  const { data: transactions, mutate: transactionsMutate } = useTransactions();
 
   async function onSubmit(event: ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -45,9 +45,9 @@ export default function NewTransaction() {
       setForm((prevForm) => ({ ...prevForm, date: null }));
     }
 
-    const { data: transaction } = await axios.post<Transaction>(
+    const transaction = await postFetcher<Transaction>(
       `http://localhost:8080/transactions`,
-      form,
+      { ...form, user: undefined, id: undefined },
       config
     );
 

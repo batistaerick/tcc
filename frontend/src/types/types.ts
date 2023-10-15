@@ -1,13 +1,5 @@
 import { RoleName, TransactionType } from '@/enums/enums';
 
-export interface NewTransactionFormType {
-  value: number | string;
-  category: string;
-  notes: string;
-  date: Date | null;
-  transactionType: TransactionType | undefined;
-}
-
 export interface UpdatedUserType {
   username?: string;
   confirmPassword?: string;
@@ -22,20 +14,30 @@ export interface User {
   password: string;
   profileImage: Uint8Array;
   refreshToken: string;
+  refreshTokenExpires: number;
   accessToken: string;
+  accessTokenExpires: number;
   roles: Role[];
   transactions: Transaction[];
   authorities: Role[];
 }
 
 export interface Transaction {
-  id: string;
-  user: User;
+  id?: string;
+  user?: User;
   category: string;
   notes?: string | null;
-  date: Date | undefined;
-  value: number;
-  transactionType: TransactionType;
+  date?: Date | null;
+  value?: number;
+  transactionType?: TransactionType;
+}
+
+export interface NewTransactionFormType {
+  value?: number;
+  category: string;
+  notes: string;
+  date: Date | null;
+  transactionType?: TransactionType;
 }
 
 export interface Role {

@@ -1,8 +1,29 @@
+import { postFetcher } from '@/libs/fetcher';
 import { User } from '@/types/types';
-import { buildAuth } from '@/utils/headerToken';
-import axios from 'axios';
+import { buildAuth, buildHeadersAuthorization } from '@/utils/headerToken';
 import NextAuth, { type NextAuthOptions } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
 import Credentials from 'next-auth/providers/credentials';
+
+async function refreshAccessToken(token: JWT) {
+  try {
+    const { accessToken, accessTokenExpires } = await postFetcher<User>(
+      '/auth/login',
+      undefined,
+      buildHeadersAuthorization(String(token.refreshToken))
+    );
+    return {
+      ...token,
+      accessToken,
+      accessTokenExpires,
+    };
+  } catch (error) {
+    return {
+      ...token,
+      error: 'RefreshAccessTokenError',
+    };
+  }
+}
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -23,11 +44,12 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.email || !credentials?.password) {
           throw new Error('missingCredentials');
         }
-        const { data: user }: { data: User } = await axios.post(
-          `http://localhost:8080/auth/login`,
-          {},
+        const user = await postFetcher<User>(
+          '/auth/login',
+          undefined,
           buildAuth(credentials.email, credentials.password)
         );
+
         if (user) {
           return user;
         }
@@ -36,12 +58,26 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
-      return { ...token, ...user };
+    async jwt({ token, user }: any) {
+      if (user) {
+        token.accessToken = user.accessToken;
+        token.accessTokenExpires = user.accessTokenExpires;
+        token.refreshToken = user.refreshToken;
+        token.refreshTokenExpires = user.refreshTokenExpires;
+      }
+      const currentDate = new Date(new Date().toUTCString());
+      const accessTokenExpires = new Date(token.accessTokenExpires * 1000);
+
+      if (currentDate > accessTokenExpires) {
+        return refreshAccessToken(token);
+      }
+      return token;
     },
     async session({ session, token }) {
-      session.user = token as any;
-      return session;
+      return {
+        ...session,
+        user: { ...token },
+      };
     },
   },
   pages: {
@@ -49,6 +85,7 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: 'jwt',
+    maxAge: 604800,
   },
   jwt: {
     secret: process.env.NEXTAUTH_JWT_SECRET,
