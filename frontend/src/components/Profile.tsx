@@ -3,7 +3,8 @@ import '@/i18n/i18n';
 import { putFetcher } from '@/libs/fetcher';
 import { UpdatedUserType } from '@/types/types';
 import { arePasswordsEqual, hasValueInside } from '@/utils/checkers';
-import axios from 'axios';
+import { buildHeadersAuthorization } from '@/utils/headerToken';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState } from 'react';
@@ -13,6 +14,7 @@ import Input from './Input';
 import Language from './Language';
 
 export default function Profile() {
+  const { data: session } = useSession();
   const { data: user, mutate: mutateUser } = useCurrentUser();
   const { t } = useTranslation();
   const { push } = useRouter();
@@ -35,9 +37,6 @@ export default function Profile() {
       ) {
         throw new Error('differentPasswords');
       }
-      if (updatedUser?.image && updatedUser.image.length > 0) {
-        await axios.put('/api/users/image', { image: updatedUser.image });
-      }
       if (
         (updatedUser?.confirmPassword &&
           updatedUser.confirmPassword.length > 0) ||
@@ -45,11 +44,16 @@ export default function Profile() {
         updatedUser?.username
       ) {
         const newUserData = {
+          email: session?.user.email,
           name: updatedUser?.username,
           password: updatedUser?.confirmPassword,
           profileImage: updatedUser?.image,
         };
-        await putFetcher('/users', newUserData);
+        await putFetcher(
+          '/users',
+          newUserData,
+          buildHeadersAuthorization(session?.user.accessToken)
+        );
       }
 
       await mutateUser();

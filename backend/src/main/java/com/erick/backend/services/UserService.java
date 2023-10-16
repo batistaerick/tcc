@@ -62,6 +62,6 @@ public class UserService {
         if (updatedUser.getProfileImage() != null) {
             existingUser.setProfileImage(updatedUser.getProfileImage());
         }
-        repository.save(updatedUser);
+        repository.save(existingUser);
     }
 }

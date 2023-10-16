@@ -46,8 +46,7 @@ rsa.public-key=classpath:certs/public.pem
 You need to create a new file called **_.env.local_** inside the **_frontend_** folder and then set it with the following environments. You may need to modify it for your specific configurations.
 
 ```env
-URL=http://localhost
-PORT=8080
+URL=http://localhost:8080
 NEXTAUTH_JWT_SECRET=YOUR_JWT_SECRET
 NEXTAUTH_SECRET=YOUR_SECRET
 ```
