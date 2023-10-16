@@ -46,7 +46,7 @@ export default function NewTransaction() {
     }
 
     const transaction = await postFetcher<Transaction>(
-      `http://localhost:8080/transactions`,
+      '/transactions',
       { ...form, user: undefined, id: undefined },
       config
     );

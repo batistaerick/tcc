@@ -41,19 +41,23 @@ export const authOptions: NextAuthOptions = {
         },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error('missingCredentials');
-        }
-        const user = await postFetcher<User>(
-          '/auth/login',
-          undefined,
-          buildAuth(credentials.email, credentials.password)
-        );
+        try {
+          if (!credentials?.email || !credentials?.password) {
+            throw new Error('missingCredentials');
+          }
+          const user = await postFetcher<User>(
+            '/auth/login',
+            undefined,
+            buildAuth(credentials.email, credentials.password)
+          );
 
-        if (user) {
-          return user;
+          if (user) {
+            return user;
+          }
+          return null;
+        } catch (error) {
+          throw Error('wrongCredentials');
         }
-        return null;
       },
     }),
   ],

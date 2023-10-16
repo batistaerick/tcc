@@ -8,7 +8,7 @@ export default function useCurrentUser() {
   const { data } = useSession();
   const config = buildHeadersAuthorization(data?.user.accessToken ?? '');
 
-  const response = useSWR([`/users/current-user`, config], ([url, config]) =>
+  const response = useSWR(['/users/current-user', config], ([url, config]) =>
     getFetcher<User>(url, config)
   );
   return response;

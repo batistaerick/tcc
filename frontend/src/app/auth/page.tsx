@@ -4,8 +4,8 @@ import Input from '@/components/Input';
 import Language from '@/components/Language';
 import Loading from '@/components/Loading';
 import '@/i18n/i18n';
+import { postFetcher } from '@/libs/fetcher';
 import { isValidEmail } from '@/utils/checkers';
-import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -47,13 +47,7 @@ export default function Auth() {
 
   const register = useCallback(async () => {
     try {
-      await axios
-        .post(`http://localhost:8080/users`, {
-          email,
-          name,
-          password,
-        })
-        .then(login);
+      await postFetcher('/users', { email, name, password }).then(login);
     } catch (error: any) {
       setUnauthorized(error?.response?.data);
       setTimeout(() => setUnauthorized(undefined), 15000);
