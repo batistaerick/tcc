@@ -1,4 +1,4 @@
-import { getFetcher } from '@/libs/fetcher';
+import { getFetcher } from '@/libs/fetchers';
 import { User } from '@/types/types';
 import { buildHeadersAuthorization } from '@/utils/headerToken';
 import { useSession } from 'next-auth/react';

@@ -4,7 +4,7 @@ import Input from '@/components/Input';
 import Language from '@/components/Language';
 import Loading from '@/components/Loading';
 import '@/i18n/i18n';
-import { postFetcher } from '@/libs/fetcher';
+import { postFetcher } from '@/libs/fetchers';
 import { isValidEmail } from '@/utils/checkers';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';

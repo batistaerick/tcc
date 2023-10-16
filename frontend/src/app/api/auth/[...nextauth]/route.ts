@@ -1,4 +1,4 @@
-import { postFetcher } from '@/libs/fetcher';
+import { postFetcher } from '@/libs/fetchers';
 import { User } from '@/types/types';
 import { buildAuth, buildHeadersAuthorization } from '@/utils/headerToken';
 import NextAuth, { type NextAuthOptions } from 'next-auth';

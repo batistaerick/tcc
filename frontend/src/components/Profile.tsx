@@ -1,6 +1,6 @@
 import useCurrentUser from '@/hooks/useCurrentUser';
 import '@/i18n/i18n';
-import { putFetcher } from '@/libs/fetcher';
+import { putFetcher } from '@/libs/fetchers';
 import { UpdatedUserType } from '@/types/types';
 import { arePasswordsEqual, hasValueInside } from '@/utils/checkers';
 import { buildHeadersAuthorization } from '@/utils/headerToken';

@@ -1,4 +1,4 @@
-import { getFetcher } from '@/libs/fetcher';
+import { getFetcher } from '@/libs/fetchers';
 import { selectedDateAtom } from '@/recoil/datePickerDialog';
 import { Transaction } from '@/types/types';
 import { buildHeadersAuthorization } from '@/utils/headerToken';

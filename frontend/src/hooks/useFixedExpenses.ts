@@ -1,5 +1,5 @@
 import { TransactionType } from '@/enums/enums';
-import { getFetcher } from '@/libs/fetcher';
+import { getFetcher } from '@/libs/fetchers';
 import { Transaction } from '@/types/types';
 import { buildHeadersAuthorization } from '@/utils/headerToken';
 import { useSession } from 'next-auth/react';

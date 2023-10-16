@@ -3,7 +3,7 @@ import { TransactionType } from '@/enums/enums';
 import usePredictions from '@/hooks/usePrediction';
 import useTransactions from '@/hooks/useTransactions';
 import '@/i18n/i18n';
-import { postFetcher } from '@/libs/fetcher';
+import { postFetcher } from '@/libs/fetchers';
 import { NewTransactionFormType, Transaction } from '@/types/types';
 import { buildHeadersAuthorization } from '@/utils/headerToken';
 import { useSession } from 'next-auth/react';

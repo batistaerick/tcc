@@ -1,5 +1,5 @@
 import usePredictions from '@/hooks/usePrediction';
-import { deleteFetcher } from '@/libs/fetcher';
+import { deleteFetcher } from '@/libs/fetchers';
 import { buildHeadersAuthorization } from '@/utils/headerToken';
 import { useSession } from 'next-auth/react';
 import { FcFullTrash } from 'react-icons/fc';
