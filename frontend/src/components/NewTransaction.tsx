@@ -47,7 +47,7 @@ export default function NewTransaction() {
 
     const transaction = await postFetcher<Transaction>(
       '/transactions',
-      { ...form, user: undefined, id: undefined },
+      { ...form, user: undefined, id: '' },
       config
     );
 

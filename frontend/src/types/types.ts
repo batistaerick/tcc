@@ -23,7 +23,7 @@ export interface User {
 }
 
 export interface Transaction {
-  id?: string;
+  id: string;
   user?: User;
   category: string;
   notes?: string | null;

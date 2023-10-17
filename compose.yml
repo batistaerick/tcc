@@ -1,0 +1,61 @@
+version: "3.9"
+services:
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: frontend
+    ports:
+      - "3000:3000"
+    working_dir: /app/frontend
+    volumes:
+      - .:/app/frontend
+      - /app/frontend/node_modules
+    environment:
+      - NEXT_PUBLIC_BASE_URL=http://backend:8080
+      - NEXTAUTH_JWT_SECRET=ERICKBATISTAPRADO
+      - NEXTAUTH_SECRET=ERICKBATISTAPRADO
+    networks:
+      - app-network
+
+  backend:
+    depends_on:
+      - postgres
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: backend
+    ports:
+      - "8080:8080"
+    working_dir: /app/backend
+    volumes:
+      - ./backend:/app/backend
+    restart: always
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123456789
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRINGDOC_SWAGGER_UI_PATH=/api-doc
+      - RSA_PRIVATE_KEY=/app/backend/src/main/resources/certs/private.pem
+      - RSA_PUBLIC_KEY=/app/backend/src/main/resources/certs/public.pem
+    networks:
+      - app-network
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456789
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

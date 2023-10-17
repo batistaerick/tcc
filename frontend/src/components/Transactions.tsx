@@ -29,7 +29,7 @@ export default function Transactions() {
                 key={transaction.id}
                 id={transaction.id}
                 category={transaction.category}
-                amount={transaction.value}
+                amount={transaction.value ?? 0}
                 type="expense"
                 mutateOnDelete={transactionsMutate}
               />
@@ -39,7 +39,7 @@ export default function Transactions() {
               key={transaction.id}
               id={transaction.id}
               category={transaction.category}
-              amount={transaction.value}
+              amount={transaction.value ?? 0}
               type="fixedExpense"
               mutateOnDelete={fixedExpensesMutate}
             />
@@ -61,7 +61,7 @@ export default function Transactions() {
                 key={transaction.id}
                 id={transaction.id}
                 category={transaction.category}
-                amount={transaction.value}
+                amount={transaction.value ?? 0}
                 type="expense"
                 mutateOnDelete={transactionsMutate}
               />
@@ -71,7 +71,7 @@ export default function Transactions() {
               key={transaction.id}
               id={transaction.id}
               category={transaction.category}
-              amount={transaction.value}
+              amount={transaction.value ?? 0}
               type="fixedExpense"
               mutateOnDelete={fixedIncomesMutate}
             />

@@ -24,13 +24,15 @@ export default function Balance() {
             transaction.transactionType === TransactionType.EXPENSE
         )
         ?.reduce?.(
-          (sum: number, transaction: Transaction) => sum + transaction.value,
+          (sum: number, transaction: Transaction) =>
+            sum + (transaction?.value ?? 0),
           0
         ) ?? 0;
 
     const expensesFixed =
       fixedExpenses?.reduce?.(
-        (sum: number, transaction: Transaction) => sum + transaction.value,
+        (sum: number, transaction: Transaction) =>
+          sum + (transaction?.value ?? 0),
         0
       ) ?? 0;
 
@@ -45,13 +47,15 @@ export default function Balance() {
             transaction.transactionType === TransactionType.INCOME
         )
         ?.reduce(
-          (sum: number, transaction: Transaction) => sum + transaction.value,
+          (sum: number, transaction: Transaction) =>
+            sum + (transaction?.value ?? 0),
           0
         ) ?? 0;
 
     const incomesFixed =
       fixedIncomes?.reduce?.(
-        (sum: number, transaction: Transaction) => sum + transaction.value,
+        (sum: number, transaction: Transaction) =>
+          sum + (transaction?.value ?? 0),
         0
       ) ?? 0;
 
