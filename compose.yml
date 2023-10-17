@@ -8,10 +8,8 @@ services:
     image: frontend
     ports:
       - "3000:3000"
-    working_dir: /app/frontend
     volumes:
-      - .:/app/frontend
-      - /app/frontend/node_modules
+      - frontend_data:/node_modules
     environment:
       - NEXT_PUBLIC_BASE_URL=http://backend:8080
       - NEXTAUTH_JWT_SECRET=ERICKBATISTAPRADO
@@ -29,18 +27,19 @@ services:
     image: backend
     ports:
       - "8080:8080"
-    working_dir: /app/backend
     volumes:
-      - ./backend:/app/backend
+      - backend_data:/data
     restart: always
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/postgres
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=123456789
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRINGDOC_SWAGGER_UI_PATH=/api-doc
-      - RSA_PRIVATE_KEY=/app/backend/src/main/resources/certs/private.pem
-      - RSA_PUBLIC_KEY=/app/backend/src/main/resources/certs/public.pem
+      SPRING_APPLICATION_JSON: '{
+        "spring.datasource.url": "jdbc:postgresql://postgres:5432/postgres",
+        "spring.datasource.username": "postgres",
+        "spring.datasource.password": "123456789",
+        "spring.jpa.hibernate.ddl-auto": "update",
+        "springdoc.swagger-ui.path": "/api-doc",
+        "rsa.private-key": "classpath:certs/private.pem",
+        "rsa.public-key": "classpath:certs/public.pem"
+        }'
     networks:
       - app-network
 
@@ -51,10 +50,16 @@ services:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456789
+      POSTGRES_HOST_AUTH_METHOD: "trust"
     ports:
       - "5432:5432"
     networks:
       - app-network
+
+volumes:
+  postgres_data:
+  backend_data:
+  frontend_data:
 
 networks:
   app-network:

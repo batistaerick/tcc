@@ -10,7 +10,7 @@ RUN sed -i -e 's/\r$//' mvnw
 RUN chmod +x mvnw
 RUN ./mvnw clean package
 
-FROM openjdk:17
+FROM openjdk:17-alpine
 WORKDIR /app
 EXPOSE 8080
 COPY --from=build /app/target/*.jar app.jar
