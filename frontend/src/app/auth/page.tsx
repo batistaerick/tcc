@@ -42,15 +42,15 @@ export default function Auth() {
       redirect: false,
     });
     setUnauthorized(response?.error);
-    setTimeout(() => setUnauthorized(undefined), 15000);
   }, [email, password]);
 
   const register = useCallback(async () => {
     try {
-      await postFetcher('/users', { email, name, password }).then(login);
+      await postFetcher('/users', { email, name, password });
+      setVariant('login');
+      await login();
     } catch (error: any) {
-      setUnauthorized(error?.response?.data);
-      setTimeout(() => setUnauthorized(undefined), 15000);
+      setUnauthorized(error);
     }
   }, [email, password, name, login]);
 

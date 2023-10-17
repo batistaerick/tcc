@@ -5,7 +5,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -38,18 +37,4 @@ public class RequestInterceptor implements HandlerInterceptor {
         @NonNull Object handler,
         @Nullable Exception exception
     ) {}
-
-    private boolean isUserInsertionRequest(HttpServletRequest request) {
-        return (
-            request.getRequestURI().equals("/users") &&
-            request.getMethod().equals("POST")
-        );
-    }
-
-    private boolean isAuthenticated() {
-        return SecurityContextHolder
-            .getContext()
-            .getAuthentication()
-            .isAuthenticated();
-    }
 }

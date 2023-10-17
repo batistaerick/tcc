@@ -8,14 +8,10 @@ services:
     image: frontend
     ports:
       - "3000:3000"
-    volumes:
-      - frontend_data:/node_modules
     environment:
       - NEXT_PUBLIC_BASE_URL=http://backend:8080
       - NEXTAUTH_JWT_SECRET=ERICKBATISTAPRADO
       - NEXTAUTH_SECRET=ERICKBATISTAPRADO
-    networks:
-      - app-network
 
   backend:
     depends_on:
@@ -27,8 +23,6 @@ services:
     image: backend
     ports:
       - "8080:8080"
-    volumes:
-      - backend_data:/data
     restart: always
     environment:
       SPRING_APPLICATION_JSON: '{
@@ -54,11 +48,6 @@ services:
       - "5432:5432"
     networks:
       - app-network
-
-volumes:
-  postgres_data:
-  backend_data:
-  frontend_data:
 
 networks:
   app-network:
