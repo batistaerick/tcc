@@ -1,6 +1,5 @@
 package com.erick.backend.controllers;
 
-import com.erick.backend.converters.UserConverter;
 import com.erick.backend.domains.dtos.UserDto;
 import com.erick.backend.services.UserService;
 import java.net.URI;
@@ -16,7 +15,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class UserController {
 
     private final UserService service;
-    private final UserConverter converter;
 
     @PostMapping
     public ResponseEntity<UserDto> save(@RequestBody UserDto dto) {
