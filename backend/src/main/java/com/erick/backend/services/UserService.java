@@ -23,9 +23,10 @@ public class UserService {
     private final PasswordEncoder encoder;
     private final RoleService roleService;
 
-    public UserDto save(User user) {
-        CredentialsChecker.isValidPassword(user.getPassword());
-        user.setPassword(encoder.encode(user.getPassword()));
+    public UserDto save(UserDto dto) {
+        CredentialsChecker.isValidPassword(dto.getPassword());
+        User user = converter.dtoToEntity(dto);
+        user.setPassword(encoder.encode(dto.getPassword()));
         Role role = roleService.findByRoleName(RoleName.ROLE_USER);
         user.setRoles(Collections.singleton(role));
         return converter.entityToDto(repository.save(user));
@@ -43,11 +44,10 @@ public class UserService {
             .map(converter::entityToDto)
             .orElseThrow(EmailNotFoundException::new);
         userDto.setPassword(null);
-
         return userDto;
     }
 
-    public void update(User updatedUser) {
+    public void update(UserDto updatedUser) {
         User existingUser = repository
             .findByEmail(UserSession.getAuthenticatedEmail())
             .orElseThrow(EmailNotFoundException::new);

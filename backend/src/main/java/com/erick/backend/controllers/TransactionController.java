@@ -1,7 +1,6 @@
 package com.erick.backend.controllers;
 
 import com.erick.backend.domains.dtos.TransactionDto;
-import com.erick.backend.domains.entities.Transaction;
 import com.erick.backend.enums.TransactionType;
 import com.erick.backend.services.TransactionService;
 import java.net.URI;
@@ -24,13 +23,13 @@ public class TransactionController {
     @PostMapping
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<TransactionDto> save(
-        @RequestBody Transaction transaction
+        @RequestBody TransactionDto transaction
     ) {
         TransactionDto transactionDto = service.save(transaction);
         URI uri = ServletUriComponentsBuilder
             .fromCurrentRequest()
             .path("/{id}")
-            .buildAndExpand(transaction.getId())
+            .buildAndExpand(transactionDto.getId())
             .toUri();
         return ResponseEntity.created(uri).body(transactionDto);
     }

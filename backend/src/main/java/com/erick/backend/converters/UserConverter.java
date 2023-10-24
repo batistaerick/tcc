@@ -9,12 +9,14 @@ import org.springframework.stereotype.Component;
 public class UserConverter {
 
     public UserDto entityToDto(User entity) {
-        UserDto dto = new UserDto();
-        dto.setId(entity.getId());
-        dto.setName(entity.getName());
-        dto.setEmail(entity.getEmail());
-        dto.setPassword(entity.getPassword());
-        dto.setProfileImage(entity.getProfileImage());
+        UserDto dto = UserDto
+            .builder()
+            .id(entity.getId())
+            .name(entity.getName())
+            .email(entity.getEmail())
+            .password(entity.getPassword())
+            .profileImage(entity.getProfileImage())
+            .build();
         if (entity.getRoles() != null) {
             dto.setRoles(
                 entity
@@ -34,5 +36,35 @@ public class UserConverter {
             );
         }
         return dto;
+    }
+
+    public User dtoToEntity(UserDto dto) {
+        User entity = User
+            .builder()
+            .id(dto.getId())
+            .name(dto.getName())
+            .email(dto.getEmail())
+            .password(dto.getPassword())
+            .profileImage(dto.getProfileImage())
+            .build();
+        if (dto.getRoles() != null) {
+            entity.setRoles(
+                dto
+                    .getRoles()
+                    .stream()
+                    .map(DefaultConverters::roleDtoToEntity)
+                    .collect(Collectors.toSet())
+            );
+        }
+        if (dto.getTransactions() != null) {
+            entity.setTransactions(
+                dto
+                    .getTransactions()
+                    .stream()
+                    .map(DefaultConverters::transactionDtoToEntity)
+                    .toList()
+            );
+        }
+        return entity;
     }
 }

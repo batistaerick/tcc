@@ -12,8 +12,8 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@Entity
 @Table(name = "t_user")
+@Entity
 @Builder
 @Getter
 @Setter

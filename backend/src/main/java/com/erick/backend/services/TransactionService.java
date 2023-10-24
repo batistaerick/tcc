@@ -24,10 +24,11 @@ public class TransactionService {
     private final TransactionConverter converter;
     private final UserService userService;
 
-    public TransactionDto save(Transaction transaction) {
+    public TransactionDto save(TransactionDto dto) {
         UUID id = userService
             .findByEmail(UserSession.getAuthenticatedEmail())
             .getId();
+        Transaction transaction = converter.dtoToEntity(dto);
         transaction.setUser(
             User
                 .builder()
@@ -38,14 +39,10 @@ public class TransactionService {
         return converter.entityToDto(repository.save(transaction));
     }
 
-    public Transaction findById(UUID id) {
-        return repository
+    public void delete(UUID id) {
+        Transaction transaction = repository
             .findById(id)
             .orElseThrow(TransactionNotFoundException::new);
-    }
-
-    public void delete(UUID id) {
-        Transaction transaction = findById(id);
         if (
             !transaction
                 .getUser()

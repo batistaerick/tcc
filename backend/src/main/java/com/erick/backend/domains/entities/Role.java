@@ -4,14 +4,12 @@ import com.erick.backend.enums.RoleName;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
-@Entity
 @Table(name = "t_role")
+@Entity
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor

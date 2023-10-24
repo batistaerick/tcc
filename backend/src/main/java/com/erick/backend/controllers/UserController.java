@@ -2,7 +2,6 @@ package com.erick.backend.controllers;
 
 import com.erick.backend.converters.UserConverter;
 import com.erick.backend.domains.dtos.UserDto;
-import com.erick.backend.domains.entities.User;
 import com.erick.backend.services.UserService;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -20,28 +19,21 @@ public class UserController {
     private final UserConverter converter;
 
     @PostMapping
-    public ResponseEntity<UserDto> save(@RequestBody User user) {
-        UserDto userDto = service.save(user);
+    public ResponseEntity<UserDto> save(@RequestBody UserDto dto) {
+        UserDto userDto = service.save(dto);
         URI uri = ServletUriComponentsBuilder
             .fromCurrentRequest()
             .path("/{id}")
-            .buildAndExpand(user.getId())
+            .buildAndExpand(userDto.getId())
             .toUri();
         return ResponseEntity.created(uri).body(userDto);
     }
 
     @PutMapping
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<Void> update(@RequestBody User user) {
-        service.update(user);
+    public ResponseEntity<Void> update(@RequestBody UserDto dto) {
+        service.update(dto);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/{email}/find-by-email")
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<UserDto> findByEmail(@PathVariable String email) {
-        UserDto userDto = converter.entityToDto(service.findByEmail(email));
-        return ResponseEntity.ok(userDto);
     }
 
     @GetMapping("/current-user")

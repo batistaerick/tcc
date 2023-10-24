@@ -8,15 +8,34 @@ import org.springframework.stereotype.Component;
 public class TransactionConverter {
 
     public TransactionDto entityToDto(Transaction entity) {
-        TransactionDto dto = new TransactionDto();
-        dto.setId(entity.getId());
-        dto.setUser(DefaultConverters.userEntityToDto(entity.getUser()));
-        dto.setCategory(entity.getCategory());
-        dto.setNotes(entity.getNotes());
-        dto.setDate(entity.getDate());
-        dto.setValue(entity.getValue());
-        dto.setTransactionType(entity.getTransactionType());
-
+        TransactionDto dto = TransactionDto
+            .builder()
+            .id(entity.getId())
+            .category(entity.getCategory())
+            .notes(entity.getNotes())
+            .date(entity.getDate())
+            .value(entity.getValue())
+            .transactionType(entity.getTransactionType())
+            .build();
+        if (entity.getUser() != null) {
+            dto.setUser(DefaultConverters.userEntityToDto(entity.getUser()));
+        }
         return dto;
+    }
+
+    public Transaction dtoToEntity(TransactionDto dto) {
+        Transaction entity = Transaction
+            .builder()
+            .id(dto.getId())
+            .category(dto.getCategory())
+            .notes(dto.getNotes())
+            .date(dto.getDate())
+            .value(dto.getValue())
+            .transactionType(dto.getTransactionType())
+            .build();
+        if (dto.getUser() != null) {
+            entity.setUser(DefaultConverters.userDtoToEntity(dto.getUser()));
+        }
+        return entity;
     }
 }

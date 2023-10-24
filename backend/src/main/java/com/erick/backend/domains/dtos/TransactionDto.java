@@ -3,15 +3,13 @@ package com.erick.backend.domains.dtos;
 import com.erick.backend.enums.TransactionType;
 import java.time.LocalDate;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Builder
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class TransactionDto {
 
     private UUID id;
