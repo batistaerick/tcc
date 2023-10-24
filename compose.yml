@@ -7,11 +7,13 @@ services:
       dockerfile: Dockerfile
     image: frontend
     ports:
-      - "3000:3000"
+      - 3000:3000
+    restart: always
     environment:
-      - NEXT_PUBLIC_BASE_URL=http://backend:8080
+      - NEXT_PUBLIC_BASE_URL=http://localhost:8080
       - NEXTAUTH_JWT_SECRET=ERICKBATISTAPRADO
       - NEXTAUTH_SECRET=ERICKBATISTAPRADO
+    network_mode: "host"
 
   backend:
     depends_on:
@@ -22,7 +24,7 @@ services:
       dockerfile: Dockerfile
     image: backend
     ports:
-      - "8080:8080"
+      - 8080:8080
     restart: always
     environment:
       SPRING_APPLICATION_JSON: '{
@@ -35,7 +37,7 @@ services:
         "rsa.public-key": "classpath:certs/public.pem"
         }'
     networks:
-      - app-network
+      - backend-network
 
   postgres:
     image: postgres
@@ -45,10 +47,10 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456789
     ports:
-      - "5432:5432"
+      - 5432:5432
     networks:
-      - app-network
+      - backend-network
 
 networks:
-  app-network:
+  backend-network:
     driver: bridge
