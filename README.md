@@ -20,6 +20,8 @@ Welcome to the Budget Manager Application! This versatile financial tool is desi
 
 ## Required Software
 
+#### NOTE: This topic only applies if you are not using [docker](#docker).
+
 To run this application locally, you will need the following:
 
 - Java 17
@@ -55,7 +57,7 @@ NEXTAUTH_SECRET=YOUR_SECRET
 
 ## Dependencies
 
-To download the dependencies **make sure you're inside the _`frontend`_ folder** and execute the following command:
+To download the dependencies **make sure you're inside the _`frontend`_ folder** and run the following command:
 
 #### YARN
 
@@ -71,7 +73,7 @@ npm i
 
 ## PEM Key
 
-To create the .pem file, **make sure you're inside the _`backend`_ folder** and execute the following commands:
+To generate the .pem file, **make sure you're inside the _`backend`_ folder** and run the following commands:
 
 ```bash
 cd src/main/resources/certs/
@@ -84,7 +86,7 @@ openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out priv
 
 ## Docker
 
-Using docker you can just execute the following command:
+Make sure you have docker installed and then run the following command:
 
 ```bash
 docker compose up
@@ -94,7 +96,7 @@ docker compose up
 
 ### Backend
 
-To start the backend locally, **make sure you're inside the _`backend`_ folder** and execute the following command:
+To start the backend locally, **make sure you're inside the _`backend`_ folder** and run the following command:
 
 ```bash
 mvn spring-boot:run
@@ -102,7 +104,7 @@ mvn spring-boot:run
 
 ### Frontend
 
-After starting the backend, **make sure you're inside the _`frontend`_ folder** and execute the following command:
+After starting the backend, **make sure you're inside the _`frontend`_ folder** and run the following command:
 
 #### YARN
 
