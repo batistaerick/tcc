@@ -14,11 +14,7 @@ public class CredentialsChecker {
         boolean isValid = Pattern.compile(regex).matcher(password).matches();
 
         if (!isValid) {
-            throw new InvalidPasswordException(
-                "Password must contain at least one number, " +
-                "one uppercase letter, one lowercase letter, " +
-                "and on special character!"
-            );
+            throw new InvalidPasswordException();
         }
     }
 }

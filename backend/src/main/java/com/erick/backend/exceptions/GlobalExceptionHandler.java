@@ -1,12 +1,19 @@
 package com.erick.backend.exceptions;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class GlobalExceptionHandler {
+@RequiredArgsConstructor
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    private final ResourceBundleMessageSource messageSource;
 
     @ExceptionHandler(EmailNotFoundException.class)
     public ResponseEntity<String> handleEmailNotFoundException(
@@ -41,17 +48,23 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleInvalidPasswordException(
         InvalidPasswordException exception
     ) {
-        return ResponseEntity
-            .status(HttpStatus.BAD_REQUEST)
-            .body(exception.getMessage());
+        String message = messageSource.getMessage(
+            "invalid.password",
+            null,
+            LocaleContextHolder.getLocale()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
 
-    @ExceptionHandler(RedirectResponseException.class)
-    public ResponseEntity<String> handleRedirectResponseException(
-        RedirectResponseException exception
+    @ExceptionHandler(ExistingEmailException.class)
+    public ResponseEntity<String> handleInvalidPasswordException(
+        ExistingEmailException exception
     ) {
-        return ResponseEntity
-            .status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(exception.getMessage());
+        String message = messageSource.getMessage(
+            "email.exists",
+            null,
+            LocaleContextHolder.getLocale()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
     }
 }

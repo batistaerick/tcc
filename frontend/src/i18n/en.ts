@@ -3,12 +3,6 @@ import { LanguageMap } from './types';
 const en: LanguageMap = {
   api: {
     differentPasswords: 'Passwords must be the same.',
-    emailTaken:
-      'The email you provided is already registered. Please use a different email address to sign up or try logging in.',
-    invalidEmail:
-      'The email format you provided is invalid. Please enter a valid email address.',
-    invalidPassword:
-      'Password must have at least 7 characters, 1 uppercase letter and 1 special character.',
     invalidUsername:
       'Username must be maximum 30 characters and can only contain letters, digits, hyphens, and underscores.',
     missingCredentials: 'Please provide both your email and password.',

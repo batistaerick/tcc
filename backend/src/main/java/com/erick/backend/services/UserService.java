@@ -6,6 +6,7 @@ import com.erick.backend.domains.entities.Role;
 import com.erick.backend.domains.entities.User;
 import com.erick.backend.enums.RoleName;
 import com.erick.backend.exceptions.EmailNotFoundException;
+import com.erick.backend.exceptions.ExistingEmailException;
 import com.erick.backend.repositories.UserRepository;
 import com.erick.backend.utils.CredentialsChecker;
 import com.erick.backend.utils.UserSession;
@@ -24,6 +25,9 @@ public class UserService {
     private final RoleService roleService;
 
     public UserDto save(UserDto dto) {
+        if (repository.findByEmail(dto.getEmail()).isPresent()) {
+            throw new ExistingEmailException();
+        }
         CredentialsChecker.isValidPassword(dto.getPassword());
         User user = converter.dtoToEntity(dto);
         user.setPassword(encoder.encode(dto.getPassword()));

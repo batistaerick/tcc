@@ -10,8 +10,13 @@ export async function getFetcher<T>(
   url: string,
   config?: AxiosRequestConfig
 ): Promise<T> {
-  const response = await defaultAxios.get<T>(url, config);
-  return response.data;
+  const response = await defaultAxios
+    .get<T>(url, config)
+    .then((response) => response.data)
+    .catch((error) => {
+      throw Error(error.response.data);
+    });
+  return response;
 }
 
 export async function postFetcher<T>(
@@ -19,8 +24,13 @@ export async function postFetcher<T>(
   body?: T,
   config?: AxiosRequestConfig
 ): Promise<T> {
-  const response = await defaultAxios.post<T>(url, body, config);
-  return response.data;
+  const response = await defaultAxios
+    .post<T>(url, body, config)
+    .then((response) => response.data)
+    .catch((error) => {
+      throw Error(error.response.data);
+    });
+  return response;
 }
 
 export async function putFetcher<T>(
@@ -28,8 +38,13 @@ export async function putFetcher<T>(
   body?: T,
   config?: AxiosRequestConfig
 ): Promise<T> {
-  const response = await defaultAxios.put<T>(url, body, config);
-  return response.data;
+  const response = await defaultAxios
+    .put<T>(url, body, config)
+    .then((response) => response.data)
+    .catch((error) => {
+      throw Error(error.response.data);
+    });
+  return response;
 }
 
 export async function deleteFetcher(url: string, config?: AxiosRequestConfig) {

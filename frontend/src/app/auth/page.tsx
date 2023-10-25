@@ -50,7 +50,7 @@ export default function Auth() {
       setVariant('login');
       await login();
     } catch (error: any) {
-      setUnauthorized(error);
+      setUnauthorized(error.message);
     }
   }, [email, password, name, login]);
 

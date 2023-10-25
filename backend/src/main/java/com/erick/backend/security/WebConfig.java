@@ -17,10 +17,7 @@ public class WebConfig {
                 registry
                     .addMapping("/**")
                     .allowedMethods("GET", "POST", "PUT", "DELETE")
-                    .allowedOrigins(
-                        "http://localhost:3000",
-                        "http://frontend:3000"
-                    );
+                    .allowedOrigins("http://localhost:3000");
             }
         };
     }

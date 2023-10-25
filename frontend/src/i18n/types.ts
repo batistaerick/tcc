@@ -1,9 +1,6 @@
 export interface LanguageMap {
   api: {
     differentPasswords: string;
-    emailTaken: string;
-    invalidEmail: string;
-    invalidPassword: string;
     invalidUsername: string;
     missingCredentials: string;
     wrongCredentials: string;
