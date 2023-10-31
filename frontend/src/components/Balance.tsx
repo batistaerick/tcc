@@ -1,4 +1,3 @@
-'use client';
 import { TransactionType } from '@/enums/enums';
 import useFixedExpenses from '@/hooks/useFixedExpenses';
 import useFixedIncomes from '@/hooks/useFixedIncomes';

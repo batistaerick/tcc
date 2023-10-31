@@ -1,4 +1,3 @@
-'use client';
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { PiEyeDuotone, PiEyeSlashDuotone } from 'react-icons/pi';
 

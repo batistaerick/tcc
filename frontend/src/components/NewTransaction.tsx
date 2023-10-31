@@ -1,4 +1,3 @@
-'use client';
 import { TransactionType } from '@/enums/enums';
 import usePredictions from '@/hooks/usePrediction';
 import useTransactions from '@/hooks/useTransactions';

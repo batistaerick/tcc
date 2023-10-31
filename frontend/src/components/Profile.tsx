@@ -1,7 +1,7 @@
 import useCurrentUser from '@/hooks/useCurrentUser';
 import useProfileImage from '@/hooks/useProfileImage';
 import '@/i18n/i18n';
-import { postFetcher, putFetcher } from '@/libs/fetchers';
+import { putFetcher } from '@/libs/fetchers';
 import { UpdatedUserType } from '@/types/types';
 import { arePasswordsEqual, hasValueInside } from '@/utils/checkers';
 import { buildHeadersAuthorization } from '@/utils/headerToken';
@@ -27,16 +27,12 @@ export default function Profile() {
     confirmPassword: undefined,
   });
   const [unauthorized, setUnauthorized] = useState<string | undefined>();
-  const [updatedImage, setUpdatedImage] = useState<Blob>();
+  const [updatedImage, setUpdatedImage] = useState<Blob | null>(null);
 
   async function onSubmit(event: ChangeEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
     try {
-      if (
-        updatedUser?.confirmPassword &&
-        updatedUser.confirmPassword?.length > 0 &&
-        !arePasswordsEqual(updatedUser.newPassword, updatedUser.confirmPassword)
-      ) {
+      if (updatedUser.newPassword !== updatedUser.confirmPassword) {
         throw new Error('differentPasswords');
       }
       if (
@@ -54,20 +50,7 @@ export default function Profile() {
           buildHeadersAuthorization(session?.user.accessToken)
         );
       }
-      if (updatedImage) {
-        await postFetcher(
-          '/images',
-          { file: updatedImage },
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Authorization: buildHeadersAuthorization(
-                session?.user.accessToken
-              ).headers.Authorization,
-            },
-          }
-        );
-      }
+
       await mutateUser();
       await mutateImage();
       push('/');
@@ -99,9 +82,7 @@ export default function Profile() {
       !arePasswordsEqual(
         updatedUser.newPassword,
         updatedUser.confirmPassword
-      ) ||
-      !hasValueInside(updatedUser) ||
-      !updatedImage
+      ) || !hasValueInside({ ...updatedUser, updatedImage })
     );
   }
 

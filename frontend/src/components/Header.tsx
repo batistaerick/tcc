@@ -1,5 +1,4 @@
-'use client';
-import useCurrentUser from '@/hooks/useCurrentUser';
+import useProfileImage from '@/hooks/useProfileImage';
 import { selectedDateAtom } from '@/recoil/datePickerDialog';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -12,7 +11,7 @@ import Language from './Language';
 
 export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const { data: user } = useCurrentUser();
+  const { data: profileImage } = useProfileImage();
   const [selectedDate, setSelectedDate] = useRecoilState(selectedDateAtom);
 
   return (
@@ -28,17 +27,17 @@ export default function Header() {
       </div>
       <div className="flex items-center gap-2">
         <Language />
-        {user?.profileImage && (
+        {profileImage && (
           <Image
             className="flex h-7 w-7 cursor-pointer items-center rounded-md object-cover"
-            src={user.profileImage.toString()}
+            src={URL.createObjectURL(profileImage)}
             alt=""
             height={0}
             width={0}
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           />
         )}
-        {!user?.profileImage && (
+        {!profileImage && (
           <BiUserCircle
             className="cursor-pointer text-white"
             size={27}
