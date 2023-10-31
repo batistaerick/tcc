@@ -1,7 +1,6 @@
 package com.erick.backend.services;
 
 import com.erick.backend.domains.entities.Image;
-import com.erick.backend.domains.entities.User;
 import com.erick.backend.exceptions.ImageException;
 import com.erick.backend.repositories.ImageRepository;
 import com.erick.backend.utils.UserSession;
@@ -22,21 +21,20 @@ public class ImageService {
     private final UserService userService;
 
     public void updateProfileImage(MultipartFile file) {
-        User existingUser = userService.findByEmail(
-            UserSession.getAuthenticatedEmail()
-        );
         if (file == null || file.isEmpty()) {
             throw new ImageException("Empty image.");
         }
+        Image image = repository
+            .findByUserEmail(UserSession.getAuthenticatedEmail())
+            .orElse(new Image());
         try {
             Blob blob = new SerialBlob(file.getBytes());
-            Image image = Image
-                .builder()
-                .name(file.getName())
-                .type(file.getContentType())
-                .profileImage(blob)
-                .user(existingUser)
-                .build();
+            image.setName(file.getName());
+            image.setType(file.getContentType());
+            image.setProfileImage(blob);
+            image.setUser(
+                userService.findByEmail(UserSession.getAuthenticatedEmail())
+            );
             repository.save(image);
         } catch (IOException | SQLException exception) {
             throw new ImageException("Invalid image: {}", exception);

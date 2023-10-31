@@ -27,26 +27,32 @@ export default function Profile() {
     confirmPassword: undefined,
   });
   const [unauthorized, setUnauthorized] = useState<string | undefined>();
-  const [updatedImage, setUpdatedImage] = useState<Blob | null>(null);
+  const [updatedImage, setUpdatedImage] = useState<Blob>();
 
   async function onSubmit(event: ChangeEvent<HTMLFormElement>): Promise<void> {
-    event.preventDefault();
     try {
-      if (updatedUser.newPassword !== updatedUser.confirmPassword) {
-        throw new Error('differentPasswords');
-      }
+      event.preventDefault();
+
       if (
-        (updatedUser?.confirmPassword &&
-          updatedUser.confirmPassword.length > 0) ||
-        updatedUser?.username
+        updatedUser?.confirmPassword &&
+        updatedUser?.newPassword &&
+        updatedUser.confirmPassword.length > 0 &&
+        updatedUser.newPassword.length > 0
       ) {
-        const newUserData = {
-          name: updatedUser?.username,
-          password: updatedUser?.confirmPassword,
-        };
+        console.log('Here?');
+        if (updatedUser.newPassword !== updatedUser.confirmPassword) {
+          throw new Error('differentPasswords');
+        }
         await putFetcher(
           '/users',
-          newUserData,
+          { password: updatedUser?.confirmPassword },
+          buildHeadersAuthorization(session?.user.accessToken)
+        );
+      }
+      if (updatedUser?.username) {
+        await putFetcher(
+          '/users',
+          { name: updatedUser?.username },
           buildHeadersAuthorization(session?.user.accessToken)
         );
       }

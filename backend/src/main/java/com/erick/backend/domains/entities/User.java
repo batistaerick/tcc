@@ -44,7 +44,10 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
-    private List<Transaction> transactions;
+    private transient List<Transaction> transactions;
+
+    @OneToOne
+    private transient Image profileImage;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
