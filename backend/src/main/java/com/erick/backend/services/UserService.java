@@ -12,11 +12,13 @@ import com.erick.backend.utils.CredentialsChecker;
 import com.erick.backend.utils.UserSession;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class UserService {
 
     private final UserRepository repository;
@@ -55,16 +57,15 @@ public class UserService {
         User existingUser = repository
             .findByEmail(UserSession.getAuthenticatedEmail())
             .orElseThrow(EmailNotFoundException::new);
-
-        if (updatedUser.getName() != null) {
+        if (updatedUser.getName() != null && !updatedUser.getName().isBlank()) {
             existingUser.setName(updatedUser.getName());
         }
-        if (updatedUser.getPassword() != null) {
+        if (
+            updatedUser.getPassword() != null &&
+            !updatedUser.getPassword().isBlank()
+        ) {
             CredentialsChecker.isValidPassword(updatedUser.getPassword());
             existingUser.setPassword(encoder.encode(updatedUser.getPassword()));
-        }
-        if (updatedUser.getProfileImage() != null) {
-            existingUser.setProfileImage(updatedUser.getProfileImage());
         }
         repository.save(existingUser);
     }

@@ -1,5 +1,7 @@
 package com.erick.backend.controllers;
 
+import static org.springframework.http.ResponseEntity.*;
+
 import com.erick.backend.domains.dtos.UserDto;
 import com.erick.backend.services.UserService;
 import java.net.URI;
@@ -24,20 +26,20 @@ public class UserController {
             .path("/{id}")
             .buildAndExpand(userDto.getId())
             .toUri();
-        return ResponseEntity.created(uri).body(userDto);
+        return created(uri).body(userDto);
     }
 
     @PutMapping
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Void> update(@RequestBody UserDto dto) {
         service.update(dto);
-        return ResponseEntity.noContent().build();
+        return noContent().build();
     }
 
     @GetMapping("/current-user")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<UserDto> findByAuthenticated() {
         UserDto userDto = service.findByAuthenticatedEmail();
-        return ResponseEntity.ok(userDto);
+        return ok(userDto);
     }
 }

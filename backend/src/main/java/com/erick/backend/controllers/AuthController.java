@@ -1,5 +1,7 @@
 package com.erick.backend.controllers;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 import com.erick.backend.domains.dtos.UserDto;
 import com.erick.backend.services.TokenService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,6 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<UserDto> token(Authentication authentication) {
         UserDto userDto = service.generateTokens(authentication);
-        return ResponseEntity.ok(userDto);
+        return ok(userDto);
     }
 }

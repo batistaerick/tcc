@@ -18,7 +18,6 @@ public class UserDto {
     private String name;
     private String email;
     private String password;
-    private byte[] profileImage;
     private String refreshToken;
     private Instant refreshTokenExpires;
     private String accessToken;

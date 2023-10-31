@@ -9,7 +9,7 @@ import useSWR from 'swr';
 
 export default function useTransactions() {
   const { data } = useSession();
-  const config = buildHeadersAuthorization(data?.user.accessToken ?? '');
+  const config = buildHeadersAuthorization(data?.user.accessToken);
 
   const date = useRecoilValue(selectedDateAtom);
   const endDate = getLocalDate(date);

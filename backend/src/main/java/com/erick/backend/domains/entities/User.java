@@ -34,9 +34,6 @@ public class User implements UserDetails {
 
     private String password;
 
-    @Lob
-    private byte[] profileImage;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "t_user_roles",

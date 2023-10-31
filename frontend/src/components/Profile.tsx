@@ -1,6 +1,7 @@
 import useCurrentUser from '@/hooks/useCurrentUser';
+import useProfileImage from '@/hooks/useProfileImage';
 import '@/i18n/i18n';
-import { putFetcher } from '@/libs/fetchers';
+import { postFetcher, putFetcher } from '@/libs/fetchers';
 import { UpdatedUserType } from '@/types/types';
 import { arePasswordsEqual, hasValueInside } from '@/utils/checkers';
 import { buildHeadersAuthorization } from '@/utils/headerToken';
@@ -16,6 +17,7 @@ import Language from './Language';
 export default function Profile() {
   const { data: session } = useSession();
   const { data: user, mutate: mutateUser } = useCurrentUser();
+  const { data: profileImage, mutate: mutateImage } = useProfileImage();
   const { t } = useTranslation();
   const { push } = useRouter();
 
@@ -23,11 +25,11 @@ export default function Profile() {
     username: undefined,
     newPassword: undefined,
     confirmPassword: undefined,
-    image: undefined,
   });
   const [unauthorized, setUnauthorized] = useState<string | undefined>();
+  const [updatedImage, setUpdatedImage] = useState<Blob>();
 
-  async function onSubmit(event: ChangeEvent<HTMLFormElement>) {
+  async function onSubmit(event: ChangeEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
     try {
       if (
@@ -40,14 +42,11 @@ export default function Profile() {
       if (
         (updatedUser?.confirmPassword &&
           updatedUser.confirmPassword.length > 0) ||
-        (updatedUser?.image && updatedUser.image.length > 0) ||
         updatedUser?.username
       ) {
         const newUserData = {
-          email: session?.user.email,
           name: updatedUser?.username,
           password: updatedUser?.confirmPassword,
-          profileImage: updatedUser?.image,
         };
         await putFetcher(
           '/users',
@@ -55,8 +54,22 @@ export default function Profile() {
           buildHeadersAuthorization(session?.user.accessToken)
         );
       }
-
+      if (updatedImage) {
+        await postFetcher(
+          '/images',
+          { file: updatedImage },
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Authorization: buildHeadersAuthorization(
+                session?.user.accessToken
+              ).headers.Authorization,
+            },
+          }
+        );
+      }
       await mutateUser();
+      await mutateImage();
       push('/');
     } catch (error: any) {
       setUnauthorized(error?.response?.data ?? error?.message);
@@ -65,7 +78,7 @@ export default function Profile() {
 
   function handleChange({
     currentTarget: { value, id },
-  }: ChangeEvent<HTMLInputElement>) {
+  }: ChangeEvent<HTMLInputElement>): void {
     setUpdatedUser((prevUpdatedUser) => ({
       ...prevUpdatedUser,
       [id]: value,
@@ -74,20 +87,10 @@ export default function Profile() {
 
   function handleChangeImage({
     currentTarget: { files },
-  }: ChangeEvent<HTMLInputElement>) {
+  }: ChangeEvent<HTMLInputElement>): void {
     const file = files?.[0];
-
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (typeof reader.result === 'string') {
-          setUpdatedUser({
-            ...updatedUser,
-            image: reader.result,
-          });
-        }
-      };
-      reader.readAsDataURL(file);
+      setUpdatedImage(file);
     }
   }
 
@@ -96,7 +99,9 @@ export default function Profile() {
       !arePasswordsEqual(
         updatedUser.newPassword,
         updatedUser.confirmPassword
-      ) || !hasValueInside(updatedUser)
+      ) ||
+      !hasValueInside(updatedUser) ||
+      !updatedImage
     );
   }
 
@@ -117,15 +122,25 @@ export default function Profile() {
               accept="image/png, image/jpeg"
               onChange={handleChangeImage}
             />
-            {updatedUser?.image || user?.profileImage ? (
+            {updatedImage && (
               <Image
-                src={updatedUser?.image ?? user?.profileImage.toString() ?? ''}
+                src={URL.createObjectURL(updatedImage)}
                 className="flex h-32 w-32 items-center rounded-xl object-cover"
                 width={0}
                 height={0}
                 alt="Choose your image"
               />
-            ) : (
+            )}
+            {!updatedImage && profileImage && (
+              <Image
+                src={`${URL.createObjectURL(profileImage)}`}
+                className="flex h-32 w-32 items-center rounded-xl object-cover"
+                width={0}
+                height={0}
+                alt="Choose your image"
+              />
+            )}
+            {!updatedImage && !profileImage && (
               <span className="flex h-32 w-32 items-center rounded-xl">
                 Choose your image
               </span>

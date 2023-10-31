@@ -6,7 +6,7 @@ import useSWR from 'swr';
 
 export default function useCurrentUser() {
   const { data } = useSession();
-  const config = buildHeadersAuthorization(data?.user.accessToken ?? '');
+  const config = buildHeadersAuthorization(data?.user.accessToken);
 
   const response = useSWR(['/users/current-user', config], ([url, config]) =>
     getFetcher<User>(url, config)

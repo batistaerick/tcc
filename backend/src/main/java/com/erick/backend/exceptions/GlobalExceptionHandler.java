@@ -44,6 +44,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             .body(exception.getMessage());
     }
 
+    @ExceptionHandler(ImageException.class)
+    public ResponseEntity<String> handleImageException(
+        ImageException exception
+    ) {
+        return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(exception.getMessage());
+    }
+
     @ExceptionHandler(InvalidPasswordException.class)
     public ResponseEntity<String> handleInvalidPasswordException(
         InvalidPasswordException exception
@@ -57,7 +66,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ExistingEmailException.class)
-    public ResponseEntity<String> handleInvalidPasswordException(
+    public ResponseEntity<String> handleExistingEmailException(
         ExistingEmailException exception
     ) {
         String message = messageSource.getMessage(

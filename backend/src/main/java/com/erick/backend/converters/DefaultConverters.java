@@ -36,7 +36,6 @@ public class DefaultConverters {
             .name(user.getName())
             .email(user.getEmail())
             .password(user.getPassword())
-            .profileImage(user.getProfileImage())
             .build();
     }
 
@@ -47,7 +46,6 @@ public class DefaultConverters {
             .name(dto.getName())
             .email(dto.getEmail())
             .password(dto.getPassword())
-            .profileImage(dto.getProfileImage())
             .build();
     }
 

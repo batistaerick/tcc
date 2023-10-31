@@ -1,5 +1,7 @@
 package com.erick.backend.controllers;
 
+import static org.springframework.http.ResponseEntity.*;
+
 import com.erick.backend.domains.dtos.TransactionDto;
 import com.erick.backend.enums.TransactionType;
 import com.erick.backend.services.TransactionService;
@@ -31,14 +33,14 @@ public class TransactionController {
             .path("/{id}")
             .buildAndExpand(transactionDto.getId())
             .toUri();
-        return ResponseEntity.created(uri).body(transactionDto);
+        return created(uri).body(transactionDto);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         service.delete(id);
-        return ResponseEntity.noContent().build();
+        return noContent().build();
     }
 
     @GetMapping("/{endDate}/between-dates")
@@ -47,7 +49,7 @@ public class TransactionController {
         @PathVariable LocalDate endDate
     ) {
         List<TransactionDto> transactions = service.findByDateBetween(endDate);
-        return ResponseEntity.ok(transactions);
+        return ok(transactions);
     }
 
     @GetMapping("/{transactionType}/fixed")
@@ -58,7 +60,7 @@ public class TransactionController {
         List<TransactionDto> transactions = service.findAllByTransactionType(
             transactionType
         );
-        return ResponseEntity.ok(transactions);
+        return ok(transactions);
     }
 
     @GetMapping("/{endDate}/prediction")
@@ -67,6 +69,6 @@ public class TransactionController {
         @PathVariable LocalDate endDate
     ) {
         Double prediction = service.predictRemainingBalance(endDate);
-        return ResponseEntity.ok(prediction);
+        return ok(prediction);
     }
 }

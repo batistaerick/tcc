@@ -4,7 +4,6 @@ export interface UpdatedUserType {
   username?: string;
   confirmPassword?: string;
   newPassword?: string;
-  image?: string;
 }
 
 export interface User {
@@ -12,7 +11,6 @@ export interface User {
   name: string;
   email: string;
   password: string;
-  profileImage: Uint8Array;
   refreshToken: string;
   refreshTokenExpires: number;
   accessToken: string;

@@ -15,7 +15,6 @@ public class UserConverter {
             .name(entity.getName())
             .email(entity.getEmail())
             .password(entity.getPassword())
-            .profileImage(entity.getProfileImage())
             .build();
         if (entity.getRoles() != null) {
             dto.setRoles(
@@ -45,7 +44,6 @@ public class UserConverter {
             .name(dto.getName())
             .email(dto.getEmail())
             .password(dto.getPassword())
-            .profileImage(dto.getProfileImage())
             .build();
         if (dto.getRoles() != null) {
             entity.setRoles(

@@ -7,7 +7,7 @@ import useSWR from 'swr';
 
 export default function useFixedIncomes() {
   const { data } = useSession();
-  const config = buildHeadersAuthorization(data?.user.accessToken ?? '');
+  const config = buildHeadersAuthorization(data?.user.accessToken);
 
   const response = useSWR(
     [`/transactions/${TransactionType.FIXED_INCOME}/fixed`, config],

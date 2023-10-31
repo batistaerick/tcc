@@ -8,7 +8,7 @@ import useSWR from 'swr';
 
 export default function usePredictions() {
   const { data } = useSession();
-  const config = buildHeadersAuthorization(data?.user.accessToken ?? '');
+  const config = buildHeadersAuthorization(data?.user.accessToken);
 
   const date = useRecoilValue(selectedDateAtom);
   const endDate = getLocalDate(date);
