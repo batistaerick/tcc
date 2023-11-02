@@ -15,7 +15,7 @@ export default function DatePickerDialog({
   setDate,
   dateFormat,
   showMonthYearPicker,
-}: DatePickerDialogProps) {
+}: Readonly<DatePickerDialogProps>) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleDateChange = (newDate: Date) => {
@@ -25,7 +25,7 @@ export default function DatePickerDialog({
 
   return (
     <DatePicker
-      className="custom-datepicker"
+      className="custom-datepicker w-40"
       selected={date}
       onChange={handleDateChange}
       dateFormat={dateFormat ?? 'dd/MMMM/yyyy'}

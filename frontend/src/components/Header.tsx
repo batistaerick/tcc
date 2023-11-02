@@ -1,52 +1,59 @@
 import useProfileImage from '@/hooks/useProfileImage';
 import { selectedDateAtom } from '@/recoil/datePickerDialog';
+import { signOut } from 'next-auth/react';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { BiUserCircle } from 'react-icons/bi';
-import { FcCalendar } from 'react-icons/fc';
+import { FcCalendar, FcSettings } from 'react-icons/fc';
+import { FiLogOut } from 'react-icons/fi';
 import { useRecoilState } from 'recoil';
 import DatePickerDialog from './DatePickerDialog';
-import DropdownMenu from './DropdownMenu';
 import Language from './Language';
 
 export default function Header() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { push } = useRouter();
   const { data: profileImage } = useProfileImage();
   const [selectedDate, setSelectedDate] = useRecoilState(selectedDateAtom);
+
+  async function handleSignOut() {
+    await signOut();
+  }
 
   return (
     <header className="flex h-12 w-[350px] items-center justify-between md:w-[700px]">
       <div className="flex items-center gap-2">
-        <FcCalendar size={27} />
-        <DatePickerDialog
-          date={selectedDate}
-          setDate={setSelectedDate}
-          dateFormat="MM/yyyy"
-          showMonthYearPicker
-        />
-      </div>
-      <div className="flex items-center gap-2">
-        <Language />
         {profileImage && (
           <Image
-            className="flex h-7 w-7 cursor-pointer items-center rounded-md object-cover"
+            className="flex h-8 w-8 items-center rounded-md object-cover"
             src={URL.createObjectURL(profileImage)}
             alt=""
             height={0}
             width={0}
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           />
         )}
-        {!profileImage && (
-          <BiUserCircle
-            className="cursor-pointer text-white"
-            size={27}
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          />
-        )}
-        <div className="flex justify-end">
-          <DropdownMenu isOpen={isDropdownOpen} />
-        </div>
+        {!profileImage && <BiUserCircle className="text-white" size={30} />}
+        <Language />
+      </div>
+      <div className="flex items-center justify-center gap-2">
+        <FcCalendar size={30} />
+        <DatePickerDialog
+          date={selectedDate}
+          setDate={setSelectedDate}
+          dateFormat="MMMM/yyyy"
+          showMonthYearPicker
+        />
+      </div>
+      <div className="flex items-center gap-3">
+        <FcSettings
+          className="cursor-pointer"
+          size={30}
+          onClick={() => push('/account')}
+        />
+        <FiLogOut
+          className="cursor-pointer text-slate-500"
+          size={30}
+          onClick={handleSignOut}
+        />
       </div>
     </header>
   );
