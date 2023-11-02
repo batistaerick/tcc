@@ -27,20 +27,14 @@ export default function Transactions() {
             ?.map((transaction) => (
               <FinancialMovements
                 key={transaction.id}
-                id={transaction.id}
-                category={transaction.category}
-                amount={transaction.value ?? 0}
-                type="expense"
+                transaction={transaction}
                 mutateOnDelete={transactionsMutate}
               />
             ))}
           {fixedExpenses?.map((transaction) => (
             <FinancialMovements
               key={transaction.id}
-              id={transaction.id}
-              category={transaction.category}
-              amount={transaction.value ?? 0}
-              type="fixedExpense"
+              transaction={transaction}
               mutateOnDelete={fixedExpensesMutate}
             />
           ))}
@@ -59,20 +53,14 @@ export default function Transactions() {
             ?.map((transaction) => (
               <FinancialMovements
                 key={transaction.id}
-                id={transaction.id}
-                category={transaction.category}
-                amount={transaction.value ?? 0}
-                type="expense"
+                transaction={transaction}
                 mutateOnDelete={transactionsMutate}
               />
             ))}
           {fixedIncomes?.map((transaction) => (
             <FinancialMovements
               key={transaction.id}
-              id={transaction.id}
-              category={transaction.category}
-              amount={transaction.value ?? 0}
-              type="fixedExpense"
+              transaction={transaction}
               mutateOnDelete={fixedIncomesMutate}
             />
           ))}

@@ -19,7 +19,7 @@ export default function Input({
   accept,
   onKeyDown,
   onChange,
-}: InputProps) {
+}: Readonly<InputProps>) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const EyeIcon = isPasswordVisible ? PiEyeDuotone : PiEyeSlashDuotone;

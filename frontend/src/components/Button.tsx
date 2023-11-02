@@ -18,7 +18,7 @@ export default function Button({
   disabled,
   translation,
   onClick,
-}: ButtonProps) {
+}: Readonly<ButtonProps>) {
   return (
     <button
       className={`
