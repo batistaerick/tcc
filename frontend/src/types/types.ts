@@ -24,17 +24,9 @@ export interface Transaction {
   id: string;
   user?: User;
   category: string;
-  notes?: string | null;
-  date?: Date | null;
+  notes?: string;
+  date?: Date;
   value?: number;
-  transactionType?: TransactionType;
-}
-
-export interface NewTransactionFormType {
-  value?: number;
-  category: string;
-  notes: string;
-  date: Date | null;
   transactionType?: TransactionType;
 }
 

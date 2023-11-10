@@ -40,8 +40,11 @@ export interface LanguageMap {
     cancel: string;
     category: string;
     expenseOption: string;
-    fixed: string;
     incomeOption: string;
+    fixedExpenseOption: string;
+    fixedIncomeOption: string;
+    chooseType: string;
+    transactionType: string;
     notes: string;
     save: string;
   };

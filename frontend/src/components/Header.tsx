@@ -8,7 +8,6 @@ import { FcCalendar, FcSettings } from 'react-icons/fc';
 import { FiLogOut } from 'react-icons/fi';
 import { useRecoilState } from 'recoil';
 import DatePickerDialog from './DatePickerDialog';
-import Language from './Language';
 
 export default function Header() {
   const { push } = useRouter();
@@ -32,7 +31,6 @@ export default function Header() {
           />
         )}
         {!profileImage && <BiUserCircle className="text-white" size={30} />}
-        <Language />
       </div>
       <div className="flex items-center justify-center gap-2">
         <FcCalendar size={30} />

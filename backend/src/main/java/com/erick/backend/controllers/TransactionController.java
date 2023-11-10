@@ -43,12 +43,19 @@ public class TransactionController {
         return noContent().build();
     }
 
-    @GetMapping("/{endDate}/between-dates")
+    @GetMapping
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<List<TransactionDto>> findByUserEmailAndDateBetween(
-        @PathVariable LocalDate endDate
+    public ResponseEntity<List<TransactionDto>> findAllTransactions(
+        @RequestParam LocalDate startDate,
+        @RequestParam LocalDate endDate,
+        @RequestParam TransactionType transactionType
     ) {
-        List<TransactionDto> transactions = service.findByDateBetween(endDate);
+        List<TransactionDto> transactions =
+            service.findAllTransactionsByTypeAndDate(
+                transactionType,
+                startDate,
+                endDate
+            );
         return ok(transactions);
     }
 

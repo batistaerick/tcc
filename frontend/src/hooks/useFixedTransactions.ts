@@ -5,12 +5,12 @@ import { buildHeadersAuthorization } from '@/utils/headerToken';
 import { useSession } from 'next-auth/react';
 import useSWR from 'swr';
 
-export default function useFixedExpenses() {
+export default function useFixedTransactions(transactionType: TransactionType) {
   const { data } = useSession();
   const config = buildHeadersAuthorization(data?.user.accessToken);
 
   const response = useSWR(
-    [`/transactions/${TransactionType.FIXED_EXPENSE}/fixed`, config],
+    [`/transactions/${transactionType}/fixed`, config],
     ([url, config]) => getFetcher<Transaction[]>(url, config)
   );
   return response;

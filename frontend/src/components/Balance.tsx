@@ -1,6 +1,5 @@
 import { TransactionType } from '@/enums/enums';
-import useFixedExpenses from '@/hooks/useFixedExpenses';
-import useFixedIncomes from '@/hooks/useFixedIncomes';
+import useFixedTransactions from '@/hooks/useFixedTransactions';
 import usePredictions from '@/hooks/usePrediction';
 import useTransactions from '@/hooks/useTransactions';
 import { Transaction } from '@/types/types';
@@ -10,14 +9,19 @@ import Money from './Money';
 
 export default function Balance() {
   const { t } = useTranslation();
-  const { data: transactions } = useTransactions();
   const { data: predictionValue } = usePredictions();
-  const { data: fixedExpenses } = useFixedExpenses();
-  const { data: fixedIncomes } = useFixedIncomes();
+  const { data: fixedExpenses } = useFixedTransactions(
+    TransactionType.FIXED_EXPENSE
+  );
+  const { data: fixedIncomes } = useFixedTransactions(
+    TransactionType.FIXED_INCOME
+  );
+  const { data: incomes } = useTransactions(TransactionType.INCOME);
+  const { data: expenses } = useTransactions(TransactionType.EXPENSE);
 
   function totalExpenses() {
     const expenses =
-      transactions
+      incomes
         ?.filter(
           (transaction) =>
             transaction.transactionType === TransactionType.EXPENSE
@@ -40,7 +44,7 @@ export default function Balance() {
 
   function totalIncomes() {
     const incomes =
-      transactions
+      expenses
         ?.filter(
           (transaction) =>
             transaction.transactionType === TransactionType.INCOME
@@ -63,7 +67,7 @@ export default function Balance() {
 
   return (
     <div className="flex cursor-default">
-      <div className="h-48 w-[350px] rounded-xl bg-indigo-800 md:w-[700px]">
+      <div className="h-48 w-[350px] rounded-xl bg-slate-600 md:w-[700px]">
         <div className="flex items-center justify-between px-10 pt-5">
           <div>
             <div className="text-left">{t('balance:totalBalance')}</div>

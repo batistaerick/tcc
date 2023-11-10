@@ -9,12 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TransactionRepository
     extends JpaRepository<Transaction, UUID> {
-    List<Transaction> findByUserEmailAndDateBetween(
-        String userEmail,
-        LocalDate startDate,
-        LocalDate endDate
-    );
-
     List<Transaction> findByUserEmailAndTransactionTypeAndDateBetween(
         String userEmail,
         TransactionType transactionType,

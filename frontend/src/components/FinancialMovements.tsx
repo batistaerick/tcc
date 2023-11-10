@@ -28,9 +28,6 @@ export default function FinancialMovements({
   }
 
   function formatDate() {
-    if (!transaction?.date) {
-      return 'Fixed';
-    }
     const date: Date = new Date(transaction?.date ?? new Date());
     return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
   }
@@ -43,7 +40,7 @@ export default function FinancialMovements({
       </div>
       <div>{formatDate()}</div>
       <div className="flex items-center justify-center gap-1">
-        <Money value={transaction.value ?? 0} />
+        <Money value={transaction?.value} />
         <FcFullTrash
           data-testid="delete-icon"
           className="cursor-pointer"

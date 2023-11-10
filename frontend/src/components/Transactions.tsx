@@ -1,16 +1,21 @@
 import { TransactionType } from '@/enums/enums';
-import useFixedExpenses from '@/hooks/useFixedExpenses';
-import useFixedIncomes from '@/hooks/useFixedIncomes';
+import useFixedTransactions from '@/hooks/useFixedTransactions';
 import useTransactions from '@/hooks/useTransactions';
 import { useTranslation } from 'react-i18next';
 import FinancialMovements from './FinancialMovements';
 
 export default function Transactions() {
   const { t } = useTranslation();
-  const { data: transactions, mutate: transactionsMutate } = useTransactions();
   const { data: fixedExpenses, mutate: fixedExpensesMutate } =
-    useFixedExpenses();
-  const { data: fixedIncomes, mutate: fixedIncomesMutate } = useFixedIncomes();
+    useFixedTransactions(TransactionType.FIXED_EXPENSE);
+  const { data: fixedIncomes, mutate: fixedIncomesMutate } =
+    useFixedTransactions(TransactionType.FIXED_INCOME);
+  const { data: incomes, mutate: incomesMutate } = useTransactions(
+    TransactionType.INCOME
+  );
+  const { data: expenses, mutate: expensesMutate } = useTransactions(
+    TransactionType.EXPENSE
+  );
 
   return (
     <div className="flex flex-col gap-2">
@@ -19,18 +24,13 @@ export default function Transactions() {
           {t('transactions:expenses')}
         </div>
         <div className="h-56 overflow-y-auto">
-          {transactions
-            ?.filter(
-              (transaction) =>
-                transaction.transactionType === TransactionType.EXPENSE
-            )
-            ?.map((transaction) => (
-              <FinancialMovements
-                key={transaction.id}
-                transaction={transaction}
-                mutateOnDelete={transactionsMutate}
-              />
-            ))}
+          {expenses?.map((transaction) => (
+            <FinancialMovements
+              key={transaction.id}
+              transaction={transaction}
+              mutateOnDelete={expensesMutate}
+            />
+          ))}
           {fixedExpenses?.map((transaction) => (
             <FinancialMovements
               key={transaction.id}
@@ -45,18 +45,13 @@ export default function Transactions() {
           {t('transactions:incomes')}
         </div>
         <div className="h-56 overflow-y-auto">
-          {transactions
-            ?.filter(
-              (transaction) =>
-                transaction.transactionType === TransactionType.INCOME
-            )
-            ?.map((transaction) => (
-              <FinancialMovements
-                key={transaction.id}
-                transaction={transaction}
-                mutateOnDelete={transactionsMutate}
-              />
-            ))}
+          {incomes?.map((transaction) => (
+            <FinancialMovements
+              key={transaction.id}
+              transaction={transaction}
+              mutateOnDelete={incomesMutate}
+            />
+          ))}
           {fixedIncomes?.map((transaction) => (
             <FinancialMovements
               key={transaction.id}

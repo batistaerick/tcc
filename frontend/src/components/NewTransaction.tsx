@@ -1,9 +1,7 @@
-import { TransactionType } from '@/enums/enums';
 import usePredictions from '@/hooks/usePrediction';
-import useTransactions from '@/hooks/useTransactions';
 import '@/i18n/i18n';
 import { postFetcher } from '@/libs/fetchers';
-import { NewTransactionFormType, Transaction } from '@/types/types';
+import { Transaction } from '@/types/types';
 import { buildHeadersAuthorization } from '@/utils/headerToken';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -25,10 +23,10 @@ export default function NewTransaction() {
   const { t } = useTranslation();
   const { data: session } = useSession();
   const { mutate: predictionMutate } = usePredictions();
-  const { data: transactions, mutate: transactionsMutate } = useTransactions();
 
-  const [isFixed, setIsFixed] = useState<boolean>(false);
-  const [form, setForm] = useState<NewTransactionFormType>({
+  const [form, setForm] = useState<Transaction>({
+    id: '',
+    user: undefined,
     value: undefined,
     category: '',
     notes: '',
@@ -38,19 +36,11 @@ export default function NewTransaction() {
 
   async function onSubmit(event: ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
-
-    const config = buildHeadersAuthorization(session?.user.accessToken);
-    if (isFixed) {
-      setForm((prevForm) => ({ ...prevForm, date: null }));
-    }
-
-    const transaction = await postFetcher<Transaction>(
+    await postFetcher<Transaction>(
       '/transactions',
-      { ...form, user: undefined, id: '' },
-      config
+      form,
+      buildHeadersAuthorization(session?.user.accessToken)
     );
-
-    await transactionsMutate(transactions?.concat(transaction));
     await predictionMutate();
     push('/');
   }
@@ -71,46 +61,6 @@ export default function NewTransaction() {
     }));
   }
 
-  function handleChangeFixed(checked: boolean) {
-    if (checked) {
-      if (
-        form.transactionType === TransactionType.EXPENSE ||
-        form.transactionType === TransactionType.FIXED_EXPENSE
-      ) {
-        setForm((prevForm) => ({
-          ...prevForm,
-          transactionType: TransactionType.FIXED_EXPENSE,
-          date: null,
-        }));
-      } else {
-        setForm((prevForm) => ({
-          ...prevForm,
-          transactionType: TransactionType.FIXED_INCOME,
-          date: null,
-        }));
-      }
-    }
-    if (!checked) {
-      if (
-        form.transactionType === TransactionType.EXPENSE ||
-        form.transactionType === TransactionType.FIXED_EXPENSE
-      ) {
-        setForm((prevForm) => ({
-          ...prevForm,
-          transactionType: TransactionType.EXPENSE,
-          date: null,
-        }));
-      } else {
-        setForm((prevForm) => ({
-          ...prevForm,
-          transactionType: TransactionType.INCOME,
-          date: null,
-        }));
-      }
-    }
-    setIsFixed(checked);
-  }
-
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="z-20 mt-5 flex w-[320px] items-center gap-1 md:w-[450px]">
@@ -125,34 +75,6 @@ export default function NewTransaction() {
         id="newTransactionForm"
         onSubmit={onSubmit}
       >
-        <div className="mt-4 flex items-center gap-14">
-          <div className="flex flex-row items-center gap-1">
-            <input
-              className="h-5 w-5 accent-indigo-800"
-              id="transactionType"
-              type="radio"
-              value="EXPENSE"
-              checked={form.transactionType === 'EXPENSE'}
-              onChange={handleChange}
-            />
-            <label className="text-lg text-white" htmlFor="expenses">
-              {t('newTransaction:expenseOption')}
-            </label>
-          </div>
-          <div className="flex flex-row items-center gap-1">
-            <input
-              className="h-5 w-5 accent-indigo-800"
-              id="transactionType"
-              type="radio"
-              value="INCOME"
-              checked={form.transactionType === 'INCOME'}
-              onChange={handleChange}
-            />
-            <label className="text-lg text-white" htmlFor="incomes">
-              {t('newTransaction:incomeOption')}
-            </label>
-          </div>
-        </div>
         <div>
           <FcCurrencyExchange className="mb-1" size={25} />
           <Input
@@ -169,7 +91,7 @@ export default function NewTransaction() {
             id="notes"
             label={t('newTransaction:notes')}
             type="text"
-            value={form.notes}
+            value={form?.notes}
             onChange={handleChange}
           />
         </div>
@@ -183,18 +105,30 @@ export default function NewTransaction() {
             onChange={handleChange}
           />
         </div>
-        <div className="flex items-center justify-center gap-1">
-          <input
-            id="fixed"
-            type="checkbox"
-            checked={isFixed}
-            onChange={({ currentTarget: { checked } }) =>
-              handleChangeFixed(checked)
-            }
-          />
-          <label className="text-white" htmlFor="fixed">
-            {t('newTransaction:fixed')}
+        <div className="flex items-center justify-between gap-1">
+          <label className="text-base text-zinc-300" htmlFor="transactionType">
+            {t('newTransaction:transactionType')}
           </label>
+          <select
+            id="transactionType"
+            className={`rounded-md border border-neutral-700 bg-neutral-700 p-2 
+              ${form.transactionType ? 'text-white' : 'text-zinc-400'}
+            `}
+            value={form.transactionType ?? ''}
+            onChange={handleChange}
+          >
+            <option value="" disabled>
+              {t('newTransaction:chooseType')}
+            </option>
+            <option value="EXPENSE">{t('newTransaction:expenseOption')}</option>
+            <option value="INCOME">{t('newTransaction:incomeOption')}</option>
+            <option value="FIXED_EXPENSE">
+              {t('newTransaction:fixedExpenseOption')}
+            </option>
+            <option value="FIXED_INCOME">
+              {t('newTransaction:fixedIncomeOption')}
+            </option>
+          </select>
         </div>
         <div className="flex items-center justify-center gap-3">
           <Button

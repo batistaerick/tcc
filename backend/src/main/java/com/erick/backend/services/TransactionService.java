@@ -56,12 +56,18 @@ public class TransactionService {
         repository.deleteById(id);
     }
 
-    public List<TransactionDto> findByDateBetween(LocalDate endDate) {
-        LocalDate startDate = endDate.withDayOfMonth(1);
+    public List<TransactionDto> findAllTransactionsByTypeAndDate(
+        TransactionType transactionType,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
+        startDate = startDate.withDayOfMonth(1);
         endDate = endDate.withDayOfMonth(endDate.lengthOfMonth());
+
         return repository
-            .findByUserEmailAndDateBetween(
+            .findByUserEmailAndTransactionTypeAndDateBetween(
                 UserSession.getAuthenticatedEmail(),
+                transactionType,
                 startDate,
                 endDate
             )
@@ -85,51 +91,57 @@ public class TransactionService {
 
     public Double predictRemainingBalance(LocalDate endDate) {
         LocalDate startDate = LocalDate.now().withDayOfMonth(1);
-        endDate = endDate.withDayOfMonth(endDate.lengthOfMonth());
-        String userEmail = UserSession.getAuthenticatedEmail();
-
-        double totalOfExpenses = repository
-            .findByUserEmailAndTransactionTypeAndDateBetween(
-                userEmail,
-                TransactionType.EXPENSE,
-                startDate,
-                endDate
-            )
-            .stream()
-            .mapToDouble(Transaction::getValue)
-            .sum();
-        double totalOfIncomes = repository
-            .findByUserEmailAndTransactionTypeAndDateBetween(
-                userEmail,
-                TransactionType.INCOME,
-                startDate,
-                endDate
-            )
-            .stream()
-            .mapToDouble(Transaction::getValue)
-            .sum();
-        double totalOfFixedExpenses = findAllByTransactionType(
-            TransactionType.FIXED_EXPENSE
-        )
-            .stream()
-            .mapToDouble(TransactionDto::getValue)
-            .sum();
-        double totalOfFixedIncomes = findAllByTransactionType(
-            TransactionType.FIXED_INCOME
-        )
-            .stream()
-            .mapToDouble(TransactionDto::getValue)
-            .sum();
-        int numberOfMonths = getNumberOfMonths(startDate, endDate);
-
-        return (
-            (totalOfIncomes +
-                totalOfFixedIncomes *
-                    (numberOfMonths == 0 ? 1 : numberOfMonths)) -
-            (totalOfExpenses +
-                totalOfFixedExpenses *
-                    (numberOfMonths == 0 ? 1 : numberOfMonths))
+        double totalOfExpenses = totalOfTransactionsByTypeAndDate(
+            TransactionType.EXPENSE,
+            startDate,
+            endDate
         );
+        double totalOfIncomes = totalOfTransactionsByTypeAndDate(
+            TransactionType.INCOME,
+            startDate,
+            endDate
+        );
+        double totalOfFixedExpenses = totalOfFixedTransactionsByType(
+            TransactionType.FIXED_EXPENSE
+        );
+        double totalOfFixedIncomes = totalOfFixedTransactionsByType(
+            TransactionType.FIXED_INCOME
+        );
+
+        int numberOfMonths = getNumberOfMonths(
+            startDate.withDayOfMonth(1),
+            endDate.withDayOfMonth(endDate.lengthOfMonth())
+        );
+        double totalIncome =
+            totalOfIncomes + totalOfFixedIncomes * numberOfMonths;
+        double totalExpense =
+            totalOfExpenses + totalOfFixedExpenses * numberOfMonths;
+
+        return totalIncome - totalExpense;
+    }
+
+    private Double totalOfTransactionsByTypeAndDate(
+        TransactionType transactionType,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
+        return findAllTransactionsByTypeAndDate(
+            transactionType,
+            startDate,
+            endDate
+        )
+            .stream()
+            .mapToDouble(TransactionDto::getValue)
+            .sum();
+    }
+
+    private Double totalOfFixedTransactionsByType(
+        TransactionType transactionType
+    ) {
+        return findAllByTransactionType(transactionType)
+            .stream()
+            .mapToDouble(TransactionDto::getValue)
+            .sum();
     }
 
     private Integer getNumberOfMonths(LocalDate startDate, LocalDate endDate) {

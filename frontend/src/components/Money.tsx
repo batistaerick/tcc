@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 interface MoneyProps {
   className?: string;
-  value: number;
+  value?: number;
 }
 
 export default function Money({ className, value }: Readonly<MoneyProps>) {

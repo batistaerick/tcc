@@ -2,6 +2,7 @@
 import Balance from '@/components/Balance';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
+import Language from '@/components/Language';
 import Loading from '@/components/Loading';
 import Transactions from '@/components/Transactions';
 import '@/i18n/i18n';
@@ -40,6 +41,7 @@ export default function Home() {
           translation={t('button:newTransaction')}
           onClick={() => push('new-transaction')}
         />
+        <Language />
       </div>
     </RecoilRoot>
   );
