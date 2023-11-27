@@ -8,6 +8,10 @@ const pt: LanguageMap = {
     missingCredentials: 'Forneça seu e-mail e senha.',
     wrongCredentials:
       'Credenciais inválidas. Verifique novamente seu e-mail e senha e tente novamente.',
+    existingEmail:
+      'O e-mail que você forneceu já está cadastrado. Por favor, use um endereço de e-mail diferente para se inscrever ou faça login.',
+    invalidPassword:
+      'A senha deve ter pelo menos sete caracteres, um número 1, letra maiúscula/minuscula e 1 caractere especial.',
   },
   account: {
     username: 'Nome de usuário',

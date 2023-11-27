@@ -39,7 +39,7 @@ export default function Home() {
           height="h-12"
           width="w-[350px] md:w-[700px]"
           translation={t('button:newTransaction')}
-          onClick={() => push('new-transaction')}
+          onClick={() => push('/new-transaction')}
         />
         <Language />
       </div>

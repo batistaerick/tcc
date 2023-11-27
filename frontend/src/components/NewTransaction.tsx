@@ -13,26 +13,26 @@ import {
   FcIdea,
   FcSurvey,
 } from 'react-icons/fc';
+import { KeyedMutator } from 'swr';
 import Button from './Button';
 import DatePickerDialog from './DatePickerDialog';
 import Input from './Input';
 import Language from './Language';
 
-export default function NewTransaction() {
+interface NewTransactionProps {
+  transaction: Transaction;
+  mutation?: KeyedMutator<Transaction>;
+}
+
+export default function NewTransaction({
+  transaction,
+  mutation,
+}: Readonly<NewTransactionProps>) {
   const { push } = useRouter();
   const { t } = useTranslation();
   const { data: session } = useSession();
   const { mutate: predictionMutate } = usePredictions();
-
-  const [form, setForm] = useState<Transaction>({
-    id: '',
-    user: undefined,
-    value: undefined,
-    category: '',
-    notes: '',
-    date: new Date(),
-    transactionType: undefined,
-  });
+  const [form, setForm] = useState<Transaction>(transaction);
 
   async function onSubmit(event: ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -42,6 +42,7 @@ export default function NewTransaction() {
       buildHeadersAuthorization(session?.user.accessToken)
     );
     await predictionMutate();
+    mutation?.();
     push('/');
   }
 
@@ -66,7 +67,7 @@ export default function NewTransaction() {
       <div className="z-20 mt-5 flex w-[320px] items-center gap-1 md:w-[450px]">
         <FcCalendar size={20} />
         <DatePickerDialog
-          date={form.date ?? new Date()}
+          date={form?.date ?? new Date()}
           setDate={handleChangeDate}
         />
       </div>
@@ -105,13 +106,13 @@ export default function NewTransaction() {
             onChange={handleChange}
           />
         </div>
-        <div className="flex items-center justify-between gap-1">
+        <div className="flex items-center justify-between">
           <label className="text-base text-zinc-300" htmlFor="transactionType">
             {t('newTransaction:transactionType')}
           </label>
           <select
             id="transactionType"
-            className={`rounded-md border border-neutral-700 bg-neutral-700 p-2 
+            className={`rounded-md border border-neutral-700 bg-neutral-700 p-3
               ${form.transactionType ? 'text-white' : 'text-zinc-400'}
             `}
             value={form.transactionType ?? ''}

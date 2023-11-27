@@ -4,9 +4,9 @@ import com.erick.backend.converters.TransactionConverter;
 import com.erick.backend.domains.dtos.TransactionDto;
 import com.erick.backend.domains.entities.Transaction;
 import com.erick.backend.domains.entities.User;
+import com.erick.backend.enums.I18nCode;
 import com.erick.backend.enums.TransactionType;
-import com.erick.backend.exceptions.TransactionNotFoundException;
-import com.erick.backend.exceptions.UnauthorizedTransactionDeletionException;
+import com.erick.backend.exceptions.GlobalException;
 import com.erick.backend.repositories.TransactionRepository;
 import com.erick.backend.utils.UserSession;
 import java.time.LocalDate;
@@ -14,6 +14,7 @@ import java.time.Period;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,18 +43,40 @@ public class TransactionService {
     public void delete(UUID id) {
         Transaction transaction = repository
             .findById(id)
-            .orElseThrow(TransactionNotFoundException::new);
-        if (
-            !transaction
-                .getUser()
-                .getEmail()
-                .equals(UserSession.getAuthenticatedEmail())
-        ) {
-            throw new UnauthorizedTransactionDeletionException(
-                "Unauthorized attempt to delete a transaction that does not belong to the user."
+            .orElseThrow(() ->
+                new GlobalException(
+                    HttpStatus.NOT_FOUND,
+                    I18nCode.TRANSACTION_NOT_FOUND,
+                    "Transaction not found for id {}",
+                    id
+                )
+            );
+        String email = UserSession.getAuthenticatedEmail();
+        boolean isSameEmail = transaction.getUser().getEmail().equals(email);
+
+        if (!isSameEmail) {
+            throw new GlobalException(
+                HttpStatus.UNAUTHORIZED,
+                I18nCode.UNAUTHORIZED_DELETION,
+                "Unauthorized attempt to delete a transaction that does not belong to the user {}",
+                email
             );
         }
         repository.deleteById(id);
+    }
+
+    public TransactionDto findDtoById(UUID id) {
+        return repository
+            .findById(id)
+            .map(converter::entityToDto)
+            .orElseThrow(() ->
+                new GlobalException(
+                    HttpStatus.NOT_FOUND,
+                    I18nCode.TRANSACTION_NOT_FOUND,
+                    "Transaction not found for id {}",
+                    id
+                )
+            );
     }
 
     public List<TransactionDto> findAllTransactionsByTypeAndDate(

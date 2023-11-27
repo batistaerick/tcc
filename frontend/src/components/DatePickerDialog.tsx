@@ -25,7 +25,7 @@ export default function DatePickerDialog({
 
   return (
     <DatePicker
-      className="custom-datepicker w-40"
+      className="custom-datepicker"
       selected={date}
       onChange={handleDateChange}
       dateFormat={dateFormat ?? 'dd/MMMM/yyyy'}

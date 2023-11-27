@@ -4,6 +4,8 @@ export interface LanguageMap {
     invalidUsername: string;
     missingCredentials: string;
     wrongCredentials: string;
+    existingEmail: string;
+    invalidPassword: string;
   };
   account: {
     username: string;

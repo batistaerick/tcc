@@ -59,6 +59,13 @@ public class TransactionController {
         return ok(transactions);
     }
 
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<TransactionDto> findDtoById(@PathVariable UUID id) {
+        TransactionDto dto = service.findDtoById(id);
+        return ok(dto);
+    }
+
     @GetMapping("/{transactionType}/fixed")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<List<TransactionDto>> findByUserEmailAndDateBetween(

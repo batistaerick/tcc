@@ -4,6 +4,7 @@ import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 
 import com.erick.backend.services.ImageService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class ImageController {
     @PostMapping
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Void> updateProfileImage(
-        @RequestBody MultipartFile file
+        @Valid @RequestBody MultipartFile file
     ) {
         service.updateProfileImage(file);
         return noContent().build();

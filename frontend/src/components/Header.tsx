@@ -1,5 +1,5 @@
 import useProfileImage from '@/hooks/useProfileImage';
-import { selectedDateAtom } from '@/recoil/datePickerDialog';
+import { selectedDateAtom } from '@/recoil/recoilValues';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';

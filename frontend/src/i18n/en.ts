@@ -8,6 +8,10 @@ const en: LanguageMap = {
     missingCredentials: 'Please provide both your email and password.',
     wrongCredentials:
       'Invalid credentials. Please double-check your email and password and try again.',
+    existingEmail:
+      'The email you provided is already registered. Please use a different email address to sign up or try logging in.',
+    invalidPassword:
+      'Password must have at least seven characters, one number, one uppercase/lowercase letter and one special character.',
   },
   account: {
     username: 'Username',

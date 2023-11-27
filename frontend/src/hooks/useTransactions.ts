@@ -1,6 +1,6 @@
 import { TransactionType } from '@/enums/enums';
 import { getFetcher } from '@/libs/fetchers';
-import { selectedDateAtom } from '@/recoil/datePickerDialog';
+import { selectedDateAtom } from '@/recoil/recoilValues';
 import { Transaction } from '@/types/types';
 import { buildHeadersAuthorization } from '@/utils/headerToken';
 import { getLocalDate } from '@/utils/localDate';

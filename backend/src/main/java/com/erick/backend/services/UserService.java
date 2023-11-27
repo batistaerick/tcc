@@ -4,14 +4,15 @@ import com.erick.backend.converters.UserConverter;
 import com.erick.backend.domains.dtos.UserDto;
 import com.erick.backend.domains.entities.Role;
 import com.erick.backend.domains.entities.User;
+import com.erick.backend.enums.I18nCode;
 import com.erick.backend.enums.RoleName;
-import com.erick.backend.exceptions.EmailNotFoundException;
-import com.erick.backend.exceptions.ExistingEmailException;
+import com.erick.backend.exceptions.GlobalException;
 import com.erick.backend.repositories.UserRepository;
 import com.erick.backend.utils.CredentialsChecker;
 import com.erick.backend.utils.UserSession;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +25,29 @@ public class UserService {
     private final PasswordEncoder encoder;
     private final RoleService roleService;
 
+    public User findByEmail(String email) {
+        return repository
+            .findByEmail(email)
+            .orElseThrow(() ->
+                new GlobalException(
+                    HttpStatus.NOT_FOUND,
+                    I18nCode.EMAIL_NOT_FOUND,
+                    "User email not found {}",
+                    email
+                )
+            );
+    }
+
     public UserDto save(UserDto dto) {
-        if (repository.findByEmail(dto.getEmail()).isPresent()) {
-            throw new ExistingEmailException();
+        boolean emailIsPresent = repository
+            .findByEmail(dto.getEmail())
+            .isPresent();
+        if (emailIsPresent) {
+            throw new GlobalException(
+                HttpStatus.CONFLICT,
+                I18nCode.EXISTING_EMAIL,
+                "The email you provided is already registered. Please use a different email address."
+            );
         }
         CredentialsChecker.isValidPassword(dto.getPassword());
         User user = converter.dtoToEntity(dto);
@@ -36,25 +57,15 @@ public class UserService {
         return converter.entityToDto(repository.save(user));
     }
 
-    public User findByEmail(String email) {
-        return repository
-            .findByEmail(email)
-            .orElseThrow(EmailNotFoundException::new);
-    }
-
     public UserDto findByAuthenticatedEmail() {
-        UserDto userDto = repository
-            .findByEmail(UserSession.getAuthenticatedEmail())
-            .map(converter::entityToDto)
-            .orElseThrow(EmailNotFoundException::new);
+        String email = UserSession.getAuthenticatedEmail();
+        UserDto userDto = converter.entityToDto(findByEmail(email));
         userDto.setPassword(null);
         return userDto;
     }
 
     public void update(UserDto updatedUser) {
-        User existingUser = repository
-            .findByEmail(UserSession.getAuthenticatedEmail())
-            .orElseThrow(EmailNotFoundException::new);
+        User existingUser = findByEmail(UserSession.getAuthenticatedEmail());
         if (updatedUser.getName() != null && !updatedUser.getName().isBlank()) {
             existingUser.setName(updatedUser.getName());
         }

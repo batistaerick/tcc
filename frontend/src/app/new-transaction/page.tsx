@@ -21,7 +21,17 @@ export default function Transactions() {
   return (
     <RecoilRoot>
       <div className="h-screen w-screen bg-slate-800">
-        <NewTransaction />
+        <NewTransaction
+          transaction={{
+            id: '',
+            user: undefined,
+            value: undefined,
+            category: '',
+            notes: '',
+            date: new Date(),
+            transactionType: undefined,
+          }}
+        />
       </div>
     </RecoilRoot>
   );
