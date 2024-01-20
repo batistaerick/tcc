@@ -6,6 +6,7 @@ export interface LanguageMap {
     wrongCredentials: string;
     existingEmail: string;
     invalidPassword: string;
+    error: string;
   };
   account: {
     username: string;

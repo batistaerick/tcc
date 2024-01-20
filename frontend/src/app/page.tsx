@@ -4,6 +4,7 @@ import Button from '@/components/Button';
 import Header from '@/components/Header';
 import Language from '@/components/Language';
 import Loading from '@/components/Loading';
+import ModalError from '@/components/ModalError';
 import Transactions from '@/components/Transactions';
 import '@/i18n/i18n';
 import { useSession } from 'next-auth/react';
@@ -26,6 +27,7 @@ export default function Home() {
   }
   return (
     <RecoilRoot>
+      <ModalError />
       <div
         className={`
           flex h-screen w-screen flex-col items-center

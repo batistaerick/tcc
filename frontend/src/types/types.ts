@@ -34,3 +34,8 @@ export interface Role {
   id: string;
   roleName: RoleName;
 }
+
+export interface ResponseError {
+  title: string;
+  message: string;
+}

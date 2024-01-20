@@ -12,6 +12,7 @@ const en: LanguageMap = {
       'The email you provided is already registered. Please use a different email address to sign up or try logging in.',
     invalidPassword:
       'Password must have at least seven characters, one number, one uppercase/lowercase letter and one special character.',
+    error: 'Error',
   },
   account: {
     username: 'Username',

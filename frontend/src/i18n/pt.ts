@@ -12,6 +12,7 @@ const pt: LanguageMap = {
       'O e-mail que você forneceu já está cadastrado. Por favor, use um endereço de e-mail diferente para se inscrever ou faça login.',
     invalidPassword:
       'A senha deve ter pelo menos sete caracteres, um número 1, letra maiúscula/minuscula e 1 caractere especial.',
+    error: 'Erro',
   },
   account: {
     username: 'Nome de usuário',

@@ -24,7 +24,7 @@
     "eslint-config-next": "13.4.3",
     "i18next": "^22.5.1",
     "i18next-browser-languagedetector": "^7.0.2",
-    "next": "^13.4.10",
+    "next": "^14.0.3",
     "next-auth": "^4.23.2",
     "postcss": "^8.4.23",
     "react": "18.2.0",
