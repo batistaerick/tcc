@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Regex for a conventional commit.
+conventional_commit_regex="^(build|chore|ci|docs|feat|fix|perf|refactor|revert|test|style)(\([a-z \-]+\))?!?: .+$"
+merge_or_rebase_commit="^Merge.|^Rebase."
+
+# Getting the commit message and branch name
+commit_message=$(cat "$1")
+branch_name=$(git rev-parse --abbrev-ref HEAD | grep -oE 'PEN-[0-9]+(-[0-9]+)?')
+
+# Checking the message.
+if [[ "$commit_message" =~ $conventional_commit_regex || "$commit_message" =~ $merge_or_rebase_commit ]]; then
+    # In case of unconventional commit.
+    echo -e "\e[32mCommit message meets conventional commit standards...\e[0m"
+    # echo -e "\e[32mRunning Java tests for backend...\e[0m"
+
+    # # Run Maven tests for backend
+    # mvn -f backend test
+
+    # if [ $? -ne 0 ]; then
+    #     echo -e "\e[31mFailed running tests. Commit aborted.\e[0m"
+    #     exit 1
+    # fi
+
+    # # Run Jest tests for frontend
+    # echo -e "\e[32mRunning Jest tests for frontend...\e[0m"
+    # cd frontend
+    # yarn -C frontend test
+
+    # if [ $? -ne 0 ]; then
+    #     echo -e "\e[31mFailed running frontend tests. Commit aborted.\e[0m"
+    #     exit 1
+    # fi
+
+    # sed -i "1s/^/$branch_name - /" "$1"
+    exit 0
+fi
+
+echo -e "\e[31mThe commit message does not meet the conventional commit standard\e[0m"
+echo "An example of a valid message is:"
+echo "feat: add the 'remember me' button"
+echo "More details on README"
+exit 1

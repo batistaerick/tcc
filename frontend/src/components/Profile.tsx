@@ -39,7 +39,6 @@ export default function Profile() {
         updatedUser.confirmPassword.length > 0 &&
         updatedUser.newPassword.length > 0
       ) {
-        console.log('Here?');
         if (updatedUser.newPassword !== updatedUser.confirmPassword) {
           throw new Error('differentPasswords');
         }
