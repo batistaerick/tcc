@@ -1,5 +1,6 @@
 'use client';
 import Loading from '@/components/Loading';
+import ModalError from '@/components/ModalError';
 import Profile from '@/components/Profile';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -19,9 +20,8 @@ export default function Account() {
   }
   return (
     <RecoilRoot>
-      <div className="h-screen w-screen bg-slate-800">
-        <Profile />
-      </div>
+      <ModalError />
+      <Profile />
     </RecoilRoot>
   );
 }

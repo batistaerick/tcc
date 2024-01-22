@@ -11,7 +11,7 @@ export const isOpenModalAtom = atom<boolean>({
   default: false,
 });
 
-export const responseErrorAtom = atom<ResponseError>({
+export const responseErrorAtom = atom<ResponseError | undefined>({
   key: 'responseError',
   default: undefined,
 });

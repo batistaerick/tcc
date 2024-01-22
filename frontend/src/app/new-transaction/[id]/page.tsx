@@ -28,22 +28,18 @@ export default function Transactions({
   }
   return (
     <RecoilRoot>
-      <div className="h-screen w-screen bg-slate-800">
-        {data && (
-          <NewTransaction
-            transaction={{
-              id: data.id,
-              user: data.user,
-              value: data.value,
-              category: data.category,
-              notes: data.notes,
-              date: new Date(data.date ?? new Date()),
-              transactionType: data.transactionType,
-            }}
-            mutation={mutate}
-          />
-        )}
-      </div>
+      <NewTransaction
+        transaction={{
+          id: data?.id ?? '',
+          user: data?.user ?? undefined,
+          value: data?.value ?? undefined,
+          category: data?.category ?? '',
+          notes: data?.notes ?? '',
+          date: new Date(data?.date ?? new Date()),
+          transactionType: data?.transactionType ?? undefined,
+        }}
+        mutation={mutate}
+      />
     </RecoilRoot>
   );
 }

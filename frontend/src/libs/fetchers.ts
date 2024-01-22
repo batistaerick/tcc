@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -10,13 +10,12 @@ export async function getFetcher<T>(
   url: string,
   config?: AxiosRequestConfig
 ): Promise<T> {
-  const response = await defaultAxios
+  return await defaultAxios
     .get<T>(url, config)
     .then((response) => response.data)
-    .catch((error) => {
-      throw Error(error.response.data);
+    .catch((error: AxiosError) => {
+      throw error;
     });
-  return response;
 }
 
 export async function postFetcher<T>(
@@ -24,13 +23,12 @@ export async function postFetcher<T>(
   body?: T,
   config?: AxiosRequestConfig
 ): Promise<T> {
-  const response = await defaultAxios
+  return await defaultAxios
     .post<T>(url, body, config)
     .then((response) => response.data)
-    .catch((error) => {
-      throw Error(error.response.data);
+    .catch((error: AxiosError) => {
+      throw error;
     });
-  return response;
 }
 
 export async function putFetcher<T>(
@@ -38,15 +36,17 @@ export async function putFetcher<T>(
   body?: T,
   config?: AxiosRequestConfig
 ): Promise<T> {
-  const response = await defaultAxios
+  return await defaultAxios
     .put<T>(url, body, config)
     .then((response) => response.data)
-    .catch((error) => {
-      throw Error(error.response.data);
+    .catch((error: AxiosError) => {
+      throw error;
     });
-  return response;
 }
 
-export async function deleteFetcher(url: string, config?: AxiosRequestConfig) {
+export async function deleteFetcher(
+  url: string,
+  config?: AxiosRequestConfig
+): Promise<void> {
   await defaultAxios.delete(url, config);
 }
