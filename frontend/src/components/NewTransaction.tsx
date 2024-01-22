@@ -1,6 +1,7 @@
 import usePredictions from '@/hooks/usePrediction';
 import '@/i18n/i18n';
 import { postFetcher } from '@/libs/fetchers';
+import { isOpenModalAtom, responseErrorAtom } from '@/recoil/recoilValues';
 import { Transaction } from '@/types/types';
 import { buildHeadersAuthorization } from '@/utils/headerToken';
 import { useSession } from 'next-auth/react';
@@ -13,6 +14,7 @@ import {
   FcIdea,
   FcSurvey,
 } from 'react-icons/fc';
+import { useSetRecoilState } from 'recoil';
 import { KeyedMutator } from 'swr';
 import Button from './Button';
 import DatePickerDialog from './DatePickerDialog';
@@ -33,17 +35,24 @@ export default function NewTransaction({
   const { data: session } = useSession();
   const { mutate: predictionMutate } = usePredictions();
   const [form, setForm] = useState<Transaction>(transaction);
+  const setIsOpen = useSetRecoilState(isOpenModalAtom);
+  const setResponseError = useSetRecoilState(responseErrorAtom);
 
   async function onSubmit(event: ChangeEvent<HTMLFormElement>) {
     event.preventDefault();
-    await postFetcher<Transaction>(
-      '/transactions',
-      form,
-      buildHeadersAuthorization(session?.user.accessToken)
-    );
-    await predictionMutate();
-    mutation?.();
-    push('/');
+    try {
+      await postFetcher<Transaction>(
+        '/transactions',
+        form,
+        buildHeadersAuthorization(session?.user.accessToken)
+      );
+      await predictionMutate();
+      mutation?.();
+      push('/');
+    } catch (error: any) {
+      setResponseError(error?.response?.data);
+      setIsOpen(true);
+    }
   }
 
   function handleChange({

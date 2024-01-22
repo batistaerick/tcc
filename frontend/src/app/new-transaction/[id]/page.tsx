@@ -1,5 +1,6 @@
 'use client';
 import Loading from '@/components/Loading';
+import ModalError from '@/components/ModalError';
 import NewTransaction from '@/components/NewTransaction';
 import useTransaction from '@/hooks/useTransaction';
 import '@/i18n/i18n';
@@ -28,6 +29,7 @@ export default function Transactions({
   }
   return (
     <RecoilRoot>
+      <ModalError />
       <NewTransaction
         transaction={{
           id: data?.id ?? '',
