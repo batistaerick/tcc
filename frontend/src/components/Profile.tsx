@@ -112,114 +112,112 @@ export default function Profile() {
   }
 
   return (
-    <div className="h-screen w-screen bg-slate-800">
-      <div className="flex flex-col items-center justify-center gap-5 pt-5">
-        <div className="flex items-center justify-center gap-5 text-white">
-          <div className="flex flex-col items-center justify-center gap-1">
-            <label
-              className={`
+    <div className="flex flex-col items-center justify-center gap-5 pt-5">
+      <div className="flex items-center justify-center gap-5 text-white">
+        <div className="flex flex-col items-center justify-center gap-1">
+          <label
+            className={`
               cursor-pointer rounded-xl bg-slate-400
               transition duration-500 hover:bg-slate-500
             `}
-            >
-              <input
-                className="hidden"
-                id="image"
-                type="file"
-                accept="image/png, image/jpeg"
-                onChange={handleChangeImage}
+          >
+            <input
+              className="hidden"
+              id="image"
+              type="file"
+              accept="image/png, image/jpeg"
+              onChange={handleChangeImage}
+            />
+            {updatedImage && (
+              <Image
+                src={URL.createObjectURL(updatedImage)}
+                className="flex h-32 w-32 items-center rounded-xl object-cover"
+                width={0}
+                height={0}
+                alt="Choose your image"
               />
-              {updatedImage && (
-                <Image
-                  src={URL.createObjectURL(updatedImage)}
-                  className="flex h-32 w-32 items-center rounded-xl object-cover"
-                  width={0}
-                  height={0}
-                  alt="Choose your image"
-                />
-              )}
-              {!updatedImage && profileImage && (
-                <Image
-                  src={`${URL.createObjectURL(profileImage)}`}
-                  className="flex h-32 w-32 items-center rounded-xl object-cover"
-                  width={0}
-                  height={0}
-                  alt="Choose your image"
-                />
-              )}
-              {!updatedImage && !profileImage && (
-                <span className="flex h-32 w-32 items-center rounded-xl">
-                  Choose your image
-                </span>
-              )}
-            </label>
-          </div>
-          <div>
-            <div>{user?.name}</div>
-            <div>{user?.email}</div>
-          </div>
+            )}
+            {!updatedImage && profileImage && (
+              <Image
+                src={`${URL.createObjectURL(profileImage)}`}
+                className="flex h-32 w-32 items-center rounded-xl object-cover"
+                width={0}
+                height={0}
+                alt="Choose your image"
+              />
+            )}
+            {!updatedImage && !profileImage && (
+              <span className="flex h-32 w-32 items-center rounded-xl">
+                Choose your image
+              </span>
+            )}
+          </label>
         </div>
-        <form
-          className="flex w-[350px] flex-col gap-5"
-          id="updateUserForm"
-          onSubmit={onSubmit}
+        <div>
+          <div>{user?.name}</div>
+          <div>{user?.email}</div>
+        </div>
+      </div>
+      <form
+        className="flex w-[350px] flex-col gap-5"
+        id="updateUserForm"
+        onSubmit={onSubmit}
+      >
+        <Input
+          id="username"
+          label={t('account:username')}
+          type="text"
+          value={updatedUser?.username}
+          onChange={handleChange}
+        />
+        <div
+          className={`
+            ${unauthorized && 'rounded-md border border-red-400'}
+          `}
         >
           <Input
-            id="username"
-            label={t('account:username')}
-            type="text"
-            value={updatedUser?.username}
+            id="newPassword"
+            label={t('account:newPassword')}
+            type="password"
+            value={updatedUser?.newPassword}
             onChange={handleChange}
           />
-          <div
-            className={`
+        </div>
+        <div
+          className={`
             ${unauthorized && 'rounded-md border border-red-400'}
           `}
-          >
-            <Input
-              id="newPassword"
-              label={t('account:newPassword')}
-              type="password"
-              value={updatedUser?.newPassword}
-              onChange={handleChange}
-            />
-          </div>
-          <div
-            className={`
-            ${unauthorized && 'rounded-md border border-red-400'}
-          `}
-          >
-            <Input
-              id="confirmPassword"
-              label={t('account:confirmPassword')}
-              type="password"
-              value={updatedUser?.confirmPassword}
-              onChange={handleChange}
-            />
-          </div>
-          {unauthorized && (
-            <div className="text-white">{t(`api:${unauthorized}`)}</div>
-          )}
-          <div className="flex w-[350px] items-center justify-center gap-3">
-            <Button
-              type="button"
-              height="h-12"
-              width="w-full"
-              translation={t('newTransaction:cancel')}
-              onClick={() => push('/')}
-            />
-            <Button
-              type="submit"
-              form="updateUserForm"
-              height="h-12"
-              width="w-full"
-              translation={t('newTransaction:save')}
-              disabled={isSaveButtonDisabled()}
-            />
-          </div>
-        </form>
-        <Language />
-      </div>
+        >
+          <Input
+            id="confirmPassword"
+            label={t('account:confirmPassword')}
+            type="password"
+            value={updatedUser?.confirmPassword}
+            onChange={handleChange}
+          />
+        </div>
+        {unauthorized && (
+          <div className="text-white">{t(`api:${unauthorized}`)}</div>
+        )}
+        <div className="flex w-[350px] items-center justify-center gap-3">
+          <Button
+            type="button"
+            height="h-12"
+            width="w-full"
+            translation={t('newTransaction:cancel')}
+            onClick={() => push('/')}
+          />
+          <Button
+            type="submit"
+            form="updateUserForm"
+            height="h-12"
+            width="w-full"
+            translation={t('newTransaction:save')}
+            disabled={isSaveButtonDisabled()}
+          />
+        </div>
+      </form>
+      <Language />
     </div>
   );
 }

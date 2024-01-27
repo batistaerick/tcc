@@ -1,4 +1,5 @@
 'use client';
+import DefaultBackground from '@/components/DefaultBackground';
 import Loading from '@/components/Loading';
 import ModalError from '@/components/ModalError';
 import NewTransaction from '@/components/NewTransaction';
@@ -30,18 +31,20 @@ export default function Transactions({
   return (
     <RecoilRoot>
       <ModalError />
-      <NewTransaction
-        transaction={{
-          id: data?.id ?? '',
-          user: data?.user ?? undefined,
-          value: data?.value ?? undefined,
-          category: data?.category ?? '',
-          notes: data?.notes ?? '',
-          date: new Date(data?.date ?? new Date()),
-          transactionType: data?.transactionType ?? undefined,
-        }}
-        mutation={mutate}
-      />
+      <DefaultBackground>
+        <NewTransaction
+          transaction={{
+            id: data?.id ?? '',
+            user: data?.user ?? undefined,
+            value: data?.value ?? undefined,
+            category: data?.category ?? '',
+            notes: data?.notes ?? '',
+            date: new Date(data?.date ?? new Date()),
+            transactionType: data?.transactionType ?? undefined,
+          }}
+          mutation={mutate}
+        />
+      </DefaultBackground>
     </RecoilRoot>
   );
 }

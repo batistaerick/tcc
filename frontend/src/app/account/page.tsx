@@ -1,4 +1,5 @@
 'use client';
+import DefaultBackground from '@/components/DefaultBackground';
 import Loading from '@/components/Loading';
 import ModalError from '@/components/ModalError';
 import Profile from '@/components/Profile';
@@ -21,7 +22,9 @@ export default function Account() {
   return (
     <RecoilRoot>
       <ModalError />
-      <Profile />
+      <DefaultBackground>
+        <Profile />
+      </DefaultBackground>
     </RecoilRoot>
   );
 }

@@ -1,6 +1,6 @@
 import { MouseEventHandler } from 'react';
 
-interface ButtonProps {
+export interface ButtonProps {
   type?: 'button' | 'submit' | 'reset';
   form?: string;
   height?: string;
@@ -13,8 +13,8 @@ interface ButtonProps {
 export default function Button({
   type,
   form,
-  height,
-  width,
+  height = 'h-10',
+  width = 'w-16',
   disabled,
   translation,
   onClick,
