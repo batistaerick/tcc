@@ -5,7 +5,7 @@ import useTransactions from '@/hooks/useTransactions';
 import { Transaction } from '@/types/types';
 import { useTranslation } from 'react-i18next';
 import { FcBearish, FcBullish } from 'react-icons/fc';
-import Money from './Money';
+import Money from '../Money/Money';
 
 export default function Balance() {
   const { t } = useTranslation();

@@ -1,3 +1,6 @@
+import Button from '@/components/Button/Button';
+import Input from '@/components/Input/Input';
+import Language from '@/components/Language/Language';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import useProfileImage from '@/hooks/useProfileImage';
 import '@/i18n/i18n';
@@ -12,9 +15,6 @@ import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSetRecoilState } from 'recoil';
-import Button from './Button';
-import Input from './Input';
-import Language from './Language';
 
 export default function Profile() {
   const { data: session } = useSession();

@@ -6,7 +6,10 @@ export default {
   title: 'Components/Button',
   component: Button,
   args: {
-    translation: 'Test',
+    translation: 'Save',
+  },
+  argTypes: {
+    onClick: { action: 'clicked' },
   },
 } as Meta<ButtonProps>;
 

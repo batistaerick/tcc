@@ -1,4 +1,4 @@
-import DatePickerDialog from '@/components/DatePickerDialog';
+import DatePickerDialog from '@/components/DatePickerDialog/DatePickerDialog';
 import { render } from '@testing-library/react';
 
 describe('DatePickerDialog component', () => {

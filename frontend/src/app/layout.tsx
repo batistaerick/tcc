@@ -1,4 +1,4 @@
-import Provider from '@/components/Provider';
+import Provider from '@/components/Provider/Provider';
 import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';
 import './globals.css';

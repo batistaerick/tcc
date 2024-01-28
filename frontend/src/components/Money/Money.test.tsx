@@ -1,4 +1,4 @@
-import Money from '@/components/Money';
+import Money from '@/components/Money/Money';
 import { render } from '@testing-library/react';
 
 // Mock the useTranslation hook

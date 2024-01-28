@@ -1,3 +1,4 @@
+import DatePickerDialog from '@/components/DatePickerDialog/DatePickerDialog';
 import useProfileImage from '@/hooks/useProfileImage';
 import { selectedDateAtom } from '@/recoil/recoilValues';
 import { signOut } from 'next-auth/react';
@@ -7,7 +8,6 @@ import { BiUserCircle } from 'react-icons/bi';
 import { FcCalendar, FcSettings } from 'react-icons/fc';
 import { FiLogOut } from 'react-icons/fi';
 import { useRecoilState } from 'recoil';
-import DatePickerDialog from './DatePickerDialog';
 
 export default function Header() {
   const { push } = useRouter();

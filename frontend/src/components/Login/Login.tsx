@@ -1,8 +1,8 @@
 'use client';
-import Button from '@/components/Button';
-import Input from '@/components/Input';
-import Language from '@/components/Language';
-import Loading from '@/components/Loading';
+import Button from '@/components/Button/Button';
+import Input from '@/components/Input/Input';
+import Language from '@/components/Language/Language';
+import Loading from '@/components/Loading/Loading';
 import { postFetcher } from '@/libs/fetchers';
 import { isValidEmail } from '@/utils/checkers';
 import { signIn, useSession } from 'next-auth/react';
@@ -12,7 +12,7 @@ import { KeyboardEvent, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
-import wallet from '../../public/images/wallet.png';
+import wallet from '../../../public/images/wallet.png';
 
 export default function Login() {
   const [email, setEmail] = useState<string>('');

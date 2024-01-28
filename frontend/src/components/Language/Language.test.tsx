@@ -1,4 +1,4 @@
-import Language from '@/components/Language';
+import Language from '@/components/Language/Language';
 import { fireEvent, render } from '@testing-library/react';
 import { useTranslation } from 'react-i18next';
 

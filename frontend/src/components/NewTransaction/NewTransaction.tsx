@@ -1,3 +1,7 @@
+import Button from '@/components/Button/Button';
+import DatePickerDialog from '@/components/DatePickerDialog/DatePickerDialog';
+import Input from '@/components/Input/Input';
+import Language from '@/components/Language/Language';
 import usePredictions from '@/hooks/usePrediction';
 import '@/i18n/i18n';
 import { postFetcher } from '@/libs/fetchers';
@@ -16,10 +20,6 @@ import {
 } from 'react-icons/fc';
 import { useSetRecoilState } from 'recoil';
 import { KeyedMutator } from 'swr';
-import Button from './Button';
-import DatePickerDialog from './DatePickerDialog';
-import Input from './Input';
-import Language from './Language';
 
 interface NewTransactionProps {
   transaction: Transaction;

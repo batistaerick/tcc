@@ -1,8 +1,8 @@
 'use client';
-import DefaultBackground from '@/components/DefaultBackground';
-import Loading from '@/components/Loading';
-import ModalError from '@/components/ModalError';
-import Profile from '@/components/Profile';
+import DefaultBackground from '@/components/DefaultBackground/DefaultBackground';
+import Loading from '@/components/Loading/Loading';
+import ModalError from '@/components/ModalError/ModalError';
+import Profile from '@/components/Profile/Profile';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { RecoilRoot } from 'recoil';

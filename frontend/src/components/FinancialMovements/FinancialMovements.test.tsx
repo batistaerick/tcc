@@ -1,4 +1,4 @@
-import FinancialMovements from '@/components/FinancialMovements';
+import FinancialMovements from '@/components/FinancialMovements/FinancialMovements';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import axios from 'axios';
 import { RecoilRoot } from 'recoil';

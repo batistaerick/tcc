@@ -1,8 +1,8 @@
+import FinancialMovements from '@/components/FinancialMovements/FinancialMovements';
 import { TransactionType } from '@/enums/enums';
 import useFixedTransactions from '@/hooks/useFixedTransactions';
 import useTransactions from '@/hooks/useTransactions';
 import { useTranslation } from 'react-i18next';
-import FinancialMovements from './FinancialMovements';
 
 export default function Transactions() {
   const { t } = useTranslation();

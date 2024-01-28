@@ -1,8 +1,8 @@
+import Button from '@/components/Button/Button';
 import { isOpenModalAtom, responseErrorAtom } from '@/recoil/recoilValues';
 import { ResponseError } from '@/types/types';
 import { useTranslation } from 'react-i18next';
 import { useRecoilState } from 'recoil';
-import Button from './Button';
 
 export default function ModalError() {
   const [responseError, setResponseError] = useRecoilState<

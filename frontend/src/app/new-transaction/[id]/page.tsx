@@ -1,8 +1,8 @@
 'use client';
-import DefaultBackground from '@/components/DefaultBackground';
-import Loading from '@/components/Loading';
-import ModalError from '@/components/ModalError';
-import NewTransaction from '@/components/NewTransaction';
+import DefaultBackground from '@/components/DefaultBackground/DefaultBackground';
+import Loading from '@/components/Loading/Loading';
+import ModalError from '@/components/ModalError/ModalError';
+import NewTransaction from '@/components/NewTransaction/NewTransaction';
 import useTransaction from '@/hooks/useTransaction';
 import '@/i18n/i18n';
 import { useSession } from 'next-auth/react';
@@ -14,7 +14,7 @@ interface NewTransactionProps {
 }
 
 export default function Transactions({
-  params,
+  params: { id },
 }: Readonly<NewTransactionProps>) {
   const { push } = useRouter();
   const { status } = useSession({
@@ -23,7 +23,7 @@ export default function Transactions({
       push('/auth');
     },
   });
-  const { data, mutate } = useTransaction(params.id);
+  const { data, mutate } = useTransaction(id);
 
   if (status === 'loading') {
     return <Loading />;

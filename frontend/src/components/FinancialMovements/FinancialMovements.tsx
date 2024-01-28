@@ -1,3 +1,4 @@
+import Money from '@/components/Money/Money';
 import usePredictions from '@/hooks/usePrediction';
 import { deleteFetcher } from '@/libs/fetchers';
 import { Transaction } from '@/types/types';
@@ -7,7 +8,6 @@ import { useRouter } from 'next/navigation';
 import { BiEdit } from 'react-icons/bi';
 import { FcFullTrash } from 'react-icons/fc';
 import { KeyedMutator } from 'swr';
-import Money from './Money';
 
 interface FinancialMovementsProps {
   transaction: Transaction;
