@@ -1,8 +1,8 @@
 'use client';
-import DefaultBackground from '@/components/DefaultBackground/DefaultBackground';
-import Loading from '@/components/Loading/Loading';
-import ModalError from '@/components/ModalError/ModalError';
-import NewTransaction from '@/components/NewTransaction/NewTransaction';
+import DefaultBackground from '@/components/DefaultBackground';
+import Loading from '@/components/Loading';
+import ModalError from '@/components/ModalError';
+import NewTransaction from '@/components/NewTransaction';
 import useTransaction from '@/hooks/useTransaction';
 import '@/i18n/i18n';
 import { useSession } from 'next-auth/react';
