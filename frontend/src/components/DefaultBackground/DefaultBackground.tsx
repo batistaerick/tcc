@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-interface DefaultBackgroundProps {
+export interface DefaultBackgroundProps {
   children: ReactNode;
 }
 

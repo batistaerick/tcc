@@ -1,6 +1,7 @@
 'use client';
 import Balance from '@/components/Balance/Balance';
 import Button from '@/components/Button/Button';
+import DefaultBackground from '@/components/DefaultBackground/DefaultBackground';
 import Header from '@/components/Header/Header';
 import Language from '@/components/Language/Language';
 import Loading from '@/components/Loading/Loading';
@@ -28,12 +29,7 @@ export default function Home() {
   return (
     <RecoilRoot>
       <ModalError />
-      <div
-        className={`
-          flex h-screen w-screen flex-col items-center
-          gap-2 bg-white dark:bg-slate-800 dark:text-gray-300
-        `}
-      >
+      <DefaultBackground>
         <Header />
         <Balance />
         <Transactions />
@@ -44,7 +40,7 @@ export default function Home() {
           onClick={() => push('/new-transaction/0')}
         />
         <Language />
-      </div>
+      </DefaultBackground>
     </RecoilRoot>
   );
 }

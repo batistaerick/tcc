@@ -1,7 +1,7 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { PiEyeDuotone, PiEyeSlashDuotone } from 'react-icons/pi';
 
-interface InputProps {
+export interface InputProps {
   id: string;
   value: string | number | undefined;
   label: string;

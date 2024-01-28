@@ -1,7 +1,7 @@
 import formatCurrency from '@/utils/formatCurrencyNumber';
 import { useTranslation } from 'react-i18next';
 
-interface MoneyProps {
+export interface MoneyProps {
   className?: string;
   value?: number;
 }

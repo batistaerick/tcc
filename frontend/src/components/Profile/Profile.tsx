@@ -3,7 +3,6 @@ import Input from '@/components/Input/Input';
 import Language from '@/components/Language/Language';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import useProfileImage from '@/hooks/useProfileImage';
-import '@/i18n/i18n';
 import { postFetcher, putFetcher } from '@/libs/fetchers';
 import { isOpenModalAtom } from '@/recoil/recoilValues';
 import { UpdatedUserType } from '@/types/types';

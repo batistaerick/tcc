@@ -21,7 +21,7 @@ import {
 import { useSetRecoilState } from 'recoil';
 import { KeyedMutator } from 'swr';
 
-interface NewTransactionProps {
+export interface NewTransactionProps {
   transaction: Transaction;
   mutation?: KeyedMutator<Transaction>;
   id?: string;

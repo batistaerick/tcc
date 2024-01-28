@@ -9,7 +9,7 @@ import { BiEdit } from 'react-icons/bi';
 import { FcFullTrash } from 'react-icons/fc';
 import { KeyedMutator } from 'swr';
 
-interface FinancialMovementsProps {
+export interface FinancialMovementsProps {
   transaction: Transaction;
   mutateOnDelete: KeyedMutator<Transaction[]>;
 }

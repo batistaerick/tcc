@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { SetterOrUpdater } from 'recoil';
 
-interface DatePickerDialogProps {
+export interface DatePickerDialogProps {
   date: Date;
   setDate: SetterOrUpdater<Date> | Dispatch<SetStateAction<Date>>;
   dateFormat?: string;
