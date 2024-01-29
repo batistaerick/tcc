@@ -11,7 +11,6 @@ class CredentialsCheckerTest {
 
     @Test
     void testValidPassword() {
-        // Test a valid password
         assertDoesNotThrow(() -> {
             CredentialsChecker.isValidPassword("ValidPassword1@");
         });
@@ -19,7 +18,6 @@ class CredentialsCheckerTest {
 
     @Test
     void testInvalidPasswordShort() {
-        // Test an invalid password that is too short
         GlobalException exception = assertThrows(
             GlobalException.class,
             () -> {
@@ -40,14 +38,12 @@ class CredentialsCheckerTest {
 
     @Test
     void testInvalidPasswordNoNumber() {
-        // Test an invalid password with no number
         GlobalException exception = assertThrows(
             GlobalException.class,
             () -> {
                 CredentialsChecker.isValidPassword("NoNumber@");
             }
         );
-
         assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
         assertEquals(
             I18nCode.INVALID_PASSWORD.getCode(),
@@ -61,14 +57,12 @@ class CredentialsCheckerTest {
 
     @Test
     void testInvalidPasswordNoUppercase() {
-        // Test an invalid password with no uppercase letter
         GlobalException exception = assertThrows(
             GlobalException.class,
             () -> {
                 CredentialsChecker.isValidPassword("nouppercase1@");
             }
         );
-
         assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
         assertEquals(
             I18nCode.INVALID_PASSWORD.getCode(),
@@ -82,14 +76,12 @@ class CredentialsCheckerTest {
 
     @Test
     void testInvalidPasswordNoSpecialCharacter() {
-        // Test an invalid password with no special character
         GlobalException exception = assertThrows(
             GlobalException.class,
             () -> {
                 CredentialsChecker.isValidPassword("NoSpecialCharacter1");
             }
         );
-
         assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
         assertEquals(
             I18nCode.INVALID_PASSWORD.getCode(),

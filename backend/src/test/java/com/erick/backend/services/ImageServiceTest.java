@@ -39,7 +39,6 @@ class ImageServiceTest {
 
     @Test
     void updateProfileImage_ValidFile_SaveImage() throws IOException {
-        // Arrange
         String authenticatedEmail = "test@test.com";
         try (
             MockedStatic<UserSession> staticUserSessionMock =
@@ -50,21 +49,20 @@ class ImageServiceTest {
                 .thenReturn(authenticatedEmail);
             MultipartFile file = createMockMultipartFile();
             Image existingImage = new Image();
+
             when(repository.findByUserEmail(authenticatedEmail))
                 .thenReturn(Optional.of(existingImage));
             when(userService.findByEmail(authenticatedEmail))
                 .thenReturn(User.builder().build());
-            // Act
             imageService.updateProfileImage(file);
-            // Assert
+
             verify(repository, times(1)).save(any(Image.class));
         }
     }
 
     @Test
     void updateProfileImage_InvalidUser_ThrowsGlobalException()
-        throws IOException, SQLException {
-        // Arrange
+        throws IOException {
         String authenticatedEmail = "test@test.com";
         try (
             MockedStatic<UserSession> staticUserSessionMock =
@@ -74,6 +72,7 @@ class ImageServiceTest {
                 .when(UserSession::getAuthenticatedEmail)
                 .thenReturn(authenticatedEmail);
             MultipartFile invalidFile = createInvalidMockMultipartFile();
+
             doThrow(
                 new GlobalException(
                     HttpStatus.INTERNAL_SERVER_ERROR,
@@ -83,7 +82,7 @@ class ImageServiceTest {
             )
                 .when(userService)
                 .findByEmail(authenticatedEmail);
-            // Act & Assert
+
             assertThrows(
                 GlobalException.class,
                 () -> imageService.updateProfileImage(invalidFile)
@@ -94,7 +93,6 @@ class ImageServiceTest {
 
     @Test
     void findByUserEmail_ImageFound_ReturnsImageBytes() throws SQLException {
-        // Arrange
         String authenticatedEmail = "test@test.com";
         try (
             MockedStatic<UserSession> staticUserSessionMock =
@@ -105,11 +103,11 @@ class ImageServiceTest {
                 .thenReturn(authenticatedEmail);
             Image existingImage = new Image();
             existingImage.setProfileImage(createMockBlob());
+
             when(repository.findByUserEmail(authenticatedEmail))
                 .thenReturn(Optional.of(existingImage));
-            // Act
             byte[] result = imageService.findByUserEmail();
-            // Assert
+
             assertNotNull(result);
             assertTrue(result.length > 0);
         }
@@ -117,7 +115,6 @@ class ImageServiceTest {
 
     @Test
     void findByUserEmail_ImageNotFound_ThrowsGlobalException() {
-        // Arrange
         String authenticatedEmail = "test@test.com";
         try (
             MockedStatic<UserSession> staticUserSessionMock =
@@ -128,7 +125,7 @@ class ImageServiceTest {
                 .thenReturn(authenticatedEmail);
             when(repository.findByUserEmail(authenticatedEmail))
                 .thenReturn(Optional.empty());
-            // Act & Assert
+
             assertThrows(
                 GlobalException.class,
                 () -> imageService.findByUserEmail()

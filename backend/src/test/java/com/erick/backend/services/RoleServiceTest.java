@@ -24,19 +24,16 @@ class RoleServiceTest {
 
     @Test
     void findByRoleName_ExistingRole_ReturnsRole() {
-        // Arrange
         RoleName roleName = RoleName.ROLE_USER;
         Role expectedRole = Role
             .builder()
             .id(UUID.randomUUID())
             .roleName(roleName)
             .build();
-        when(repository.findByRoleName(roleName)).thenReturn(expectedRole);
 
-        // Act
+        when(repository.findByRoleName(roleName)).thenReturn(expectedRole);
         Role result = roleService.findByRoleName(roleName);
 
-        // Assert
         assertNotNull(result);
         assertEquals(expectedRole, result);
         verify(repository, times(1)).findByRoleName(roleName);
@@ -44,14 +41,11 @@ class RoleServiceTest {
 
     @Test
     void findByRoleName_NonExistingRole_ReturnsNull() {
-        // Arrange
         RoleName roleName = RoleName.ROLE_ADMIN;
-        when(repository.findByRoleName(roleName)).thenReturn(null);
 
-        // Act
+        when(repository.findByRoleName(roleName)).thenReturn(null);
         Role result = roleService.findByRoleName(roleName);
 
-        // Assert
         assertNull(result);
         verify(repository, times(1)).findByRoleName(roleName);
     }

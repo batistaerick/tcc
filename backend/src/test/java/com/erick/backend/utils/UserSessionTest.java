@@ -14,16 +14,11 @@ class UserSessionTest {
 
     @Test
     void testGetAuthenticatedEmail() {
-        // Create a mock authentication with a known email
         Authentication authentication = new MockAuthentication(
             "test@example.com"
         );
-
-        // Set the mock authentication in the SecurityContext
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(authentication);
-
-        // Call the getAuthenticatedEmail method and verify the result
         String email = UserSession.getAuthenticatedEmail();
         assertEquals("test@example.com", email);
     }
@@ -37,7 +32,6 @@ class UserSessionTest {
         );
     }
 
-    // Helper class to create a mock Authentication
     private record MockAuthentication(String email) implements Authentication {
         @Override
         public String getName() {

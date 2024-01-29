@@ -40,17 +40,14 @@ class TransactionServiceTest {
 
     @Test
     void save_ValidTransactionDto_SaveTransaction() {
-        // Arrange
         String authenticatedEmail = "test@test.com";
         try (
             MockedStatic<UserSession> staticUserSessionMock =
                 Mockito.mockStatic(UserSession.class)
         ) {
-            // Arrange
             staticUserSessionMock
                 .when(UserSession::getAuthenticatedEmail)
                 .thenReturn(authenticatedEmail);
-
             TransactionDto transactionDto = createMockTransactionDto();
             Transaction transaction = createMockTransaction();
 
@@ -59,11 +56,8 @@ class TransactionServiceTest {
                 .thenReturn(createMockUser());
             when(repository.save(transaction)).thenReturn(transaction);
             when(converter.entityToDto(transaction)).thenReturn(transactionDto);
-
-            // Act
             TransactionDto result = transactionService.save(transactionDto);
 
-            // Assert
             assertNotNull(result);
             assertEquals(transactionDto, result);
             verify(repository, times(1)).save(transaction);
@@ -72,13 +66,11 @@ class TransactionServiceTest {
 
     @Test
     void delete_NonExistingTransaction_ThrowsGlobalException() {
-        // Arrange
         UUID nonExistingTransactionId = UUID.randomUUID();
 
         when(repository.findById(nonExistingTransactionId))
             .thenReturn(Optional.empty());
 
-        // Act & Assert
         assertThrows(
             GlobalException.class,
             () -> transactionService.delete(nonExistingTransactionId)
@@ -88,7 +80,6 @@ class TransactionServiceTest {
 
     @Test
     void findDtoById_ExistingTransaction_ReturnsTransactionDto() {
-        // Arrange
         UUID transactionId = UUID.randomUUID();
         Transaction existingTransaction = createMockTransaction();
         TransactionDto expectedTransactionDto = createMockTransactionDto();
@@ -97,24 +88,19 @@ class TransactionServiceTest {
             .thenReturn(Optional.of(existingTransaction));
         when(converter.entityToDto(existingTransaction))
             .thenReturn(expectedTransactionDto);
-
-        // Act
         TransactionDto result = transactionService.findDtoById(transactionId);
 
-        // Assert
         assertNotNull(result);
         assertEquals(expectedTransactionDto, result);
     }
 
     @Test
     void findDtoById_NonExistingTransaction_ThrowsGlobalException() {
-        // Arrange
         UUID nonExistingTransactionId = UUID.randomUUID();
 
         when(repository.findById(nonExistingTransactionId))
             .thenReturn(Optional.empty());
 
-        // Act & Assert
         assertThrows(
             GlobalException.class,
             () -> transactionService.findDtoById(nonExistingTransactionId)
@@ -130,7 +116,6 @@ class TransactionServiceTest {
             MockedStatic<UserSession> staticUserSessionMock =
                 Mockito.mockStatic(UserSession.class)
         ) {
-            // Arrange
             staticUserSessionMock
                 .when(UserSession::getAuthenticatedEmail)
                 .thenReturn(authenticatedEmail);
@@ -148,15 +133,11 @@ class TransactionServiceTest {
                         createMockTransaction()
                     )
                 );
-
             when(converter.entityToDto(any(Transaction.class)))
                 .thenReturn(createMockTransactionDto());
-
-            // Act
             List<TransactionDto> result =
                 transactionService.findAllByTransactionType(transactionType);
 
-            // Assert
             assertNotNull(result);
             assertFalse(result.isEmpty());
             assertEquals(2, result.size());

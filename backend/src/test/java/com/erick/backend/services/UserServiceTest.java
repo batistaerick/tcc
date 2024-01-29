@@ -15,7 +15,6 @@ import com.erick.backend.utils.UserSession;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -43,70 +42,25 @@ class UserServiceTest {
     @InjectMocks
     private UserService service;
 
-    private User user;
-    private UserDto userDto;
-
-    @BeforeEach
-    void setUp() {
-        user =
-            User
-                .builder()
-                .id(UUID.randomUUID())
-                .email("test@test.com")
-                .password("Password@123")
-                .name("Test")
-                .roles(
-                    Set.of(
-                        Role
-                            .builder()
-                            .id(UUID.randomUUID())
-                            .roleName(RoleName.ROLE_USER)
-                            .build()
-                    )
-                )
-                .build();
-        userDto =
-            UserDto
-                .builder()
-                .id(UUID.randomUUID())
-                .email("test@test.com")
-                .password("Password@123")
-                .name("Test")
-                .roles(
-                    Set.of(
-                        RoleDto
-                            .builder()
-                            .id(UUID.randomUUID())
-                            .roleName(RoleName.ROLE_USER)
-                            .build()
-                    )
-                )
-                .build();
-    }
-
     @Test
     void findByEmail_ExistingEmail() {
-        // Arrange
         String userEmail = "test@test.com";
         User expectedUser = new User();
+
         when(repository.findByEmail(userEmail))
             .thenReturn(Optional.of(expectedUser));
-
-        // Act
         User result = service.findByEmail(userEmail);
 
-        // Assert
         assertEquals(expectedUser, result);
         verify(repository, times(1)).findByEmail(userEmail);
     }
 
     @Test
     void findByEmail_NonExistingEmail_ThrowsGlobalException() {
-        // Arrange
         String userEmail = "nonexistent@test.com";
+
         when(repository.findByEmail(userEmail)).thenReturn(Optional.empty());
 
-        // Act & Assert
         assertThrows(
             GlobalException.class,
             () -> service.findByEmail(userEmail)
@@ -116,6 +70,8 @@ class UserServiceTest {
 
     @Test
     void save_NewUser() {
+        User user = createMockUser();
+        UserDto userDto = createMockUserDto();
         User expectedUser = User
             .builder()
             .email("test@test.com")
@@ -126,7 +82,7 @@ class UserServiceTest {
             .email("test@test.com")
             .password("hashedPassword")
             .build();
-        // Arrange
+
         when(repository.findByEmail(userDto.getEmail()))
             .thenReturn(Optional.empty());
         when(repository.save(user)).thenReturn(expectedUser);
@@ -136,11 +92,8 @@ class UserServiceTest {
             .thenReturn("hashedPassword");
         when(roleService.findByRoleName(RoleName.ROLE_USER))
             .thenReturn(new Role());
-
-        // Act
         UserDto result = service.save(userDto);
 
-        // Assert
         assertEquals(expectedUserDto, result);
         verify(repository, times(2)).findByEmail(userDto.getEmail());
         verify(repository, times(2)).save(user);
@@ -151,7 +104,6 @@ class UserServiceTest {
 
     @Test
     void save_ExistingEmail_ThrowsGlobalException() {
-        // Arrange
         UserDto existingUserDto = new UserDto();
         existingUserDto.setEmail("existing@example.com");
         existingUserDto.setPassword("password");
@@ -159,7 +111,6 @@ class UserServiceTest {
         when(repository.findByEmail(existingUserDto.getEmail()))
             .thenReturn(Optional.of(new User()));
 
-        // Act & Assert
         assertThrows(
             GlobalException.class,
             () -> service.save(existingUserDto)
@@ -169,9 +120,7 @@ class UserServiceTest {
 
     @Test
     void findByAuthenticatedEmail_ValidAuthenticatedEmail_ReturnsUserDto() {
-        // Arrange
         String authenticatedEmail = "test@test.com";
-        userDto.setPassword(null);
         try (
             MockedStatic<UserSession> staticUserSessionMock =
                 Mockito.mockStatic(UserSession.class)
@@ -179,18 +128,14 @@ class UserServiceTest {
             staticUserSessionMock
                 .when(UserSession::getAuthenticatedEmail)
                 .thenReturn(authenticatedEmail);
-            assertEquals(
-                UserSession.getAuthenticatedEmail(),
-                authenticatedEmail
-            );
+            User user = createMockUser();
+            UserDto userDto = createMockUserDto();
+            userDto.setPassword(null);
             when(converter.entityToDto(user)).thenReturn(userDto);
             when(repository.findByEmail(authenticatedEmail))
                 .thenReturn(Optional.of(user));
-
-            // Act
             UserDto result = service.findByAuthenticatedEmail();
 
-            // Assert
             assertNotNull(result);
             assertEquals(authenticatedEmail, result.getEmail());
             assertEquals(userDto, result);
@@ -206,7 +151,6 @@ class UserServiceTest {
             MockedStatic<UserSession> staticUserSessionMock =
                 Mockito.mockStatic(UserSession.class)
         ) {
-            // Arrange
             staticUserSessionMock
                 .when(UserSession::getAuthenticatedEmail)
                 .thenReturn(authenticatedEmail);
@@ -214,7 +158,6 @@ class UserServiceTest {
             existingUser.setEmail(authenticatedEmail);
             existingUser.setName("OldName");
             existingUser.setPassword("oldPassword");
-
             UserDto updatedUserDto = new UserDto();
             updatedUserDto.setName("NewName");
             updatedUserDto.setPassword("Password@123");
@@ -223,11 +166,8 @@ class UserServiceTest {
                 .thenReturn(Optional.of(existingUser));
             when(passwordEncoder.encode(updatedUserDto.getPassword()))
                 .thenReturn("hashedNewPassword");
-
-            // Act
             service.update(updatedUserDto);
 
-            // Assert
             verify(repository, times(1)).save(existingUser);
             assertEquals("NewName", existingUser.getName());
             assertEquals("hashedNewPassword", existingUser.getPassword());
@@ -236,13 +176,11 @@ class UserServiceTest {
 
     @Test
     void update_BlankNameAndPassword_NoUpdates() {
-        // Arrange
         String authenticatedEmail = "test@test.com";
         try (
             MockedStatic<UserSession> staticUserSessionMock =
                 Mockito.mockStatic(UserSession.class)
         ) {
-            // Arrange
             staticUserSessionMock
                 .when(UserSession::getAuthenticatedEmail)
                 .thenReturn(authenticatedEmail);
@@ -250,16 +188,12 @@ class UserServiceTest {
             existingUser.setEmail(authenticatedEmail);
             existingUser.setName("OldName");
             existingUser.setPassword("oldPassword");
-
-            UserDto updatedUserDto = new UserDto(); // Empty values
+            UserDto updatedUserDto = new UserDto();
 
             when(repository.findByEmail(authenticatedEmail))
                 .thenReturn(Optional.of(existingUser));
-
-            // Act
             service.update(updatedUserDto);
 
-            // Assert
             verify(repository, times(1)).findByEmail(authenticatedEmail);
             assertEquals("OldName", existingUser.getName());
             assertEquals("oldPassword", existingUser.getPassword());
@@ -274,7 +208,6 @@ class UserServiceTest {
             MockedStatic<UserSession> staticUserSessionMock =
                 Mockito.mockStatic(UserSession.class)
         ) {
-            // Arrange
             staticUserSessionMock
                 .when(UserSession::getAuthenticatedEmail)
                 .thenReturn(authenticatedEmail);
@@ -282,14 +215,12 @@ class UserServiceTest {
             existingUser.setEmail(authenticatedEmail);
             existingUser.setName("OldName");
             existingUser.setPassword("oldPassword");
-
             UserDto updatedUserDto = new UserDto();
-            updatedUserDto.setPassword("short"); // Invalid password
+            updatedUserDto.setPassword("short");
 
             when(repository.findByEmail(authenticatedEmail))
                 .thenReturn(Optional.of(existingUser));
 
-            // Act & Assert
             assertThrows(
                 GlobalException.class,
                 () -> service.update(updatedUserDto)
@@ -300,13 +231,11 @@ class UserServiceTest {
 
     @Test
     void update_PasswordProvided_PasswordIsUpdated() {
-        // Arrange
         String authenticatedEmail = "test@test.com";
         try (
             MockedStatic<UserSession> staticUserSessionMock =
                 Mockito.mockStatic(UserSession.class)
         ) {
-            // Arrange
             staticUserSessionMock
                 .when(UserSession::getAuthenticatedEmail)
                 .thenReturn(authenticatedEmail);
@@ -314,7 +243,6 @@ class UserServiceTest {
             existingUser.setEmail(authenticatedEmail);
             existingUser.setName("OldName");
             existingUser.setPassword("Password@123");
-
             UserDto updatedUserDto = new UserDto();
             updatedUserDto.setPassword("Password@123");
 
@@ -323,10 +251,8 @@ class UserServiceTest {
             when(passwordEncoder.encode(updatedUserDto.getPassword()))
                 .thenReturn("hashedNewPassword");
 
-            // Act
             service.update(updatedUserDto);
 
-            // Assert
             verify(repository, times(1)).save(existingUser);
             assertEquals("hashedNewPassword", existingUser.getPassword());
         }
@@ -334,13 +260,11 @@ class UserServiceTest {
 
     @Test
     void update_NameProvided_NameIsUpdated() {
-        // Arrange
         String authenticatedEmail = "test@test.com";
         try (
             MockedStatic<UserSession> staticUserSessionMock =
                 Mockito.mockStatic(UserSession.class)
         ) {
-            // Arrange
             staticUserSessionMock
                 .when(UserSession::getAuthenticatedEmail)
                 .thenReturn(authenticatedEmail);
@@ -348,19 +272,53 @@ class UserServiceTest {
             existingUser.setEmail(authenticatedEmail);
             existingUser.setName("OldName");
             existingUser.setPassword("oldPassword");
-
             UserDto updatedUserDto = new UserDto();
             updatedUserDto.setName("NewName");
 
             when(repository.findByEmail(authenticatedEmail))
                 .thenReturn(Optional.of(existingUser));
-
-            // Act
             service.update(updatedUserDto);
 
-            // Assert
             verify(repository, times(1)).save(existingUser);
             assertEquals("NewName", existingUser.getName());
         }
+    }
+
+    private User createMockUser() {
+        return User
+            .builder()
+            .id(UUID.randomUUID())
+            .email("test@test.com")
+            .password("Password@123")
+            .name("Test")
+            .roles(
+                Set.of(
+                    Role
+                        .builder()
+                        .id(UUID.randomUUID())
+                        .roleName(RoleName.ROLE_USER)
+                        .build()
+                )
+            )
+            .build();
+    }
+
+    private UserDto createMockUserDto() {
+        return UserDto
+            .builder()
+            .id(UUID.randomUUID())
+            .email("test@test.com")
+            .password("Password@123")
+            .name("Test")
+            .roles(
+                Set.of(
+                    RoleDto
+                        .builder()
+                        .id(UUID.randomUUID())
+                        .roleName(RoleName.ROLE_USER)
+                        .build()
+                )
+            )
+            .build();
     }
 }
