@@ -1,21 +1,19 @@
-import Login from '@/components/Login';
+import DefaultBackground from '@/components/DefaultBackground';
+import Header from '@/components/Header';
 import Provider from '@/components/Provider';
 import { Meta, StoryObj } from '@storybook/react';
 import { RecoilRoot } from 'recoil';
 
 export default {
-  title: 'Components/Login',
-  component: Login,
-  parameters: {
-    nextjs: {
-      appDirectory: true,
-    },
-  },
+  title: 'Components/Header',
+  component: Header,
   decorators: [
     (Story) => {
       return (
         <RecoilRoot>
-          <Provider>{Story()}</Provider>
+          <Provider>
+            <DefaultBackground>{Story()}</DefaultBackground>
+          </Provider>
         </RecoilRoot>
       );
     },

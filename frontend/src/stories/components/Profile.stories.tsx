@@ -6,11 +6,6 @@ import { RecoilRoot } from 'recoil';
 export default {
   title: 'Components/Profile',
   component: Profile,
-  parameters: {
-    nextjs: {
-      appDirectory: true,
-    },
-  },
   decorators: [
     (Story) => {
       return (

@@ -1,7 +1,6 @@
 import Money from '@/components/Money';
 import { render } from '@testing-library/react';
 
-// Mock the useTranslation hook
 jest.mock('react-i18next', () => ({
   useTranslation: jest.fn().mockReturnValue({
     i18n: { language: 'en' },

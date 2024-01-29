@@ -8,11 +8,6 @@ import { RecoilRoot } from 'recoil';
 export default {
   title: 'Components/NewTransaction',
   component: NewTransaction,
-  parameters: {
-    nextjs: {
-      appDirectory: true,
-    },
-  },
   decorators: [
     (Story) => {
       return (

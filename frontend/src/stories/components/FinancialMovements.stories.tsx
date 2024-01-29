@@ -9,11 +9,6 @@ import { RecoilRoot } from 'recoil';
 export default {
   title: 'Components/FinancialMovements',
   component: FinancialMovements,
-  parameters: {
-    nextjs: {
-      appDirectory: true,
-    },
-  },
   args: {
     transaction: {
       id: '1',
