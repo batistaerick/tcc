@@ -5,18 +5,22 @@ import com.erick.backend.enums.I18nCode;
 import com.erick.backend.exceptions.GlobalException;
 import com.erick.backend.repositories.ImageRepository;
 import com.erick.backend.utils.UserSession;
-import java.io.IOException;
-import java.sql.Blob;
-import java.sql.SQLException;
-import javax.sql.rowset.serial.SerialBlob;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-@Log4j2
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
+
+
+/**
+ * Service class for managing image-related operations.
+ * This service handles the storage and retrieval of user profile images.
+ */
 @Service
 @RequiredArgsConstructor
 public class ImageService {
@@ -24,6 +28,13 @@ public class ImageService {
     private final ImageRepository repository;
     private final UserService userService;
 
+    /**
+     * Updates the profile image of the currently authenticated user.
+     *
+     * @param file The MultipartFile containing the image to be updated.
+     * @throws GlobalException If there's an IOException or SQLException during the image processing,
+     *                         or if the image is invalid, with an HttpStatus of INTERNAL_SERVER_ERROR.
+     */
     public void updateProfileImage(MultipartFile file) {
         Image image = repository
             .findByUserEmail(UserSession.getAuthenticatedEmail())
@@ -48,6 +59,13 @@ public class ImageService {
         repository.save(image);
     }
 
+    /**
+     * Retrieves the profile image of the currently authenticated user as a byte array.
+     *
+     * @return A byte array representing the user's profile image.
+     * @throws GlobalException If the image is not found, with an HttpStatus of NOT_FOUND,
+     *                         or if there's an error in retrieving the image, with an HttpStatus of INTERNAL_SERVER_ERROR.
+     */
     @Transactional
     public byte[] findByUserEmail() {
         Image image = repository

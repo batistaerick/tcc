@@ -10,12 +10,17 @@ import com.erick.backend.exceptions.GlobalException;
 import com.erick.backend.repositories.UserRepository;
 import com.erick.backend.utils.CredentialsChecker;
 import com.erick.backend.utils.UserSession;
-import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+
+/**
+ * Service class for managing user-related operations.
+ * This includes finding, saving, and updating user information.
+ */
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -25,6 +30,13 @@ public class UserService {
     private final PasswordEncoder encoder;
     private final RoleService roleService;
 
+    /**
+     * Finds a user by their email address.
+     *
+     * @param email The email address of the user to find.
+     * @return The found User entity.
+     * @throws GlobalException if the user is not found, with an HttpStatus of NOT_FOUND.
+     */
     public User findByEmail(String email) {
         return repository
             .findByEmail(email)
@@ -38,6 +50,14 @@ public class UserService {
             );
     }
 
+    /**
+     * Saves a new user to the repository. Validates the uniqueness of the email and the password criteria before saving.
+     *
+     * @param dto The UserDto object containing user information to be saved.
+     * @return The saved UserDto.
+     * @throws GlobalException if the email is already registered or the password does not meet the criteria,
+     *                         with an HttpStatus of CONFLICT or UNAUTHORIZED respectively.
+     */
     public UserDto save(UserDto dto) {
         boolean emailIsPresent = repository
             .findByEmail(dto.getEmail())
@@ -57,6 +77,11 @@ public class UserService {
         return converter.entityToDto(repository.save(user));
     }
 
+    /**
+     * Finds a user DTO by the email of the currently authenticated user.
+     *
+     * @return The UserDto of the authenticated user.
+     */
     public UserDto findByAuthenticatedEmail() {
         String email = UserSession.getAuthenticatedEmail();
         UserDto userDto = converter.entityToDto(findByEmail(email));
@@ -64,6 +89,12 @@ public class UserService {
         return userDto;
     }
 
+    /**
+     * Updates the existing user details based on the provided UserDto.
+     * Updates the name and password if they are not null and not blank.
+     *
+     * @param updatedUser The UserDto containing the updated user information.
+     */
     public void update(UserDto updatedUser) {
         User existingUser = findByEmail(UserSession.getAuthenticatedEmail());
         if (updatedUser.getName() != null && !updatedUser.getName().isBlank()) {
@@ -71,7 +102,7 @@ public class UserService {
         }
         if (
             updatedUser.getPassword() != null &&
-            !updatedUser.getPassword().isBlank()
+                !updatedUser.getPassword().isBlank()
         ) {
             CredentialsChecker.isValidPassword(updatedUser.getPassword());
             existingUser.setPassword(encoder.encode(updatedUser.getPassword()));

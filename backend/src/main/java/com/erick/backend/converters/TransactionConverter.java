@@ -4,9 +4,21 @@ import com.erick.backend.domains.dtos.TransactionDto;
 import com.erick.backend.domains.entities.Transaction;
 import org.springframework.stereotype.Component;
 
+/**
+ * Converter class for converting between Transaction entity and TransactionDto.
+ * This class provides methods to convert Transaction entities to DTOs and vice versa.
+ */
 @Component
 public class TransactionConverter {
 
+    /**
+     * Converts a Transaction entity to a TransactionDto.
+     * This method maps the properties of the Transaction entity to a new TransactionDto object.
+     * It also converts the associated user if it is not null.
+     *
+     * @param entity The Transaction entity to convert.
+     * @return A TransactionDto object corresponding to the provided Transaction entity.
+     */
     public TransactionDto entityToDto(Transaction entity) {
         TransactionDto dto = TransactionDto
             .builder()
@@ -23,6 +35,14 @@ public class TransactionConverter {
         return dto;
     }
 
+    /**
+     * Converts a TransactionDto to a Transaction entity.
+     * This method maps the properties of the TransactionDto to a new Transaction entity object.
+     * It also converts the associated user if it is not null.
+     *
+     * @param dto The TransactionDto to convert.
+     * @return A Transaction entity corresponding to the provided TransactionDto.
+     */
     public Transaction dtoToEntity(TransactionDto dto) {
         Transaction entity = Transaction
             .builder()

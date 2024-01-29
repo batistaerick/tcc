@@ -9,14 +9,19 @@ import com.erick.backend.enums.TransactionType;
 import com.erick.backend.exceptions.GlobalException;
 import com.erick.backend.repositories.TransactionRepository;
 import com.erick.backend.utils.UserSession;
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.List;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.List;
+import java.util.UUID;
+
+/**
+ * Service class for managing transaction-related operations.
+ * This includes saving, deleting, finding, and predicting transactions.
+ */
 @Service
 @RequiredArgsConstructor
 public class TransactionService {
@@ -25,6 +30,12 @@ public class TransactionService {
     private final TransactionConverter converter;
     private final UserService userService;
 
+    /**
+     * Saves a new transaction to the repository.
+     *
+     * @param dto The TransactionDto object containing transaction information to be saved.
+     * @return The saved TransactionDto.
+     */
     public TransactionDto save(TransactionDto dto) {
         UUID id = userService
             .findByEmail(UserSession.getAuthenticatedEmail())
@@ -40,6 +51,12 @@ public class TransactionService {
         return converter.entityToDto(repository.save(transaction));
     }
 
+    /**
+     * Deletes a transaction by its ID.
+     *
+     * @param id The UUID of the transaction to be deleted.
+     * @throws GlobalException if the transaction is not found or if an unauthorized user attempts deletion.
+     */
     public void delete(UUID id) {
         Transaction transaction = repository
             .findById(id)
@@ -65,6 +82,13 @@ public class TransactionService {
         repository.deleteById(id);
     }
 
+    /**
+     * Finds a transaction DTO by its ID.
+     *
+     * @param id The UUID of the transaction to be found.
+     * @return The TransactionDto of the requested transaction.
+     * @throws GlobalException if the transaction is not found.
+     */
     public TransactionDto findDtoById(UUID id) {
         return repository
             .findById(id)
@@ -79,6 +103,14 @@ public class TransactionService {
             );
     }
 
+    /**
+     * Finds all transactions of a specified type within a date range.
+     *
+     * @param transactionType The type of transactions to find.
+     * @param startDate       The start date of the range.
+     * @param endDate         The end date of the range.
+     * @return A list of TransactionDto objects.
+     */
     public List<TransactionDto> findAllTransactionsByTypeAndDate(
         TransactionType transactionType,
         LocalDate startDate,
@@ -99,6 +131,12 @@ public class TransactionService {
             .toList();
     }
 
+    /**
+     * Finds all transactions of a specified type.
+     *
+     * @param transactionType The type of transactions to find.
+     * @return A list of TransactionDto objects.
+     */
     public List<TransactionDto> findAllByTransactionType(
         TransactionType transactionType
     ) {
@@ -112,6 +150,12 @@ public class TransactionService {
             .toList();
     }
 
+    /**
+     * Predicts the remaining balance by a specified end date.
+     *
+     * @param endDate The end date to predict the balance for.
+     * @return The predicted balance as a Double.
+     */
     public Double predictRemainingBalance(LocalDate endDate) {
         LocalDate startDate = LocalDate.now().withDayOfMonth(1);
         double totalOfExpenses = totalOfTransactionsByTypeAndDate(

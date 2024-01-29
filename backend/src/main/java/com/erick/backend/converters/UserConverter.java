@@ -2,12 +2,25 @@ package com.erick.backend.converters;
 
 import com.erick.backend.domains.dtos.UserDto;
 import com.erick.backend.domains.entities.User;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
+import java.util.stream.Collectors;
+
+/**
+ * Converter class for converting between User entity and UserDto.
+ * This class provides methods to convert User entities to DTOs and vice versa.
+ */
 @Component
 public class UserConverter {
 
+    /**
+     * Converts a User entity to a UserDto.
+     * This method maps the properties of the User entity to a new UserDto object.
+     * It also converts associated roles and transactions if they are not null.
+     *
+     * @param entity The User entity to convert.
+     * @return A UserDto object corresponding to the provided User entity.
+     */
     public UserDto entityToDto(User entity) {
         UserDto dto = UserDto
             .builder()
@@ -37,6 +50,14 @@ public class UserConverter {
         return dto;
     }
 
+    /**
+     * Converts a UserDto to a User entity.
+     * This method maps the properties of the UserDto to a new User entity object.
+     * It also converts associated roles and transactions if they are not null.
+     *
+     * @param dto The UserDto to convert.
+     * @return A User entity corresponding to the provided UserDto.
+     */
     public User dtoToEntity(UserDto dto) {
         User entity = User
             .builder()

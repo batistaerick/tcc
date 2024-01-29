@@ -9,9 +9,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * Interceptor for handling HTTP requests in the application.
+ * This interceptor allows for pre-processing and post-processing of requests.
+ */
 @Component
 @Log4j2
 public class RequestInterceptor implements HandlerInterceptor {
+
 
     @Override
     public boolean preHandle(
@@ -28,7 +33,8 @@ public class RequestInterceptor implements HandlerInterceptor {
         @NonNull HttpServletResponse response,
         @NonNull Object handler,
         @Nullable ModelAndView modelAndView
-    ) {}
+    ) {
+    }
 
     @Override
     public void afterCompletion(
@@ -36,5 +42,6 @@ public class RequestInterceptor implements HandlerInterceptor {
         @NonNull HttpServletResponse response,
         @NonNull Object handler,
         @Nullable Exception exception
-    ) {}
+    ) {
+    }
 }
