@@ -32,8 +32,8 @@ public class ImageService {
             Blob blob = new SerialBlob(file.getBytes());
             image.setProfileImage(blob);
         } catch (IOException | SQLException exception) {
-            log.error("Error converting Blob {0}", exception);
             throw new GlobalException(
+                exception,
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 I18nCode.INVALID_IMAGE,
                 "Invalid image {}",
@@ -65,6 +65,7 @@ public class ImageService {
                 .getBytes(1, (int) image.getProfileImage().length());
         } catch (Exception exception) {
             throw new GlobalException(
+                exception,
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 I18nCode.ERROR_GETTING_IMAGE,
                 "Error getting profile image {}",

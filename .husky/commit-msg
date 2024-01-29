@@ -12,27 +12,27 @@ branch_name=$(git rev-parse --abbrev-ref HEAD | grep -oE 'PEN-[0-9]+(-[0-9]+)?')
 if [[ "$commit_message" =~ $conventional_commit_regex || "$commit_message" =~ $merge_or_rebase_commit ]]; then
     # In case of unconventional commit.
     echo -e "\e[32mCommit message meets conventional commit standards...\e[0m"
-    # echo -e "\e[32mRunning Java tests for backend...\e[0m"
+    echo -e "\e[32mRunning Java tests for backend...\e[0m"
 
-    # # Run Maven tests for backend
-    # mvn -f backend test
+    # Run Maven tests for backend
+    mvn -f backend test
 
-    # if [ $? -ne 0 ]; then
-    #     echo -e "\e[31mFailed running tests. Commit aborted.\e[0m"
-    #     exit 1
-    # fi
+    if [ $? -ne 0 ]; then
+        echo -e "\e[31mFailed running tests. Commit aborted.\e[0m"
+        exit 1
+    fi
 
-    # # Run Jest tests for frontend
-    # echo -e "\e[32mRunning Jest tests for frontend...\e[0m"
-    # cd frontend
-    # yarn -C frontend test
+    # Run Jest tests for frontend
+    echo -e "\e[32mRunning Jest tests for frontend...\e[0m"
+    cd frontend
+    yarn -C frontend jest
 
-    # if [ $? -ne 0 ]; then
-    #     echo -e "\e[31mFailed running frontend tests. Commit aborted.\e[0m"
-    #     exit 1
-    # fi
+    if [ $? -ne 0 ]; then
+        echo -e "\e[31mFailed running frontend tests. Commit aborted.\e[0m"
+        exit 1
+    fi
 
-    # sed -i "1s/^/$branch_name - /" "$1"
+    sed -i "1s/^/$branch_name - /" "$1"
     exit 0
 fi
 
