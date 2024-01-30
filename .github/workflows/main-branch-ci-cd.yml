@@ -8,6 +8,9 @@ on:
 jobs:
   test-frontend:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
     strategy:
       matrix:
         node-version: [20.x]
@@ -18,12 +21,15 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "yarn"
-      - run: cd frontend && yarn --frozen-lockfile
-      - name: Tests with Maven
-        run: mvn -f backend -B test --file pom.xml
+      - run: yarn --frozen-lockfile
+      - name: Yarn test
+        run: yarn test:ci
 
   test-backend:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
     strategy:
       matrix:
         java-version: [17]
@@ -41,12 +47,15 @@ jobs:
           openssl genrsa -out backend/src/main/resources/certs/keypair.pem 2048
           openssl rsa -in backend/src/main/resources/certs/keypair.pem -pubout -out backend/src/main/resources/certs/public.pem
           openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in backend/src/main/resources/certs/keypair.pem -out backend/src/main/resources/certs/private.pem
-      - name: Tests with Maven
-        run: mvn -f backend -B test --file pom.xml
+      - name: Maven Tests
+        run: mvn -B test --file pom.xml
 
   build-fronted:
     needs: test-frontend
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
     strategy:
       matrix:
         node-version: [20.x]
@@ -58,13 +67,16 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "yarn"
-      - run: cd frontend && yarn --frozen-lockfile
-      - name: Build with Maven
-        run: mvn -B package --file pom.xml
+      - run: yarn --frozen-lockfile
+      - name: Yarn Build
+        run: yarn build
 
   build-backend:
     needs: test-backend
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
     strategy:
       matrix:
         java-version: [17]
@@ -83,5 +95,5 @@ jobs:
           openssl genrsa -out backend/src/main/resources/certs/keypair.pem 2048
           openssl rsa -in backend/src/main/resources/certs/keypair.pem -pubout -out backend/src/main/resources/certs/public.pem
           openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in backend/src/main/resources/certs/keypair.pem -out backend/src/main/resources/certs/private.pem
-      - name: Build with Maven
+      - name: Maven Packge
         run: mvn -B package --file pom.xml
