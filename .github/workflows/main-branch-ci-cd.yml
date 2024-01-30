@@ -44,7 +44,7 @@ jobs:
         run: mvn -f backend -B test --file pom.xml
 
       - name: Tests with Jest
-        run: yarn -C frontend install && yarn -C frontend jest
+        run: cd frontend && yarn && yarn -C frontend jest
 
   build:
     needs: test
@@ -85,4 +85,4 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Build with Jest
-        run: yarn -C frontend install && yarn -C frontend build
+        run: cd frontend && yarn && yarn build
