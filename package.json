@@ -1,6 +1,7 @@
 {
   "name": "budget-manager",
   "private": true,
+  "type": "commonjs",
   "scripts": {
     "pre-commit": "lint-staged --allow-empty",
     "prepare": "husky install",
