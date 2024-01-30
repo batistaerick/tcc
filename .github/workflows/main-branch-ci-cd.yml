@@ -31,7 +31,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Set up yarn
-        run: npm install --global yarn
+        run: npm install --global yarn && yarn -C frontend install
 
       - name: Generate Keys
         run: |
@@ -70,6 +70,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: Set up yarn
+        run: npm install --global yarn && yarn -C frontend install
 
       - name: Generate Keys
         run: |
