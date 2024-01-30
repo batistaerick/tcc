@@ -24,7 +24,7 @@ jobs:
       - name: Npm Install
         run: npm i
       - name: Jest Tests
-        run: npm run jest
+        run: npm run text:ci
 
   test-backend:
     runs-on: ubuntu-latest
