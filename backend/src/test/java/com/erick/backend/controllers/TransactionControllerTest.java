@@ -1,18 +1,9 @@
 package com.erick.backend.controllers;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import com.erick.backend.domains.dtos.TransactionDto;
 import com.erick.backend.enums.TransactionType;
 import com.erick.backend.services.TransactionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +16,17 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(TransactionController.class)
@@ -59,6 +61,7 @@ class TransactionControllerTest {
         mockMvc
             .perform(
                 post("/transactions")
+                    .with(jwt())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(transaction))
             )
@@ -76,7 +79,7 @@ class TransactionControllerTest {
         doNothing().when(service).delete(id);
 
         mockMvc
-            .perform(delete("/transactions/" + id))
+            .perform(delete("/transactions/" + id).with(jwt()))
             .andExpect(status().isNoContent());
         verify(service).delete(id);
     }
@@ -100,6 +103,7 @@ class TransactionControllerTest {
         mockMvc
             .perform(
                 get("/transactions")
+                    .with(jwt())
                     .param("startDate", startDate.toString())
                     .param("endDate", endDate.toString())
                     .param("transactionType", type.toString())
@@ -119,7 +123,7 @@ class TransactionControllerTest {
         given(service.findDtoById(id)).willReturn(transaction);
 
         mockMvc
-            .perform(get("/transactions/" + id))
+            .perform(get("/transactions/" + id).with(jwt()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value(transaction.getId()));
         verify(service).findDtoById(id);
@@ -137,7 +141,7 @@ class TransactionControllerTest {
         given(service.findAllByTransactionType(type)).willReturn(transactions);
 
         mockMvc
-            .perform(get("/transactions/" + type + "/fixed"))
+            .perform(get("/transactions/" + type + "/fixed").with(jwt()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.size()").value(transactions.size()));
         verify(service).findAllByTransactionType(type);
@@ -152,7 +156,7 @@ class TransactionControllerTest {
         given(service.predictRemainingBalance(endDate)).willReturn(prediction);
 
         mockMvc
-            .perform(get("/transactions/" + endDate + "/prediction"))
+            .perform(get("/transactions/" + endDate + "/prediction").with(jwt()))
             .andExpect(status().isOk())
             .andExpect(content().string(prediction.toString()));
         verify(service).predictRemainingBalance(endDate);

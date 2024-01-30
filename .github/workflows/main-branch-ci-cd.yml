@@ -15,15 +15,17 @@ jobs:
       matrix:
         node-version: [20.x]
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Set up Node 20
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: "yarn"
-      - run: yarn
-      - name: Yarn test
-        run: yarn test:ci
+      - name: Yarn Install
+        run: yarn
+      - name: Jest Tests
+        run: yarn jest
 
   test-backend:
     runs-on: ubuntu-latest
@@ -34,7 +36,8 @@ jobs:
       matrix:
         java-version: [17]
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -48,7 +51,7 @@ jobs:
           openssl rsa -in backend/src/main/resources/certs/keypair.pem -pubout -out backend/src/main/resources/certs/public.pem
           openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in backend/src/main/resources/certs/keypair.pem -out backend/src/main/resources/certs/private.pem
       - name: Maven Tests
-        run: mvn test
+        run: mvn -B test --file pom.xml
 
   build-fronted:
     needs: test-frontend

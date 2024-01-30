@@ -26,8 +26,6 @@ import org.springframework.web.context.WebApplicationContext;
 @WebMvcTest(AuthController.class)
 class AuthControllerTest {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
     @Autowired
     private MockMvc mockMvc;
 

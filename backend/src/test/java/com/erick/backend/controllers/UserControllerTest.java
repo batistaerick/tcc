@@ -1,11 +1,5 @@
 package com.erick.backend.controllers;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.erick.backend.domains.dtos.RoleDto;
 import com.erick.backend.domains.dtos.UserDto;
 import com.erick.backend.domains.entities.Role;
@@ -14,9 +8,6 @@ import com.erick.backend.enums.RoleName;
 import com.erick.backend.repositories.UserRepository;
 import com.erick.backend.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,6 +19,17 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(UserController.class)
@@ -63,6 +65,7 @@ class UserControllerTest {
         mockMvc
             .perform(
                 post("/users")
+                    .with(jwt())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(userDto))
             )
@@ -85,6 +88,7 @@ class UserControllerTest {
         mockMvc
             .perform(
                 put("/users")
+                    .with(jwt())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(updatedUser))
             )
@@ -99,7 +103,7 @@ class UserControllerTest {
         given(service.findByAuthenticatedEmail()).willReturn(userDto);
 
         mockMvc
-            .perform(get("/users/current-user"))
+            .perform(get("/users/current-user").with(jwt()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value(userDto.getId().toString()))
             .andExpect(jsonPath("$.email").value(userDto.getEmail()))
