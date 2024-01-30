@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: 20.x
       - name: Install Yarn
-        run: npm install --global yarn && rm -f yarn.lock
+        run: npm install --global yarn
       - name: Install Dependencies
         run: yarn
       - name: Run tests
