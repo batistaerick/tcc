@@ -15,7 +15,7 @@ if [[ "$commit_message" =~ $conventional_commit_regex || "$commit_message" =~ $m
     echo -e "\e[32mRunning Java tests for backend...\e[0m"
 
     # Run Maven tests for backend
-    mvn -f backend test
+    mvn test -f backend
 
     if [ $? -ne 0 ]; then
         echo -e "\e[31mFailed running tests. Commit aborted.\e[0m"
@@ -24,8 +24,7 @@ if [[ "$commit_message" =~ $conventional_commit_regex || "$commit_message" =~ $m
 
     # Run Jest tests for frontend
     echo -e "\e[32mRunning Jest tests for frontend...\e[0m"
-    cd frontend
-    yarn -C frontend jest
+    cd frontend && yarn test:ci
 
     if [ $? -ne 0 ]; then
         echo -e "\e[31mFailed running frontend tests. Commit aborted.\e[0m"

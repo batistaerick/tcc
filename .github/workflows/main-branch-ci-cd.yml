@@ -25,13 +25,6 @@ jobs:
           java-version: ${{ matrix.java-version }}
           cache: "maven"
 
-      - name: Set up Node 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "yarn"
-      - run: yarn install --cwd=frontend --frozen-lockfile
-
       - name: Generate Keys
         run: |
           mkdir -p backend/src/main/resources/certs
@@ -39,8 +32,15 @@ jobs:
           openssl rsa -in backend/src/main/resources/certs/keypair.pem -pubout -out backend/src/main/resources/certs/public.pem
           openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in backend/src/main/resources/certs/keypair.pem -out backend/src/main/resources/certs/private.pem
 
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+      - run: cd frontend && yarn
+
       - name: Tests with Jest
-        run: yarn jest --cwd=frontend
+        run: cd frontend && yarn test:ci
 
       - name: Tests with Maven
         run: mvn -f backend -B test --file pom.xml
@@ -65,13 +65,6 @@ jobs:
           java-version: ${{ matrix.java-version }}
           cache: "maven"
 
-      - name: Set up Node 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "yarn"
-      - run: yarn install --cwd=frontend --frozen-lockfile
-
       - name: Generate Keys
         run: |
           mkdir -p backend/src/main/resources/certs
@@ -79,8 +72,15 @@ jobs:
           openssl rsa -in backend/src/main/resources/certs/keypair.pem -pubout -out backend/src/main/resources/certs/public.pem
           openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in backend/src/main/resources/certs/keypair.pem -out backend/src/main/resources/certs/private.pem
 
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+      - run: cd frontend && yarn
+
       - name: Build with Jest
-        run: yarn build --cwd=frontend
+        run: cd frontend && yarn build
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml
