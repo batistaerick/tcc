@@ -21,11 +21,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "yarn"
-      - name: Yarn Install
-        run: yarn
+      - name: Npm Install
+        run: npm ci
       - name: Jest Tests
-        run: yarn jest
+        run: npm run jest
 
   test-backend:
     runs-on: ubuntu-latest
@@ -69,10 +68,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "yarn"
-      - run: yarn
-      - name: Yarn Build
-        run: yarn build
+      - run: npm ci
+      - name: Npm Build
+        run: npm run build
 
   build-backend:
     needs: test-backend
