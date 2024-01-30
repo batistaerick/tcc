@@ -44,7 +44,7 @@ jobs:
         run: mvn -f backend -B test --file pom.xml
 
       - name: Tests with Jest
-        run: cd frontend && yarn && yarn -C frontend jest
+        run: cd frontend && yarn && yarn jest
 
   build:
     needs: test
