@@ -1,5 +1,4 @@
 name: Main Branch Maven and Jest Workflow
-
 on:
   push:
     branches:
