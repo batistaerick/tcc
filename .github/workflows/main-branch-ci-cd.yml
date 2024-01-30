@@ -29,9 +29,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: Set up yarn
-        run: npm install --global yarn
+          cache: "yarn"
+      - run: yarn install --frozen-lockfile
 
       - name: Generate Keys
         run: |
@@ -44,7 +43,7 @@ jobs:
         run: mvn -f backend -B test --file pom.xml
 
       - name: Tests with Jest
-        run: cd frontend && yarn && yarn jest
+        run: yarn -C frontend jest
 
   build:
     needs: test
@@ -70,9 +69,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: Set up yarn
-        run: npm install --global yarn
+          cache: "yarn"
+      - run: yarn install --frozen-lockfile
 
       - name: Generate Keys
         run: |
@@ -85,4 +83,4 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Build with Jest
-        run: cd frontend && yarn && yarn build
+        run: yarn -C frontend build
