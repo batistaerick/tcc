@@ -31,7 +31,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Set up yarn
-        run: npm install --global yarn && yarn -C frontend install
+        run: npm install --global yarn
 
       - name: Generate Keys
         run: |
@@ -44,7 +44,7 @@ jobs:
         run: mvn -f backend -B test --file pom.xml
 
       - name: Tests with Jest
-        run: yarn -C frontend jest
+        run: yarn -C frontend install && yarn -C frontend jest
 
   build:
     needs: test
@@ -72,7 +72,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Set up yarn
-        run: npm install --global yarn && yarn -C frontend install
+        run: npm install --global yarn
 
       - name: Generate Keys
         run: |
@@ -85,4 +85,4 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Build with Jest
-        run: yarn -C frontend build
+        run: yarn -C frontend install && yarn -C frontend build
