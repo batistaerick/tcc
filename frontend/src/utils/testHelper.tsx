@@ -1,10 +1,10 @@
 import Provider from '@/components/Provider';
 import '@/i18n/i18n';
 import { render } from '@testing-library/react';
-import { ReactElement } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { RecoilRoot } from 'recoil';
 
-export function recoilRootRender(element: ReactElement) {
+export function recoilRootRender(element: ReactElement | ReactNode) {
   return render(<RecoilRoot>{element}</RecoilRoot>);
 }
 
