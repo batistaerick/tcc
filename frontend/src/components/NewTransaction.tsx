@@ -3,13 +3,13 @@ import DatePickerDialog from '@/components/DatePickerDialog';
 import Input from '@/components/Input';
 import Language from '@/components/Language';
 import usePredictions from '@/hooks/usePrediction';
-import { postFetcher } from '@/libs/fetchers';
+import { getFetcher, postFetcher, putFetcher } from '@/libs/fetchers';
 import { isOpenModalAtom, responseErrorAtom } from '@/recoil/recoilValues';
 import { Transaction } from '@/types/types';
 import { buildHeadersAuthorization } from '@/utils/headerToken';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   FcCalendar,
@@ -18,38 +18,67 @@ import {
   FcSurvey,
 } from 'react-icons/fc';
 import { useSetRecoilState } from 'recoil';
-import { KeyedMutator } from 'swr';
 
 export interface NewTransactionProps {
-  transaction: Transaction;
-  mutation?: KeyedMutator<Transaction>;
   id?: string;
 }
 
-export default function NewTransaction({
-  transaction,
-  mutation,
-  id,
-}: Readonly<NewTransactionProps>) {
-  // const { data, mutate } = useTransaction(id);
+export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
   const { push } = useRouter();
   const { t } = useTranslation();
   const { data: session } = useSession();
   const { mutate: predictionMutate } = usePredictions();
-  const [form, setForm] = useState<Transaction>(transaction);
+  const [form, setForm] = useState<Transaction>({
+    id: '',
+    user: undefined,
+    value: 0,
+    category: '',
+    notes: '',
+    date: new Date(),
+    transactionType: undefined,
+  });
   const setIsOpen = useSetRecoilState(isOpenModalAtom);
   const setResponseError = useSetRecoilState(responseErrorAtom);
 
+  useEffect(() => {
+    if (id) {
+      async function getTransaction() {
+        const transaction = await getFetcher<Transaction>(
+          `/transactions/${id}`,
+          buildHeadersAuthorization(session?.user.accessToken)
+        );
+        setForm({
+          id: transaction?.id ?? '',
+          user: transaction?.user ?? undefined,
+          value: transaction?.value ?? undefined,
+          category: transaction?.category,
+          notes: transaction?.notes,
+          date: new Date(transaction?.date ?? new Date()),
+          transactionType: transaction?.transactionType,
+        });
+        console.log('transaction ->', transaction);
+      }
+      getTransaction();
+    }
+  }, [id, session?.user.accessToken]);
+
   async function onSubmit(event: ChangeEvent<HTMLFormElement>) {
-    event.preventDefault();
     try {
-      await postFetcher<Transaction>(
-        '/transactions',
-        form,
-        buildHeadersAuthorization(session?.user.accessToken)
-      );
+      event.preventDefault();
+      if (id) {
+        await putFetcher<Transaction>(
+          '/transactions',
+          form,
+          buildHeadersAuthorization(session?.user.accessToken)
+        );
+      } else {
+        await postFetcher<Transaction>(
+          '/transactions',
+          form,
+          buildHeadersAuthorization(session?.user.accessToken)
+        );
+      }
       await predictionMutate();
-      mutation?.();
       push('/');
     } catch (error: any) {
       setResponseError(error?.response?.data);
@@ -126,7 +155,7 @@ export default function NewTransaction({
             className={`rounded-md border border-neutral-700 bg-neutral-700 p-3
               ${form.transactionType ? 'text-white' : 'text-zinc-400'}
             `}
-            value={form.transactionType ?? ''}
+            value={form?.transactionType ?? ''}
             onChange={handleChange}
           >
             <option value="" disabled>

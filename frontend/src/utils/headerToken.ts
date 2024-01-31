@@ -1,4 +1,8 @@
-export function buildHeadersAuthorization(token: string = '') {
+import { AxiosRequestConfig } from 'axios';
+
+export function buildHeadersAuthorization(
+  token: string = ''
+): AxiosRequestConfig {
   return {
     headers: {
       Authorization: `Bearer ${token}`,
