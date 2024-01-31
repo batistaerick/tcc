@@ -4,6 +4,7 @@ import useFixedTransactions from '@/hooks/useFixedTransactions';
 import usePredictions from '@/hooks/usePrediction';
 import useTransactions from '@/hooks/useTransactions';
 import { Transaction } from '@/types/types';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FcBearish, FcBullish } from 'react-icons/fc';
 
@@ -19,7 +20,7 @@ export default function Balance() {
   const { data: incomes } = useTransactions(TransactionType.INCOME);
   const { data: expenses } = useTransactions(TransactionType.EXPENSE);
 
-  function totalExpenses() {
+  const totalExpenses = useMemo(() => {
     const expenses =
       incomes
         ?.filter(
@@ -31,7 +32,6 @@ export default function Balance() {
             sum + (transaction?.value ?? 0),
           0
         ) ?? 0;
-
     const expensesFixed =
       fixedExpenses?.reduce?.(
         (sum: number, transaction: Transaction) =>
@@ -40,9 +40,9 @@ export default function Balance() {
       ) ?? 0;
 
     return expenses + expensesFixed;
-  }
+  }, [incomes, fixedExpenses]);
 
-  function totalIncomes() {
+  const totalIncomes = useMemo(() => {
     const incomes =
       expenses
         ?.filter(
@@ -54,7 +54,6 @@ export default function Balance() {
             sum + (transaction?.value ?? 0),
           0
         ) ?? 0;
-
     const incomesFixed =
       fixedIncomes?.reduce?.(
         (sum: number, transaction: Transaction) =>
@@ -63,7 +62,7 @@ export default function Balance() {
       ) ?? 0;
 
     return incomes + incomesFixed;
-  }
+  }, [expenses, fixedIncomes]);
 
   return (
     <div className="flex cursor-default">
@@ -83,7 +82,7 @@ export default function Balance() {
             <div className="flex items-center justify-start gap-1">
               <FcBearish size={35} />
               <div>
-                <Money value={totalExpenses()} />
+                <Money value={totalExpenses} />
               </div>
             </div>
           </div>
@@ -92,7 +91,7 @@ export default function Balance() {
               <div>{t('balance:income')}</div>
               <div className="flex items-center justify-end gap-1">
                 <FcBullish size={35} />
-                <Money value={totalIncomes()} />
+                <Money value={totalIncomes} />
               </div>
             </div>
           </div>

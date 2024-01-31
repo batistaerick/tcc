@@ -1,7 +1,8 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { SetterOrUpdater } from 'recoil';
+import DatePickerCustomButton from './DatePickerCustomButton';
 
 export interface DatePickerDialogProps {
   date: Date;
@@ -16,31 +17,13 @@ export default function DatePickerDialog({
   dateFormat,
   showMonthYearPicker,
 }: Readonly<DatePickerDialogProps>) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleDateChange = (newDate: Date) => {
-    setDate(newDate);
-    setIsOpen(false);
-  };
-
   return (
     <DatePicker
-      className="custom-datepicker"
       selected={date}
-      onChange={handleDateChange}
+      onChange={(newDate: Date) => setDate(newDate)}
       dateFormat={dateFormat ?? 'dd/MMMM/yyyy'}
-      showPopperArrow={false}
       showMonthYearPicker={showMonthYearPicker}
-      open={isOpen}
-      onFocus={() => setIsOpen(true)}
-      onBlur={() => setIsOpen(false)}
-      customInput={
-        <input
-          className="bg-inherit text-white focus:outline-none focus:ring-transparent"
-          value={date?.toString() ?? ''}
-          readOnly
-        />
-      }
+      customInput={<DatePickerCustomButton />}
     />
   );
 }
