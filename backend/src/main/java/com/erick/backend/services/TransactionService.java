@@ -8,15 +8,15 @@ import com.erick.backend.enums.I18nCode;
 import com.erick.backend.enums.TransactionType;
 import com.erick.backend.exceptions.GlobalException;
 import com.erick.backend.repositories.TransactionRepository;
+import com.erick.backend.utils.UpdateEntity;
 import com.erick.backend.utils.UserSession;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 /**
  * Service class for managing transaction-related operations.
@@ -49,6 +49,25 @@ public class TransactionService {
                 .build()
         );
         return converter.entityToDto(repository.save(transaction));
+    }
+
+    /**
+     * Updates an existing transaction with the values from the provided DTO.
+     *
+     * @param dto The DTO containing updated values.
+     * @return The updated DTO.
+     * @throws GlobalException If the transaction with the given ID is not found.
+     */
+    public TransactionDto put(TransactionDto dto) {
+        TransactionDto existingTransaction = findDtoById(dto.getId());
+        TransactionDto updatedTransaction = UpdateEntity.updateEntityFields(
+            dto,
+            existingTransaction
+        );
+        Transaction savedTransaction = repository.save(
+            converter.dtoToEntity(updatedTransaction)
+        );
+        return converter.entityToDto(savedTransaction);
     }
 
     /**

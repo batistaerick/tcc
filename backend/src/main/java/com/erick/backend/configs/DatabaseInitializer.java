@@ -26,7 +26,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     public void run(String... args) {
         String sql =
             "INSERT INTO t_role (id, role_name) SELECT '2950b982-3f2a-46c0-8694-796ab4988b4b', 'ROLE_USER' " +
-                "WHERE NOT EXISTS (SELECT 1 FROM t_role WHERE id = '2950b982-3f2a-46c0-8694-796ab4988b4b')";
+            "WHERE NOT EXISTS (SELECT 1 FROM t_role WHERE id = '2950b982-3f2a-46c0-8694-796ab4988b4b')";
         jdbcTemplate.update(sql);
     }
 }

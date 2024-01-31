@@ -2,9 +2,8 @@ package com.erick.backend.utils;
 
 import com.erick.backend.enums.I18nCode;
 import com.erick.backend.exceptions.GlobalException;
-import org.springframework.http.HttpStatus;
-
 import java.util.regex.Pattern;
+import org.springframework.http.HttpStatus;
 
 /**
  * The {@code CredentialsChecker} class provides utility functions for validating user credentials.

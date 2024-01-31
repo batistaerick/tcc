@@ -1,9 +1,19 @@
 package com.erick.backend.controllers;
 
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import com.erick.backend.domains.dtos.TransactionDto;
 import com.erick.backend.enums.TransactionType;
 import com.erick.backend.services.TransactionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,17 +26,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(TransactionController.class)
@@ -156,7 +155,9 @@ class TransactionControllerTest {
         given(service.predictRemainingBalance(endDate)).willReturn(prediction);
 
         mockMvc
-            .perform(get("/transactions/" + endDate + "/prediction").with(jwt()))
+            .perform(
+                get("/transactions/" + endDate + "/prediction").with(jwt())
+            )
             .andExpect(status().isOk())
             .andExpect(content().string(prediction.toString()));
         verify(service).predictRemainingBalance(endDate);

@@ -53,7 +53,7 @@ export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
           value: transaction?.value ?? undefined,
           category: transaction?.category,
           notes: transaction?.notes,
-          date: new Date(transaction?.date ?? new Date()),
+          date: new Date(transaction.date),
           transactionType: transaction?.transactionType,
         });
         console.log('transaction ->', transaction);

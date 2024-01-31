@@ -25,7 +25,7 @@ export interface Transaction {
   user?: User;
   category: string;
   notes?: string;
-  date?: Date;
+  date: Date;
   value: number;
   transactionType?: TransactionType;
 }
