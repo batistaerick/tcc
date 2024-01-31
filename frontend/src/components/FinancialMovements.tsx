@@ -2,9 +2,11 @@ import Money from '@/components/Money';
 import usePredictions from '@/hooks/usePrediction';
 import { deleteFetcher } from '@/libs/fetchers';
 import { Transaction } from '@/types/types';
+import { formatDate } from '@/utils/formatCurrencyNumber';
 import { buildHeadersAuthorization } from '@/utils/headerToken';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 import { BiEdit } from 'react-icons/bi';
 import { FcFullTrash } from 'react-icons/fc';
 import { KeyedMutator } from 'swr';
@@ -18,6 +20,9 @@ export default function FinancialMovements({
   transaction,
   mutateOnDelete,
 }: Readonly<FinancialMovementsProps>) {
+  const {
+    i18n: { language },
+  } = useTranslation();
   const { data: session } = useSession();
   const { mutate: mutatePrediction } = usePredictions();
   const { push } = useRouter();
@@ -27,11 +32,6 @@ export default function FinancialMovements({
     await deleteFetcher(`/transactions/${transaction.id}`, config);
     await mutateOnDelete();
     await mutatePrediction();
-  }
-
-  function formatDate(): string {
-    const date: Date = new Date(transaction?.date ?? new Date());
-    return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
   }
 
   return (
@@ -44,7 +44,7 @@ export default function FinancialMovements({
         />
         {transaction.category}
       </div>
-      <div>{formatDate()}</div>
+      <div>{formatDate(transaction.date, language)}</div>
       <div className="flex items-center justify-center gap-1">
         <Money value={transaction.value} />
         <FcFullTrash

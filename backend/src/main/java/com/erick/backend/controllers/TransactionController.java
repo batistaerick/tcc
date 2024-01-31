@@ -48,6 +48,21 @@ public class TransactionController {
     }
 
     /**
+     * Updates an existing transaction.
+     *
+     * @param transaction The TransactionDto containing the updated information.
+     * @return A ResponseEntity with the updated TransactionDto.
+     */
+    @PutMapping
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<TransactionDto> put(
+        @RequestBody TransactionDto transaction
+    ) {
+        TransactionDto transactionDto = service.put(transaction);
+        return ok(transactionDto);
+    }
+
+    /**
      * Deletes a transaction by its ID.
      *
      * @param id The UUID of the transaction to be deleted.

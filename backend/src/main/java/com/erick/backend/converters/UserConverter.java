@@ -2,9 +2,8 @@ package com.erick.backend.converters;
 
 import com.erick.backend.domains.dtos.UserDto;
 import com.erick.backend.domains.entities.User;
-import org.springframework.stereotype.Component;
-
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Component;
 
 /**
  * Converter class for converting between User entity and UserDto.

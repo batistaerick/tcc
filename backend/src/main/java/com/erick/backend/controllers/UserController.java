@@ -1,16 +1,15 @@
 package com.erick.backend.controllers;
 
+import static org.springframework.http.ResponseEntity.*;
+
 import com.erick.backend.domains.dtos.UserDto;
 import com.erick.backend.services.UserService;
+import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
-
-import static org.springframework.http.ResponseEntity.*;
 
 /**
  * REST controller for managing users.

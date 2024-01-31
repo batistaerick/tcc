@@ -1,5 +1,7 @@
 package com.erick.backend.controllers;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 import com.erick.backend.domains.dtos.UserDto;
 import com.erick.backend.services.TokenService;
 import lombok.RequiredArgsConstructor;
@@ -8,8 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import static org.springframework.http.ResponseEntity.ok;
 
 /**
  * REST controller for authentication-related operations.
