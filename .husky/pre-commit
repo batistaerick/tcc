@@ -1,2 +1,12 @@
 #!/bin/bash
+
+main="main"
+
+branch_name="$(git rev-parse --abbrev-ref HEAD)"
+
+if [[ $branch_name =~ $main ]]; then
+    echo "Unauthorized, commits to the main branch are not allowed"
+    exit 1
+fi
+
 yarn pre-commit

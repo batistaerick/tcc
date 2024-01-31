@@ -1,50 +1,18 @@
 'use client';
-import DefaultBackground from '@/components/DefaultBackground';
-import Loading from '@/components/Loading';
-import ModalError from '@/components/ModalError';
 import NewTransaction from '@/components/NewTransaction';
-import useTransaction from '@/hooks/useTransaction';
+import Wrapper from '@/components/Wrapper';
 import '@/i18n/i18n';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { RecoilRoot } from 'recoil';
 
-interface NewTransactionProps {
+interface EditTransactionProps {
   params: { id: string };
 }
 
-export default function Transactions({
+export default function EditTransaction({
   params: { id },
-}: Readonly<NewTransactionProps>) {
-  const { push } = useRouter();
-  const { status } = useSession({
-    required: true,
-    onUnauthenticated() {
-      push('/auth');
-    },
-  });
-  const { data, mutate } = useTransaction(id);
-
-  if (status === 'loading') {
-    return <Loading />;
-  }
+}: Readonly<EditTransactionProps>) {
   return (
-    <RecoilRoot>
-      <ModalError />
-      <DefaultBackground>
-        <NewTransaction
-          transaction={{
-            id: data?.id ?? '',
-            user: data?.user ?? undefined,
-            value: data?.value ?? undefined,
-            category: data?.category ?? '',
-            notes: data?.notes ?? '',
-            date: new Date(data?.date ?? new Date()),
-            transactionType: data?.transactionType ?? undefined,
-          }}
-          mutation={mutate}
-        />
-      </DefaultBackground>
-    </RecoilRoot>
+    <Wrapper>
+      <NewTransaction id={id} />
+    </Wrapper>
   );
 }

@@ -40,13 +40,13 @@ export default function FinancialMovements({
         <BiEdit
           className="cursor-pointer text-slate-500"
           size={22}
-          onClick={() => push(`/new-transaction/${transaction?.id}`)}
+          onClick={() => push(`/new-transaction/${transaction.id}`)}
         />
         {transaction.category}
       </div>
       <div>{formatDate()}</div>
       <div className="flex items-center justify-center gap-1">
-        <Money value={transaction?.value} />
+        <Money value={transaction.value} />
         <FcFullTrash
           data-testid="delete-icon"
           className="cursor-pointer"
