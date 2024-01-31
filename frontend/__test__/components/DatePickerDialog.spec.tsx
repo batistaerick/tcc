@@ -8,7 +8,7 @@ describe('DatePickerDialog component', () => {
       <DatePickerDialog date={new Date('2024-05-05')} setDate={setDate} />
     );
 
-    const inputElement = getByRole('textbox');
+    const inputElement = getByRole('button');
     expect(inputElement).toBeInTheDocument();
   });
 });
