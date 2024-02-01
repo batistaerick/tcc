@@ -147,12 +147,16 @@ export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
           />
         </div>
         <div className="flex items-center justify-between">
-          <label className="text-base text-zinc-300" htmlFor="transactionType">
+          <label
+            className="text-base dark:text-zinc-300"
+            htmlFor="transactionType"
+          >
             {t('newTransaction:transactionType')}
           </label>
           <select
             id="transactionType"
-            className={`rounded-md border border-neutral-700 bg-neutral-700 p-3
+            className={`
+              rounded-md border border-neutral-700 bg-neutral-700 p-3
               ${form.transactionType ? 'text-white' : 'text-zinc-400'}
             `}
             value={form?.transactionType ?? ''}

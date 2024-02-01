@@ -112,7 +112,7 @@ export default function Profile() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-5 pt-5">
-      <div className="flex items-center justify-center gap-5 text-white">
+      <div className="flex items-center justify-center gap-5">
         <div className="flex flex-col items-center justify-center gap-1">
           <label
             className={`

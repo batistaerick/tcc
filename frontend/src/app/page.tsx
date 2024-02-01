@@ -5,7 +5,6 @@ import Header from '@/components/Header';
 import Language from '@/components/Language';
 import Transactions from '@/components/Transactions';
 import Wrapper from '@/components/Wrapper';
-import '@/i18n/i18n';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 

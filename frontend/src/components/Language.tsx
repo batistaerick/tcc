@@ -13,7 +13,7 @@ export default function Language() {
 
   const buttonStyle = `
     flex h-8 w-9 transform items-center justify-center
-    text-xs font-medium text-white
+    text-xs font-medium
     transition-colors duration-500 ease-in-out
     hover:bg-slate-700
   `;

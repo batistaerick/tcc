@@ -86,7 +86,7 @@ export default function Login() {
               px-16 pb-16 pt-5 lg:mt-2 lg:w-2/5
             `}
         >
-          <h2 className="mb-8 flex items-center justify-center text-4xl font-semibold text-white">
+          <h2 className="mb-8 flex items-center justify-center text-4xl font-semibold">
             {variant === 'login' ? t('auth:signIn') : t('auth:signUp')}
           </h2>
           <div className="flex flex-col gap-4">
@@ -127,9 +127,7 @@ export default function Login() {
                 onKeyDown={onKeyDown}
               />
             </div>
-            {unauthorized && (
-              <div className="text-white">{t(`api:${unauthorized}`)}</div>
-            )}
+            {unauthorized && <div>{t(`api:${unauthorized}`)}</div>}
           </div>
           <div className="mt-10">
             <Button
@@ -169,7 +167,7 @@ export default function Login() {
               ? t('auth:newInHere')
               : t('auth:alreadyHaveAccount')}
             <button
-              className="ml-1 cursor-pointer text-white hover:underline"
+              className="ml-1 cursor-pointer text-black hover:underline dark:text-white"
               onClick={toggleVariant}
             >
               {variant === 'login' ? t('auth:signUp') : t('auth:login')}
