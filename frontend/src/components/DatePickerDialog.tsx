@@ -1,10 +1,10 @@
-import { getLocation } from '@/utils/globalFormats';
+import DatePickerCustomButton from '@/components/DatePickerCustomButton';
+import { enUS, ptBR } from 'date-fns/locale';
 import { Dispatch, SetStateAction, useMemo } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useTranslation } from 'react-i18next';
 import { SetterOrUpdater } from 'recoil';
-import DatePickerCustomButton from './DatePickerCustomButton';
 
 export interface DatePickerDialogProps {
   date: Date;
@@ -22,7 +22,7 @@ export default function DatePickerDialog({
   const {
     i18n: { language },
   } = useTranslation();
-  const locale = useMemo(() => getLocation(language), [language]);
+  const locale = useMemo(() => (language === 'en' ? enUS : ptBR), [language]);
 
   return (
     <DatePicker
