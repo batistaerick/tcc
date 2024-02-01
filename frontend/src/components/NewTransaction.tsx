@@ -103,8 +103,8 @@ export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="z-20 mt-5 flex w-[320px] items-center justify-center gap-1 md:w-[450px]">
+    <div className="flex w-screen flex-col items-center justify-center ">
+      <div className="z-20 mt-5 flex items-center justify-center gap-1">
         <FcCalendar size={25} />
         <DatePickerDialog
           date={form?.date ?? new Date()}
@@ -112,7 +112,7 @@ export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
         />
       </div>
       <form
-        className="mt-5 flex w-[320px] flex-col gap-10 md:w-[450px]"
+        className="mt-5 flex w-11/12 flex-col gap-10 md:w-8/12 lg:w-6/12"
         id="newTransactionForm"
         onSubmit={onSubmit}
       >

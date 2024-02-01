@@ -1,4 +1,5 @@
 import DatePickerDialog from '@/components/DatePickerDialog';
+import Language from '@/components/Language';
 import useProfileImage from '@/hooks/useProfileImage';
 import { selectedDateAtom } from '@/recoil/recoilValues';
 import { signOut } from 'next-auth/react';
@@ -23,7 +24,7 @@ export default function Header() {
   }
 
   return (
-    <header className="flex h-12 w-[350px] items-center justify-between md:w-[700px]">
+    <header className="flex h-12 w-11/12 items-center justify-between">
       <div className="flex items-center gap-2">
         {profileImage && (
           <Image
@@ -35,13 +36,14 @@ export default function Header() {
           />
         )}
         {!profileImage && <BiUserCircle className="text-white" size={30} />}
+        <Language />
       </div>
       <div className="flex items-center justify-center gap-2">
         <FcCalendar size={25} />
         <DatePickerDialog
           date={selectedDate}
           setDate={setSelectedDate}
-          dateFormat="MMMM/yyyy"
+          dateFormat="MMM/yyyy"
           showMonthYearPicker
         />
       </div>

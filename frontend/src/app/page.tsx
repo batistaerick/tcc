@@ -2,7 +2,6 @@
 import Balance from '@/components/Balance';
 import Button from '@/components/Button';
 import Header from '@/components/Header';
-import Language from '@/components/Language';
 import Transactions from '@/components/Transactions';
 import Wrapper from '@/components/Wrapper';
 import { useRouter } from 'next/navigation';
@@ -19,11 +18,10 @@ export default function Home() {
       <Transactions />
       <Button
         height="h-12"
-        width="w-[350px] md:w-[700px]"
+        width="w-11/12"
         translation={t('button:newTransaction')}
         onClick={() => push('/new-transaction')}
       />
-      <Language />
     </Wrapper>
   );
 }
