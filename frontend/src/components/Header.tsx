@@ -33,7 +33,7 @@ export default function Header() {
         {!profileImage && <BiUserCircle className="text-white" size={30} />}
       </div>
       <div className="flex items-center justify-center gap-2">
-        <FcCalendar size={30} />
+        <FcCalendar size={25} />
         <DatePickerDialog
           date={selectedDate}
           setDate={setSelectedDate}

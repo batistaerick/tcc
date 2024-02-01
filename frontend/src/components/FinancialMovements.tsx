@@ -2,7 +2,7 @@ import Money from '@/components/Money';
 import usePredictions from '@/hooks/usePrediction';
 import { deleteFetcher } from '@/libs/fetchers';
 import { Transaction } from '@/types/types';
-import { formatDate } from '@/utils/formatCurrencyNumber';
+import { formatDate } from '@/utils/globalFormats';
 import { buildHeadersAuthorization } from '@/utils/headerToken';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';

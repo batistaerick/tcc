@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/utils/formatCurrencyNumber';
+import { formatCurrency } from '@/utils/globalFormats';
 import { useTranslation } from 'react-i18next';
 
 export interface MoneyProps {
