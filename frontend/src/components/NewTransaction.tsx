@@ -104,8 +104,8 @@ export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="z-20 mt-5 flex w-[320px] items-center gap-1 md:w-[450px]">
-        <FcCalendar size={20} />
+      <div className="z-20 mt-5 flex w-[320px] items-center justify-center gap-1 md:w-[450px]">
+        <FcCalendar size={25} />
         <DatePickerDialog
           date={form?.date ?? new Date()}
           setDate={handleChangeDate}
@@ -127,22 +127,22 @@ export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
           />
         </div>
         <div>
-          <FcSurvey className="mb-1" size={25} />
-          <Input
-            id="notes"
-            label={t('newTransaction:notes')}
-            type="text"
-            value={form?.notes}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
           <FcIdea className="mb-1" size={25} />
           <Input
             id="category"
             label={t('newTransaction:category')}
             type="text"
             value={form.category}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <FcSurvey className="mb-1" size={25} />
+          <Input
+            id="notes"
+            label={t('newTransaction:notes')}
+            type="text"
+            value={form?.notes}
             onChange={handleChange}
           />
         </div>

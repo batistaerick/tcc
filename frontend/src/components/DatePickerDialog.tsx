@@ -1,6 +1,8 @@
-import { Dispatch, SetStateAction } from 'react';
+import { getLocation } from '@/utils/globalFormats';
+import { Dispatch, SetStateAction, useMemo } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useTranslation } from 'react-i18next';
 import { SetterOrUpdater } from 'recoil';
 import DatePickerCustomButton from './DatePickerCustomButton';
 
@@ -17,6 +19,11 @@ export default function DatePickerDialog({
   dateFormat,
   showMonthYearPicker,
 }: Readonly<DatePickerDialogProps>) {
+  const {
+    i18n: { language },
+  } = useTranslation();
+  const locale = useMemo(() => getLocation(language), [language]);
+
   return (
     <DatePicker
       selected={date}
@@ -24,6 +31,7 @@ export default function DatePickerDialog({
       dateFormat={dateFormat ?? 'dd/MMMM/yyyy'}
       showMonthYearPicker={showMonthYearPicker}
       customInput={<DatePickerCustomButton />}
+      locale={locale}
     />
   );
 }
