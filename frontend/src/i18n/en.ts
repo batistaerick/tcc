@@ -1,4 +1,4 @@
-import { LanguageMap } from './types';
+import { LanguageMap } from '@/i18n/types';
 
 const en: LanguageMap = {
   api: {
