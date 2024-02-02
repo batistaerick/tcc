@@ -1,6 +1,5 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
-import Language from '@/components/Language';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import useProfileImage from '@/hooks/useProfileImage';
 import { postFetcher, putFetcher } from '@/libs/fetchers';
@@ -216,7 +215,6 @@ export default function Profile() {
           />
         </div>
       </form>
-      <Language />
     </div>
   );
 }
