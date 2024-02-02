@@ -12,10 +12,9 @@ export default function Language() {
   }
 
   const buttonStyle = `
-    flex h-8 w-9 transform items-center justify-center
-    text-xs font-medium text-white
+    flex h-9 w-9 transform items-center justify-center text-xs font-medium
     transition-colors duration-500 ease-in-out
-    hover:bg-slate-700
+    hover:bg-slate-400 dark:hover:bg-slate-700
   `;
 
   return (
@@ -24,7 +23,11 @@ export default function Language() {
         className={`
           rounded-l-xl
           ${buttonStyle}
-          ${language === 'en' ? 'bg-slate-700' : 'bg-slate-500'}
+          ${
+            language === 'en'
+              ? 'bg-slate-400 dark:bg-slate-700'
+              : 'bg-slate-300 dark:bg-slate-500'
+          }
         `}
         onClick={() => handleChangeLanguage('en')}
       >
@@ -34,7 +37,11 @@ export default function Language() {
         className={`
           rounded-r-xl
           ${buttonStyle}
-          ${language === 'pt' ? 'bg-slate-700' : 'bg-slate-500'}
+          ${
+            language === 'pt'
+              ? 'bg-slate-400 dark:bg-slate-700'
+              : 'bg-slate-300 dark:bg-slate-500'
+          }
         `}
         onClick={() => handleChangeLanguage('pt')}
       >

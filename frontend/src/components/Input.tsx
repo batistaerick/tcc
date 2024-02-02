@@ -59,13 +59,12 @@ export default function Input({
           w-full
           appearance-none
           rounded-md
-          bg-neutral-700
           px-6
           pb-1
           pt-6
-          text-white
           outline-none
           focus:ring-0
+          dark:bg-neutral-700
         `}
         placeholder=" "
         id={id}

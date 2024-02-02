@@ -156,8 +156,8 @@ export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
           <select
             id="transactionType"
             className={`
-              rounded-md border border-neutral-700 bg-neutral-700 p-3
-              ${form.transactionType ? 'text-white' : 'text-zinc-400'}
+              rounded-md border bg-white p-3 dark:border-neutral-700 dark:bg-neutral-700
+              ${form.transactionType ? 'dark:text-white' : 'text-zinc-400'}
             `}
             value={form?.transactionType ?? ''}
             onChange={handleChange}

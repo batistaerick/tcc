@@ -62,7 +62,7 @@ export default function Balance() {
 
   return (
     <div className="w-11/12">
-      <div className="h-48 cursor-default rounded-xl bg-gray-200 dark:bg-slate-600">
+      <div className="h-48 cursor-default rounded-xl bg-[#bfd8d5] dark:bg-slate-600">
         <div className="flex items-center justify-between px-10 pt-5">
           <div>
             <div className="text-left">{t('balance:totalBalance')}</div>

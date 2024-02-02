@@ -2,7 +2,7 @@ import Provider from '@/components/Provider';
 import i18n from '@/i18n/i18n';
 import { render } from '@testing-library/react';
 import { SessionProvider } from 'next-auth/react';
-import { ThemeProvider } from 'next-theme';
+import { ThemeProvider } from 'next-themes';
 import { ReactElement, ReactNode } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { RecoilRoot } from 'recoil';

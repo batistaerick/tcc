@@ -10,7 +10,7 @@ export default function DefaultBackground({
   return (
     <div
       className={`
-        flex h-screen w-screen flex-col items-center gap-2 bg-white
+        flex h-screen w-screen flex-col items-center gap-2 bg-[#dfdfdf]
         transition-colors duration-500 dark:bg-slate-800 dark:text-gray-300
       `}
     >

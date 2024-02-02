@@ -17,8 +17,8 @@ describe('Language component', () => {
     const enButton = getByText('EN');
     const ptButton = getByText('PT');
 
-    expect(enButton).toHaveClass('bg-slate-700');
-    expect(ptButton).toHaveClass('bg-slate-500');
+    expect(enButton).toHaveClass('bg-slate-400');
+    expect(ptButton).toHaveClass('bg-slate-300');
   });
 
   it('should call changeLanguage when a different language button is clicked', () => {

@@ -13,8 +13,8 @@ export interface ButtonProps {
 export default function Button({
   type,
   form,
-  height = 'h-10',
-  width = 'w-16',
+  height,
+  width,
   disabled,
   translation,
   onClick,
@@ -22,13 +22,13 @@ export default function Button({
   return (
     <button
       className={`
-        ${height} ${width}
+        rounded-xl text-white transition-colors duration-500
+        ${height ?? 'h-10'} ${width ?? 'w-16'}
         ${
           disabled
-            ? 'dark:bg-slate-700'
-            : 'bg-slate-500 hover:bg-slate-600 dark:bg-indigo-800 dark:hover:bg-indigo-900'
+            ? 'bg-[#568185] dark:bg-slate-700'
+            : 'bg-[#78b7bb] hover:bg-[#5e9094] dark:bg-indigo-800 dark:hover:bg-indigo-900'
         }
-        rounded-xl transition-colors duration-500
       `}
       type={type}
       form={form}
