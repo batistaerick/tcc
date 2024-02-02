@@ -1,7 +1,6 @@
 import Button from '@/components/Button';
 import DatePickerDialog from '@/components/DatePickerDialog';
 import Input from '@/components/Input';
-import Language from '@/components/Language';
 import usePredictions from '@/hooks/usePrediction';
 import { getFetcher, postFetcher, putFetcher } from '@/libs/fetchers';
 import { isOpenModalAtom, responseErrorAtom } from '@/recoil/recoilValues';
@@ -197,9 +196,6 @@ export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
           />
         </div>
       </form>
-      <div className="mt-10">
-        <Language />
-      </div>
     </div>
   );
 }

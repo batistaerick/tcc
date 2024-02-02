@@ -12,14 +12,14 @@ export default function ThemeSwitch() {
         <FaSun
           className="cursor-pointer"
           color="orange"
-          size={30}
+          size={25}
           onClick={() => setTheme('light')}
         />
       )}
       {resolvedTheme === 'light' && (
         <GiMoonBats
           className="cursor-pointer"
-          size={30}
+          size={25}
           onClick={() => setTheme('dark')}
         />
       )}
