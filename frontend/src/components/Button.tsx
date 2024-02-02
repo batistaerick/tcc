@@ -23,7 +23,11 @@ export default function Button({
     <button
       className={`
         ${height} ${width}
-        ${disabled ? 'bg-slate-700' : 'bg-indigo-800 hover:bg-indigo-900'}
+        ${
+          disabled
+            ? 'dark:bg-slate-700'
+            : 'bg-slate-500 hover:bg-slate-600 dark:bg-indigo-800 dark:hover:bg-indigo-900'
+        }
         rounded-xl transition-colors duration-500
       `}
       type={type}

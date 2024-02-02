@@ -103,8 +103,8 @@ export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="z-20 mt-5 flex w-[320px] items-center justify-center gap-1 md:w-[450px]">
+    <div className="flex w-screen flex-col items-center justify-center ">
+      <div className="z-20 mt-5 flex items-center justify-center gap-1">
         <FcCalendar size={25} />
         <DatePickerDialog
           date={form?.date ?? new Date()}
@@ -112,7 +112,7 @@ export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
         />
       </div>
       <form
-        className="mt-5 flex w-[320px] flex-col gap-10 md:w-[450px]"
+        className="mt-5 flex w-11/12 flex-col gap-10 md:w-8/12 lg:w-6/12"
         id="newTransactionForm"
         onSubmit={onSubmit}
       >
@@ -147,12 +147,16 @@ export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
           />
         </div>
         <div className="flex items-center justify-between">
-          <label className="text-base text-zinc-300" htmlFor="transactionType">
+          <label
+            className="text-base dark:text-zinc-300"
+            htmlFor="transactionType"
+          >
             {t('newTransaction:transactionType')}
           </label>
           <select
             id="transactionType"
-            className={`rounded-md border border-neutral-700 bg-neutral-700 p-3
+            className={`
+              rounded-md border border-neutral-700 bg-neutral-700 p-3
               ${form.transactionType ? 'text-white' : 'text-zinc-400'}
             `}
             value={form?.transactionType ?? ''}
