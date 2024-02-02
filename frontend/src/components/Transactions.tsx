@@ -2,8 +2,10 @@ import SingleTransaction from '@/components/SingleTransaction';
 import { TransactionType } from '@/enums/enums';
 import useFixedTransactions from '@/hooks/useFixedTransactions';
 import useTransactions from '@/hooks/useTransactions';
+import { useTranslation } from 'react-i18next';
 
 export default function Transactions() {
+  const { t } = useTranslation();
   const { data: fixedExpenses, mutate: fixedExpensesMutate } =
     useFixedTransactions(TransactionType.FIXED_EXPENSE);
   const { data: fixedIncomes, mutate: fixedIncomesMutate } =
@@ -22,14 +24,16 @@ export default function Transactions() {
         transactionsMutate={expensesMutate}
         fixedTransactions={fixedExpenses}
         fixedTransactionsMutate={fixedExpensesMutate}
-        textColor="text-red-600"
+        title={t('transactions:expenses')}
+        style="text-red-800 text-xl dark:text-red-700"
       />
       <SingleTransaction
         transactions={incomes}
         transactionsMutate={incomesMutate}
         fixedTransactions={fixedIncomes}
         fixedTransactionsMutate={fixedIncomesMutate}
-        textColor="text-green-600"
+        title={t('transactions:incomes')}
+        style="text-green-800 text-xl dark:text-green-700"
       />
     </>
   );

@@ -2,7 +2,6 @@ import DatePickerCustomButton from '@/components/DatePickerCustomButton';
 import { enUS, ptBR } from 'date-fns/locale';
 import { Dispatch, SetStateAction, useMemo } from 'react';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import { useTranslation } from 'react-i18next';
 import { SetterOrUpdater } from 'recoil';
 
