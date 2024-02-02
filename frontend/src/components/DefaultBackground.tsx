@@ -1,7 +1,7 @@
-import { ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
 
 export interface DefaultBackgroundProps {
-  children: ReactNode;
+  children: ReactNode | ReactElement;
 }
 
 export default function DefaultBackground({
