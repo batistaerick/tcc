@@ -1,0 +1,22 @@
+#!/bin/bash
+
+echo -e "\e[32mRunning Java tests for backend...\e[0m"
+
+# Run Maven tests for backend
+mvn test -f backend
+
+if [ $? -ne 0 ]; then
+    echo -e "\e[31mFailed running tests. Commit aborted.\e[0m"
+    exit 1
+fi
+
+# Run Jest tests for frontend
+echo -e "\e[32mRunning Jest tests for frontend...\e[0m"
+cd frontend && yarn test:ci
+
+if [ $? -ne 0 ]; then
+    echo -e "\e[31mFailed running frontend tests. Commit aborted.\e[0m"
+    exit 1
+fi
+
+exit 0
