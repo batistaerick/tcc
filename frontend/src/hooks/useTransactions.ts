@@ -7,9 +7,11 @@ import { getLocalDate } from '@/utils/localDate';
 import { AxiosRequestConfig } from 'axios';
 import { useSession } from 'next-auth/react';
 import { useRecoilValue } from 'recoil';
-import useSWR from 'swr';
+import useSWR, { SWRResponse } from 'swr';
 
-export default function useTransactions(transactionType: TransactionType) {
+export default function useTransactions(
+  transactionType: TransactionType
+): SWRResponse<Transaction[], any, any> {
   const { data } = useSession();
   const date = useRecoilValue(selectedDateAtom);
   const startDate = getLocalDate(date);
@@ -24,8 +26,7 @@ export default function useTransactions(transactionType: TransactionType) {
     },
   };
 
-  const response = useSWR(['/transactions', config], ([url, config]) =>
+  return useSWR(['/transactions', config], ([url, config]) =>
     getFetcher<Transaction[]>(url, config)
   );
-  return response;
 }

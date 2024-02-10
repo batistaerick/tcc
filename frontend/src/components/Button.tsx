@@ -26,8 +26,8 @@ export default function Button({
         ${height ?? 'h-10'} ${width ?? 'w-16'}
         ${
           disabled
-            ? 'bg-[#568185] dark:bg-slate-700'
-            : 'bg-[#78b7bb] hover:bg-[#5e9094] dark:bg-indigo-800 dark:hover:bg-indigo-900'
+            ? 'bg-slate-700 bg-opacity-60'
+            : 'bg-indigo-800 bg-opacity-80 hover:bg-indigo-900'
         }
       `}
       type={type}

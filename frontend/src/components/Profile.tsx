@@ -110,54 +110,52 @@ export default function Profile() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center gap-5 pt-5">
-      <div className="flex items-center justify-center gap-5">
-        <div className="flex flex-col items-center justify-center gap-1">
-          <label
-            className={`
-              cursor-pointer rounded-xl bg-slate-400
-              transition duration-500 hover:bg-slate-500
-            `}
-          >
-            <input
-              className="hidden"
-              id="image"
-              type="file"
-              accept="image/png, image/jpeg"
-              onChange={handleChangeImage}
+    <div className="flex flex-col items-center justify-center gap-5">
+      <div className="flex flex-col items-center justify-center gap-2">
+        <label
+          className={`
+            cursor-pointer rounded-xl bg-slate-400
+            transition duration-500 hover:bg-slate-500
+          `}
+        >
+          <input
+            className="hidden"
+            id="image"
+            type="file"
+            accept="image/png, image/jpeg"
+            onChange={handleChangeImage}
+          />
+          {updatedImage && (
+            <Image
+              src={URL.createObjectURL(updatedImage)}
+              className="flex h-40 w-40 items-center rounded-xl object-cover"
+              width={0}
+              height={0}
+              alt="Choose your image"
             />
-            {updatedImage && (
-              <Image
-                src={URL.createObjectURL(updatedImage)}
-                className="flex h-32 w-32 items-center rounded-xl object-cover"
-                width={0}
-                height={0}
-                alt="Choose your image"
-              />
-            )}
-            {!updatedImage && profileImage && (
-              <Image
-                src={`${URL.createObjectURL(profileImage)}`}
-                className="flex h-32 w-32 items-center rounded-xl object-cover"
-                width={0}
-                height={0}
-                alt="Choose your image"
-              />
-            )}
-            {!updatedImage && !profileImage && (
-              <span className="flex h-32 w-32 items-center rounded-xl">
-                Choose your image
-              </span>
-            )}
-          </label>
-        </div>
-        <div>
+          )}
+          {!updatedImage && profileImage && (
+            <Image
+              src={`${URL.createObjectURL(profileImage)}`}
+              className="flex h-40 w-40 items-center rounded-xl object-cover"
+              width={0}
+              height={0}
+              alt="Choose your image"
+            />
+          )}
+          {!updatedImage && !profileImage && (
+            <span className="flex h-40 w-40 items-center rounded-xl">
+              Choose your image
+            </span>
+          )}
+        </label>
+        <div className="flex flex-col items-center justify-center">
           <div>{user?.name}</div>
           <div>{user?.email}</div>
         </div>
       </div>
       <form
-        className="flex w-[350px] flex-col gap-5"
+        className="flex w-[350px] flex-col gap-5 sm:w-[400px]"
         id="updateUserForm"
         onSubmit={onSubmit}
       >
@@ -197,7 +195,7 @@ export default function Profile() {
         {unauthorized && (
           <div className="text-white">{t(`api:${unauthorized}`)}</div>
         )}
-        <div className="flex w-[350px] items-center justify-center gap-3">
+        <div className="flex w-[350px] items-center justify-center gap-3 sm:w-[400px]">
           <Button
             type="button"
             height="h-12"

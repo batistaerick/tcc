@@ -2,7 +2,6 @@ import Provider from '@/components/Provider';
 import i18n from '@/i18n/i18n';
 import { render } from '@testing-library/react';
 import { SessionProvider } from 'next-auth/react';
-import { ThemeProvider } from 'next-themes';
 import { ReactElement, ReactNode } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { RecoilRoot } from 'recoil';
@@ -17,14 +16,6 @@ export function renderRecoilRoot(element: ReactElement | ReactNode) {
 
 export function renderSessionProvider(element: ReactElement) {
   return render(<SessionProvider>{element}</SessionProvider>);
-}
-
-export function renderThemeProvider(element: ReactElement) {
-  return render(
-    <ThemeProvider attribute="class" defaultTheme="system">
-      {element}
-    </ThemeProvider>
-  );
 }
 
 export function renderI18nextProvider(element: ReactElement) {

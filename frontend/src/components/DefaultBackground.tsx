@@ -10,11 +10,19 @@ export default function DefaultBackground({
   return (
     <div
       className={`
-        flex h-screen w-screen flex-col items-center gap-2 bg-[#dfdfdf]
-        transition-colors duration-500 dark:bg-slate-800 dark:text-gray-300
+        relative h-screen w-screen
+        bg-[url('/images/HomeBackground.jpg')] bg-cover bg-fixed bg-center bg-no-repeat
+        transition-colors duration-500
       `}
     >
-      {children}
+      <div
+        className={`
+          flex h-screen w-screen flex-col items-center justify-center gap-2
+          bg-black bg-opacity-50 text-gray-300
+        `}
+      >
+        {children}
+      </div>
     </div>
   );
 }

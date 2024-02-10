@@ -20,7 +20,7 @@ export default function SingleTransaction({
   style,
 }: Readonly<SingleTransactionProps>) {
   return (
-    <div className="w-11/12 rounded-xl bg-[#b1bed5] dark:border-none dark:bg-blue-950">
+    <div className="w-10/12 rounded-xl bg-blue-950 bg-opacity-65">
       <div
         className={`flex items-center justify-center font-semibold ${style}`}
       >

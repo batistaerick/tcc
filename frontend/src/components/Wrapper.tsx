@@ -1,6 +1,5 @@
 import DefaultBackground from '@/components/DefaultBackground';
 import Loading from '@/components/Loading';
-import ModalError from '@/components/ModalError';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { ReactElement, ReactNode } from 'react';
@@ -21,10 +20,5 @@ export default function Wrapper({ children }: Readonly<WrapperProps>) {
   if (status === 'loading') {
     return <Loading />;
   }
-  return (
-    <>
-      <ModalError />
-      <DefaultBackground>{children}</DefaultBackground>
-    </>
-  );
+  return <DefaultBackground>{children}</DefaultBackground>;
 }

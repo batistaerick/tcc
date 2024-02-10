@@ -25,7 +25,7 @@ export default function Transactions() {
         fixedTransactions={fixedExpenses}
         fixedTransactionsMutate={fixedExpensesMutate}
         title={t('transactions:expenses')}
-        style="text-red-800 text-xl dark:text-red-700"
+        style="text-xl text-red-700"
       />
       <SingleTransaction
         transactions={incomes}
@@ -33,7 +33,7 @@ export default function Transactions() {
         fixedTransactions={fixedIncomes}
         fixedTransactionsMutate={fixedIncomesMutate}
         title={t('transactions:incomes')}
-        style="text-green-800 text-xl dark:text-green-700"
+        style="text-xl text-green-700"
       />
     </>
   );

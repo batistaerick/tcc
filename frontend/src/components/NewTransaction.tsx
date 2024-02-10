@@ -10,12 +10,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  FcCalendar,
-  FcCurrencyExchange,
-  FcIdea,
-  FcSurvey,
-} from 'react-icons/fc';
+import { FcCurrencyExchange, FcIdea, FcSurvey } from 'react-icons/fc';
 import { useSetRecoilState } from 'recoil';
 
 export interface NewTransactionProps {
@@ -102,14 +97,11 @@ export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
   }
 
   return (
-    <div className="flex w-screen flex-col items-center justify-center ">
-      <div className="z-20 mt-5 flex items-center justify-center gap-1">
-        <FcCalendar size={25} />
-        <DatePickerDialog
-          date={form?.date ?? new Date()}
-          setDate={handleChangeDate}
-        />
-      </div>
+    <div className="flex w-screen flex-col items-center justify-center">
+      <DatePickerDialog
+        date={form?.date ?? new Date()}
+        setDate={handleChangeDate}
+      />
       <form
         className="mt-5 flex w-11/12 flex-col gap-10 md:w-8/12 lg:w-6/12"
         id="newTransactionForm"
@@ -146,17 +138,14 @@ export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
           />
         </div>
         <div className="flex items-center justify-between">
-          <label
-            className="text-base dark:text-zinc-300"
-            htmlFor="transactionType"
-          >
+          <label className="text-zinc-300" htmlFor="transactionType">
             {t('newTransaction:transactionType')}
           </label>
           <select
             id="transactionType"
             className={`
-              rounded-md border bg-white p-3 dark:border-neutral-700 dark:bg-neutral-700
-              ${form.transactionType ? 'dark:text-white' : 'text-zinc-400'}
+              rounded-md border border-neutral-700 bg-neutral-700 p-3
+              ${form.transactionType ? 'text-white' : 'text-zinc-400'}
             `}
             value={form?.transactionType ?? ''}
             onChange={handleChange}

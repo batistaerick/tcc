@@ -9,7 +9,7 @@ i18n
   .use(LanguageDetector)
   .init({
     resources: { en: { translation: en }, pt: { translation: pt } },
-    fallbackLng: 'pt',
+    fallbackLng: 'en',
     keySeparator: ':',
     interpolation: { escapeValue: false },
     react: { useSuspense: true },
