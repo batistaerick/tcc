@@ -39,9 +39,7 @@ export default function FinancialMovements({
       <div className="flex items-center justify-start gap-2">
         <BiEdit
           className={`
-            cursor-pointer text-slate-800 transition-colors
-            duration-500 hover:text-slate-500
-            dark:text-slate-400 dark:hover:text-slate-100
+            cursor-pointer text-slate-400 transition-colors duration-500 hover:text-slate-100
           `}
           size={22}
           onClick={() => push(`/new-transaction/${transaction.id}`)}

@@ -18,7 +18,7 @@ export default function Home() {
       <Transactions />
       <Button
         height="h-12"
-        width="w-11/12"
+        width="w-10/12"
         translation={t('button:newTransaction')}
         onClick={() => push('/new-transaction')}
       />

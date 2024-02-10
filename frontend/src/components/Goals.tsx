@@ -39,7 +39,7 @@ export default function Goals() {
 
   return (
     <div className="flex w-11/12 flex-col gap-2">
-      <div className="flex flex-row justify-between rounded-xl bg-[#bfd8d5] p-2 dark:bg-slate-600">
+      <div className="flex flex-row justify-between rounded-xl bg-slate-600 p-2">
         <div className="flex flex-col items-center justify-center gap-2">
           <div>Incomes</div>
           <Goal<Transaction>
@@ -51,7 +51,7 @@ export default function Goals() {
         </div>
         <div className="">test</div>
       </div>
-      <div className="flex flex-row justify-between rounded-xl bg-[#bfd8d5] p-2 dark:bg-slate-600">
+      <div className="flex flex-row justify-between rounded-xl bg-slate-600 p-2">
         <div className="flex flex-col items-center justify-center gap-2">
           <div>Incomes</div>
           <Goal<Transaction>
@@ -63,7 +63,7 @@ export default function Goals() {
         </div>
         <div>test</div>
       </div>
-      <div className="flex flex-row justify-between rounded-xl bg-[#bfd8d5] p-2 dark:bg-slate-600">
+      <div className="flex flex-row justify-between rounded-xl bg-slate-600 p-2">
         <div className="flex flex-col items-center justify-center gap-2">
           <div>Balance</div>
           <Goal<Transaction>

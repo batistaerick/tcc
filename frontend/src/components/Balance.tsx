@@ -49,30 +49,41 @@ export default function Balance() {
   );
 
   return (
-    <div className="h-48 w-11/12 cursor-default rounded-xl bg-[#bfd8d5] dark:bg-slate-600">
-      <div className="flex items-center justify-between px-10 pt-5">
-        <div>
-          <div className="text-left">{t('balance:totalBalance')}</div>
-          <Money className="text-left text-3xl" value={predictionValue ?? 0} />
+    <div
+      className={`
+        flex h-52 w-10/12 cursor-default
+        flex-col items-center justify-center rounded-xl
+        bg-slate-700 bg-opacity-60
+      `}
+    >
+      <div className="flex w-full flex-col gap-2 px-5">
+        <div className="flex items-center justify-between ">
+          <div>
+            <div className="text-left">{t('balance:totalBalance')}</div>
+            <Money
+              className="text-left text-3xl"
+              value={predictionValue ?? 0}
+            />
+          </div>
+          <Goal<number> height="h-20" data={[totalExpenses, totalIncomes]} />
         </div>
-        <Goal<number> height="h-20" data={[totalExpenses, totalIncomes]} />
-      </div>
-      <div className="flex justify-between px-10 pt-4 text-sm">
-        <div className="text-left">
-          <div>{t('balance:expense')}</div>
-          <div className="flex items-center justify-start gap-1">
-            <FcBearish size={35} />
-            <div>
-              <Money value={totalExpenses} />
+        <div className="flex justify-between text-sm">
+          <div className="text-left">
+            <div>{t('balance:expense')}</div>
+            <div className="flex items-center justify-start gap-1">
+              <FcBearish size={35} />
+              <div>
+                <Money value={totalExpenses} />
+              </div>
             </div>
           </div>
-        </div>
-        <div className="flex gap-1">
-          <div className="text-right">
-            <div>{t('balance:income')}</div>
-            <div className="flex items-center justify-end gap-1">
-              <FcBullish size={35} />
-              <Money value={totalIncomes} />
+          <div className="flex gap-1">
+            <div className="text-right">
+              <div>{t('balance:income')}</div>
+              <div className="flex items-center justify-end gap-1">
+                <FcBullish size={35} />
+                <Money value={totalIncomes} />
+              </div>
             </div>
           </div>
         </div>

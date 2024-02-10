@@ -1,5 +1,4 @@
 'use client';
-import DefaultBackground from '@/components/DefaultBackground';
 import Loading from '@/components/Loading';
 import Login from '@/components/Login';
 import { useSession } from 'next-auth/react';
@@ -16,9 +15,5 @@ export default function Auth() {
     push('/');
     return <Loading />;
   }
-  return (
-    <DefaultBackground>
-      <Login />
-    </DefaultBackground>
-  );
+  return <Login />;
 }
