@@ -1,4 +1,3 @@
-'use client';
 import DatePickerDialog from '@/components/DatePickerDialog';
 import Language from '@/components/Language';
 import useProfileImage from '@/hooks/useProfileImage';

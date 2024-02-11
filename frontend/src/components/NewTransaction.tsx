@@ -50,7 +50,6 @@ export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
           date: new Date(transaction.date),
           transactionType: transaction?.transactionType,
         });
-        console.log('transaction ->', transaction);
       }
       getTransaction();
     }

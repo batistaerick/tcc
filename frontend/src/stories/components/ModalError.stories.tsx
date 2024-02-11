@@ -1,4 +1,4 @@
-import ModalError from '@/components/ModalError';
+import ModalError from '@/components/Modals/ModalError';
 import { Meta, StoryObj } from '@storybook/react';
 import { RecoilRoot } from 'recoil';
 

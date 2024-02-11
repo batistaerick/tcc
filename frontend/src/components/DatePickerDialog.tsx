@@ -1,3 +1,4 @@
+'use client';
 import DatePickerCustomButton from '@/components/DatePickerCustomButton';
 import { enUS, ptBR } from 'date-fns/locale';
 import { Dispatch, SetStateAction, useMemo } from 'react';

@@ -2,26 +2,39 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import Language from '@/components/Language';
-import Loading from '@/components/Loading';
+import LoadingSkeleton from '@/components/LoadingSkeleton';
+import { useModal } from '@/components/Modals/ModalContext';
 import { postFetcher } from '@/libs/fetchers';
+import { responseErrorAtom } from '@/recoil/recoilValues';
+import { ResponseError } from '@/types/types';
 import { isValidEmail } from '@/utils/checkers';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { KeyboardEvent, useCallback, useState } from 'react';
+import { KeyboardEvent, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
+import { useRecoilState } from 'recoil';
 
 export default function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [variant, setVariant] = useState<string>('login');
-  const [unauthorized, setUnauthorized] = useState<string | undefined | null>();
+  const { openModal } = useModal();
+  const [responseError, setResponseError] = useRecoilState<
+    ResponseError | undefined
+  >(responseErrorAtom);
 
   const { t } = useTranslation();
   const { push } = useRouter();
   const { status } = useSession();
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      push('/');
+    }
+  });
 
   const toggleVariant = useCallback(
     () =>
@@ -38,8 +51,12 @@ export default function Login() {
       callbackUrl: '/',
       redirect: false,
     });
-    setUnauthorized(response?.error);
-  }, [email, password]);
+    if (response?.error) {
+      const message = t(`api:${response.error}`);
+      setResponseError({ title: 'Invalid Credentials', message });
+      openModal();
+    }
+  }, [email, password, openModal, setResponseError, t]);
 
   const register = useCallback(async () => {
     try {
@@ -47,9 +64,10 @@ export default function Login() {
       setVariant('login');
       await login();
     } catch (error: any) {
-      setUnauthorized(error.message);
+      setResponseError(error.response.data);
+      openModal();
     }
-  }, [email, password, name, login]);
+  }, [email, password, name, login, openModal, setResponseError]);
 
   async function onClick() {
     if (variant === 'login') {
@@ -65,18 +83,15 @@ export default function Login() {
     }
   }
 
-  if (status === 'loading') {
-    return <Loading />;
+  if (status === 'loading' || status === 'authenticated') {
+    return <LoadingSkeleton />;
   }
-  if (status === 'authenticated') {
-    push('/');
-    return <Loading />;
-  }
+
   return (
     <div
       className={`
         relative h-screen w-screen
-        bg-[url('/images/Background.jpg')] bg-cover bg-fixed bg-center bg-no-repeat
+        bg-[url('/images/AuthBackground.jpg')] bg-cover bg-fixed bg-center bg-no-repeat
       `}
     >
       <div
@@ -87,7 +102,7 @@ export default function Login() {
       >
         <div
           className={`
-            max-w-md self-center rounded-md px-16
+            max-w-md self-center rounded-3xl px-16
             pb-16 pt-5 transition-colors duration-500
             sm:bg-slate-950 sm:bg-opacity-90 lg:mt-2 lg:w-2/5
           `}
@@ -107,7 +122,7 @@ export default function Login() {
             )}
             <div
               className={`${
-                unauthorized && 'rounded-md border border-red-400'
+                responseError && 'rounded-md border border-red-400'
               }`}
             >
               <Input
@@ -121,7 +136,7 @@ export default function Login() {
             </div>
             <div
               className={`${
-                unauthorized && 'rounded-md border border-red-400'
+                responseError && 'rounded-md border border-red-400'
               }`}
             >
               <Input
@@ -133,7 +148,6 @@ export default function Login() {
                 onKeyDown={onKeyDown}
               />
             </div>
-            {unauthorized && <div>{t(`api:${unauthorized}`)}</div>}
           </div>
           <div className="mt-10">
             <Button

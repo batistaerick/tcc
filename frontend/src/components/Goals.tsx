@@ -4,10 +4,8 @@ import { TransactionType } from '@/enums/enums';
 import useFixedTransactions from '@/hooks/useFixedTransactions';
 import useTransactions from '@/hooks/useTransactions';
 import { Transaction } from '@/types/types';
-import { useTranslation } from 'react-i18next';
 
 export default function Goals() {
-  const { t } = useTranslation();
   const { data: fixedExpenses } = useFixedTransactions(
     TransactionType.FIXED_EXPENSE
   );
