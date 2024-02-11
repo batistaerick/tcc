@@ -1,6 +1,7 @@
 'use client';
-import NewTransaction from '@/components/NewTransaction';
-import Wrapper from '@/components/Wrapper';
+import DefaultBackground from '@/components/DefaultBackground';
+import ModalError from '@/components/Modals/ModalError';
+import dynamic from 'next/dynamic';
 
 interface EditTransactionProps {
   params: { id: string };
@@ -9,9 +10,14 @@ interface EditTransactionProps {
 export default function EditTransaction({
   params: { id },
 }: Readonly<EditTransactionProps>) {
+  const NewTransactionComponent = dynamic(
+    () => import('@/components/NewTransaction')
+  );
+
   return (
-    <Wrapper>
-      <NewTransaction id={id} />
-    </Wrapper>
+    <DefaultBackground>
+      <NewTransactionComponent id={id} />
+      <ModalError />
+    </DefaultBackground>
   );
 }

@@ -1,9 +1,9 @@
-export default function Loading() {
+export default function LoadingSkeleton() {
   return (
     <div
       className={`
         relative h-screen w-screen
-        bg-[url('/images/Background.jpg')] bg-cover bg-fixed bg-center bg-no-repeat
+        bg-[url('/images/HomeBackground.jpg')] bg-cover bg-fixed bg-center bg-no-repeat
       `}
     >
       <div className="flex h-screen items-center justify-center bg-black bg-opacity-50">

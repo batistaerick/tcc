@@ -49,7 +49,7 @@ export default function FinancialMovements({
       <div className="flex items-center justify-center">
         {formatDate(transaction.date, language)}
       </div>
-      <div className="flex items-end justify-end gap-1">
+      <div className="flex items-center justify-end gap-1">
         <Money value={transaction.value} />
         <FcFullTrash
           data-testid="delete-icon"

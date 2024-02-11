@@ -5,11 +5,12 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 
 i18n
-  .use(initReactI18next)
   .use(LanguageDetector)
+  .use(initReactI18next)
   .init({
     resources: { en: { translation: en }, pt: { translation: pt } },
     fallbackLng: 'en',
+    supportedLngs: ['en', 'pt'],
     keySeparator: ':',
     interpolation: { escapeValue: false },
     react: { useSuspense: true },

@@ -1,9 +1,7 @@
 'use client';
-import Balance from '@/components/Balance';
-import Button from '@/components/Button';
-import Header from '@/components/Header';
-import Transactions from '@/components/Transactions';
-import Wrapper from '@/components/Wrapper';
+import DefaultBackground from '@/components/DefaultBackground';
+import ModalError from '@/components/Modals/ModalError';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 
@@ -11,17 +9,25 @@ export default function Home() {
   const { push } = useRouter();
   const { t } = useTranslation();
 
+  const BalanceComponent = dynamic(() => import('@/components/Balance'));
+  const HeaderComponent = dynamic(() => import('@/components/Header'));
+  const TransactionsComponent = dynamic(
+    () => import('@/components/Transactions')
+  );
+  const ButtonComponent = dynamic(() => import('@/components/Button'));
+
   return (
-    <Wrapper>
-      <Header />
-      <Balance />
-      <Transactions />
-      <Button
+    <DefaultBackground>
+      <HeaderComponent />
+      <BalanceComponent />
+      <TransactionsComponent />
+      <ButtonComponent
         height="h-12"
         width="w-10/12"
         translation={t('button:newTransaction')}
         onClick={() => push('/new-transaction')}
       />
-    </Wrapper>
+      <ModalError />
+    </DefaultBackground>
   );
 }

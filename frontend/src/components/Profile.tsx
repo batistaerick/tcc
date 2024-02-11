@@ -3,7 +3,6 @@ import Input from '@/components/Input';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import useProfileImage from '@/hooks/useProfileImage';
 import { postFetcher, putFetcher } from '@/libs/fetchers';
-import { isOpenModalAtom } from '@/recoil/recoilValues';
 import { UpdatedUserType } from '@/types/types';
 import { arePasswordsEqual, hasValueInside } from '@/utils/checkers';
 import { buildHeadersAuthorization } from '@/utils/headerToken';
@@ -12,7 +11,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSetRecoilState } from 'recoil';
+import { useModal } from './Modals/ModalContext';
 
 export default function Profile() {
   const { data: session } = useSession();
@@ -20,7 +19,7 @@ export default function Profile() {
   const { data: profileImage, mutate: mutateImage } = useProfileImage();
   const { t } = useTranslation();
   const { push } = useRouter();
-  const setIsOpen = useSetRecoilState(isOpenModalAtom);
+  const { openModal } = useModal();
 
   const [updatedUser, setUpdatedUser] = useState<UpdatedUserType>({
     username: undefined,
@@ -77,7 +76,7 @@ export default function Profile() {
       if (error?.response?.data?.message) {
         setUnauthorized(error?.response?.data?.errorCode);
       } else {
-        setIsOpen(true);
+        openModal();
       }
     }
   }

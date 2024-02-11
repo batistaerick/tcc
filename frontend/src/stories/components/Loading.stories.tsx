@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import Loading from '@/components/Loading';
+import LoadingSkeleton from '@/components/LoadingSkeleton';
 
 export default {
-  title: 'Components/Loading',
-  component: Loading,
+  title: 'Components/LoadingSkeleton',
+  component: LoadingSkeleton,
 } as Meta;
 
 export const Default: StoryObj = {};
