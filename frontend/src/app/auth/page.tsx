@@ -5,7 +5,7 @@ import ModalError from '@/components/Modals/ModalError';
 
 export default function Auth() {
   return (
-    <DefaultBackground backgroundImage="AuthBackground.jpg">
+    <DefaultBackground>
       <Login />
       <ModalError />
     </DefaultBackground>
