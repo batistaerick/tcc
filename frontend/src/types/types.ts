@@ -39,3 +39,11 @@ export interface ResponseError {
   title: string;
   message: string;
 }
+
+export interface AnalyticsArgs {
+  retention?: number;
+}
+
+export interface TrackOptions {
+  persist?: boolean;
+}

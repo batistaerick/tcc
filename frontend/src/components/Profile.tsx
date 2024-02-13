@@ -1,5 +1,6 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
+import { useModal } from '@/components/Modals/ModalContext';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import useProfileImage from '@/hooks/useProfileImage';
 import { postFetcher, putFetcher } from '@/libs/fetchers';
@@ -11,7 +12,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useModal } from './Modals/ModalContext';
 
 export default function Profile() {
   const { data: session } = useSession();
