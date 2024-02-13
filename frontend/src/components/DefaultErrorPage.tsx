@@ -13,8 +13,8 @@ export default function DefaultErrorPage({
 
   return (
     <DefaultBackground>
-      <h1 className="text-6xl font-bold mb-4">Oops &#128531;</h1>
-      <p className="text-xl mb-8">Something went wrong.</p>
+      <h1 className="mb-4 text-6xl font-bold">Oops &#128531;</h1>
+      <p className="mb-8 text-xl">Something went wrong.</p>
       <div className="flex w-44 gap-3">
         <Button
           height="h-12"

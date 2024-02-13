@@ -23,7 +23,7 @@ export default function ModalError() {
         <div
           className={`
             fixed inset-0 z-50 flex items-center justify-center
-            bg-black bg-opacity-25 backdrop-blur-sm text-black
+            bg-black bg-opacity-25 text-black backdrop-blur-sm
           `}
         >
           <div className="flex w-96 flex-col gap-3 rounded bg-white p-2">

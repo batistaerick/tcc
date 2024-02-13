@@ -19,7 +19,7 @@ export default function Header() {
   }
 
   return (
-    <header className="flex w-10/12 items-center justify-between gap-3 border-slate-600">
+    <header className="flex w-10/12 items-center justify-between gap-3">
       {profileImage && (
         <Image
           className="flex h-12 w-12 cursor-pointer items-center rounded-md object-cover"

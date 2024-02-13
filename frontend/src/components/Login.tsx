@@ -2,7 +2,7 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import Language from '@/components/Language';
-import LoadingSkeleton from '@/components/LoadingSkeleton';
+import Loading from '@/components/Loading';
 import { useModal } from '@/components/Modals/ModalContext';
 import { postFetcher } from '@/libs/fetchers';
 import { responseErrorAtom } from '@/recoil/recoilValues';
@@ -84,7 +84,7 @@ export default function Login() {
   }
 
   if (status === 'loading' || status === 'authenticated') {
-    return <LoadingSkeleton />;
+    return <Loading />;
   }
 
   return (

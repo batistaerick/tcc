@@ -1,4 +1,5 @@
 'use client';
+import Button from '@/components/Button';
 import DefaultBackground from '@/components/DefaultBackground';
 import ModalError from '@/components/Modals/ModalError';
 import dynamic from 'next/dynamic';
@@ -9,19 +10,18 @@ export default function Home() {
   const { push } = useRouter();
   const { t } = useTranslation();
 
-  const BalanceComponent = dynamic(() => import('@/components/Balance'));
   const HeaderComponent = dynamic(() => import('@/components/Header'));
+  const BalanceComponent = dynamic(() => import('@/components/Balance'));
   const TransactionsComponent = dynamic(
     () => import('@/components/Transactions')
   );
-  const ButtonComponent = dynamic(() => import('@/components/Button'));
 
   return (
     <DefaultBackground>
       <HeaderComponent />
       <BalanceComponent />
       <TransactionsComponent />
-      <ButtonComponent
+      <Button
         height="h-12"
         width="w-10/12"
         translation={t('button:newTransaction')}
