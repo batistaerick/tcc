@@ -1,7 +1,7 @@
 import Money from '@/components/Money';
 import usePredictions from '@/hooks/usePrediction';
 import { deleteFetcher } from '@/libs/fetchers';
-import { Transaction } from '@/types/types';
+import { PaginatedTransactions, Transaction } from '@/types/types';
 import { formatDate } from '@/utils/globalFormats';
 import { buildHeadersAuthorization } from '@/utils/headerToken';
 import { useSession } from 'next-auth/react';
@@ -9,11 +9,13 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { BiEdit } from 'react-icons/bi';
 import { FcFullTrash } from 'react-icons/fc';
-import { KeyedMutator } from 'swr';
+import { InfiniteKeyedMutator, KeyedMutator } from 'swr';
 
 export interface FinancialMovementsProps {
   transaction: Transaction;
-  mutateOnDelete: KeyedMutator<Transaction[]>;
+  mutateOnDelete:
+    | InfiniteKeyedMutator<PaginatedTransactions[]>
+    | KeyedMutator<Transaction[]>;
 }
 
 export default function FinancialMovements({

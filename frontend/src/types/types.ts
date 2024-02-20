@@ -20,6 +20,11 @@ export interface User {
   authorities: Role[];
 }
 
+export interface Role {
+  id: string;
+  roleName: RoleName;
+}
+
 export interface Transaction {
   id: string;
   user?: User;
@@ -30,9 +35,42 @@ export interface Transaction {
   transactionType?: TransactionType;
 }
 
-export interface Role {
+interface Pageable {
+  pageNumber: number;
+  pageSize: number;
+  sort: {
+    sorted: boolean;
+    unsorted: boolean;
+    empty: boolean;
+  };
+  offset: number;
+  paged: boolean;
+  unpaged: boolean;
+}
+
+export interface PaginatedTransactions {
+  content: Transaction[];
+  pageable: Pageable;
+  totalPages: number;
+  totalElements: number;
+  last: boolean;
+  size: number;
+  number: number;
+  sort: {
+    sorted: boolean;
+    unsorted: boolean;
+    empty: boolean;
+  };
+  first: boolean;
+  numberOfElements: number;
+  empty: boolean;
+}
+
+export interface Analytic {
   id: string;
-  roleName: RoleName;
+  path: string;
+  countries: Map<Date, string[]>;
+  accesses: Map<Date, number>;
 }
 
 export interface ResponseError {
