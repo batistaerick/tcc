@@ -1,10 +1,7 @@
-import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 
-const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-
-const defaultAxios = axios.create({
-  baseURL,
-});
+const baseURL: string = process.env.NEXT_PUBLIC_BASE_URL!;
+const defaultAxios: AxiosInstance = axios.create({ baseURL });
 
 export async function getFetcher<T>(
   url: string,

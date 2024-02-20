@@ -1,4 +1,4 @@
-export default function LoadingSkeleton() {
+export default function Loading() {
   return (
     <div
       className={`

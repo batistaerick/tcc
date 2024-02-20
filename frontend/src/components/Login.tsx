@@ -2,39 +2,28 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import Language from '@/components/Language';
-import LoadingSkeleton from '@/components/LoadingSkeleton';
 import { useModal } from '@/components/Modals/ModalContext';
 import { postFetcher } from '@/libs/fetchers';
 import { responseErrorAtom } from '@/recoil/recoilValues';
 import { ResponseError } from '@/types/types';
 import { isValidEmail } from '@/utils/checkers';
-import { signIn, useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { KeyboardEvent, useCallback, useEffect, useState } from 'react';
+import { signIn } from 'next-auth/react';
+import { KeyboardEvent, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaGithub } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { useRecoilState } from 'recoil';
 
 export default function Login() {
+  const [responseError, setResponseError] = useRecoilState<
+    ResponseError | undefined
+  >(responseErrorAtom);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [variant, setVariant] = useState<string>('login');
   const { openModal } = useModal();
-  const [responseError, setResponseError] = useRecoilState<
-    ResponseError | undefined
-  >(responseErrorAtom);
-
   const { t } = useTranslation();
-  const { push } = useRouter();
-  const { status } = useSession();
-
-  useEffect(() => {
-    if (status === 'authenticated') {
-      push('/');
-    }
-  });
 
   const toggleVariant = useCallback(
     () =>
@@ -81,10 +70,6 @@ export default function Login() {
     if (key === 'Enter') {
       onClick();
     }
-  }
-
-  if (status === 'loading' || status === 'authenticated') {
-    return <LoadingSkeleton />;
   }
 
   return (

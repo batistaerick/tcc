@@ -6,7 +6,7 @@ import useSWR, { SWRResponse } from 'swr';
 
 export default function useTransaction(
   id: string
-): SWRResponse<Transaction, any, any> {
+): SWRResponse<Transaction, Error> {
   const { data } = useSession();
   const config = buildHeadersAuthorization(data?.user.accessToken);
 

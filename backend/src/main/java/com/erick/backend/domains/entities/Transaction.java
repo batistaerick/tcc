@@ -11,9 +11,9 @@ import lombok.*;
 
 @Table(name = "t_transaction")
 @Entity
-@Builder
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Transaction {

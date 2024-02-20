@@ -10,8 +10,7 @@ export default function DefaultBackground({
   return (
     <div
       className={`
-        bg-[url('/images/HomeBackground.jpg')]
-        relative h-screen w-screen
+        relative h-screen w-screen bg-[url('/images/HomeBackground.jpg')]
         bg-cover bg-fixed bg-center bg-no-repeat
         transition-colors duration-500
       `}

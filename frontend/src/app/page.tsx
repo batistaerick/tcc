@@ -9,8 +9,8 @@ export default function Home() {
   const { push } = useRouter();
   const { t } = useTranslation();
 
-  const BalanceComponent = dynamic(() => import('@/components/Balance'));
   const HeaderComponent = dynamic(() => import('@/components/Header'));
+  const BalanceComponent = dynamic(() => import('@/components/Balance'));
   const TransactionsComponent = dynamic(
     () => import('@/components/Transactions')
   );
@@ -18,7 +18,9 @@ export default function Home() {
 
   return (
     <DefaultBackground>
-      <HeaderComponent />
+      <div className="w-10/12">
+        <HeaderComponent dateFormat="MMM/yyyy" />
+      </div>
       <BalanceComponent />
       <TransactionsComponent />
       <ButtonComponent

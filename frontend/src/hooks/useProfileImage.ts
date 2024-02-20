@@ -4,7 +4,7 @@ import { AxiosRequestConfig } from 'axios';
 import { useSession } from 'next-auth/react';
 import useSWR, { SWRResponse } from 'swr';
 
-export default function useProfileImage(): SWRResponse<File, any, any> {
+export default function useProfileImage(): SWRResponse<File, Error> {
   const { data } = useSession();
   const config: AxiosRequestConfig = {
     ...buildHeadersAuthorization(data?.user.accessToken),

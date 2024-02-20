@@ -7,7 +7,7 @@ import useSWR, { SWRResponse } from 'swr';
 
 export default function useFixedTransactions(
   transactionType: TransactionType
-): SWRResponse<Transaction[], any, any> {
+): SWRResponse<Transaction[], Error> {
   const { data } = useSession();
   const config = buildHeadersAuthorization(data?.user.accessToken);
 

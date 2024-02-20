@@ -1,6 +1,5 @@
-import LoadingSkeleton from '@/components/LoadingSkeleton';
+import HomeLoadingSkeleton from '@/components/HomeLoadingSkeleton';
 
-//TODO implement a default Loading page for HomePage
 export default function Loading() {
-  return <LoadingSkeleton />;
+  return <HomeLoadingSkeleton />;
 }
