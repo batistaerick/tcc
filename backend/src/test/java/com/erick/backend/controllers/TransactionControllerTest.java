@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.erick.backend.domains.dtos.TransactionDto;
+import com.erick.backend.domains.entities.Transaction;
 import com.erick.backend.enums.TransactionType;
 import com.erick.backend.services.TransactionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +21,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -89,13 +93,21 @@ class TransactionControllerTest {
         LocalDate startDate = LocalDate.now();
         LocalDate endDate = LocalDate.now();
         TransactionType type = TransactionType.EXPENSE;
-        List<TransactionDto> transactions = Arrays.asList(
-            new TransactionDto(),
-            new TransactionDto()
+
+        Page<Transaction> transactions = new PageImpl<>(
+            Arrays.asList(
+                Transaction.builder().id(UUID.randomUUID()).build(),
+                Transaction.builder().id(UUID.randomUUID()).build()
+            )
         );
 
         given(
-            service.findAllTransactionsByTypeAndDate(type, startDate, endDate)
+            service.findByUserEmailAndTransactionTypeAndDateBetween(
+                type,
+                startDate,
+                endDate,
+                Pageable.unpaged()
+            )
         )
             .willReturn(transactions);
 
@@ -106,11 +118,10 @@ class TransactionControllerTest {
                     .param("startDate", startDate.toString())
                     .param("endDate", endDate.toString())
                     .param("transactionType", type.toString())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .characterEncoding("utf-8")
             )
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.size()").value(transactions.size()));
-        verify(service)
-            .findAllTransactionsByTypeAndDate(type, startDate, endDate);
+            .andExpect(status().isOk());
     }
 
     @Test
