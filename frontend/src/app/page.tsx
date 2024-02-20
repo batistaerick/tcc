@@ -1,5 +1,4 @@
 'use client';
-import Button from '@/components/Button';
 import DefaultBackground from '@/components/DefaultBackground';
 import ModalError from '@/components/Modals/ModalError';
 import dynamic from 'next/dynamic';
@@ -15,13 +14,16 @@ export default function Home() {
   const TransactionsComponent = dynamic(
     () => import('@/components/Transactions')
   );
+  const ButtonComponent = dynamic(() => import('@/components/Button'));
 
   return (
     <DefaultBackground>
-      <HeaderComponent />
+      <div className="w-10/12">
+        <HeaderComponent dateFormat="MMM/yyyy" />
+      </div>
       <BalanceComponent />
       <TransactionsComponent />
-      <Button
+      <ButtonComponent
         height="h-12"
         width="w-10/12"
         translation={t('button:newTransaction')}

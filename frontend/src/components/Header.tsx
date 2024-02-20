@@ -9,7 +9,11 @@ import { BiUserCircle } from 'react-icons/bi';
 import { FiLogOut } from 'react-icons/fi';
 import { useRecoilState } from 'recoil';
 
-export default function Header() {
+interface HeaderProps {
+  dateFormat?: string;
+}
+
+export default function Header({ dateFormat }: Readonly<HeaderProps>) {
   const { push } = useRouter();
   const { data: profileImage } = useProfileImage();
   const [selectedDate, setSelectedDate] = useRecoilState(selectedDateAtom);
@@ -19,7 +23,7 @@ export default function Header() {
   }
 
   return (
-    <header className="flex w-10/12 items-center justify-between gap-3">
+    <header className="flex items-center justify-between gap-3">
       {profileImage && (
         <Image
           className="flex h-12 w-12 cursor-pointer items-center rounded-md object-cover"
@@ -40,7 +44,7 @@ export default function Header() {
       <DatePickerDialog
         date={selectedDate}
         setDate={setSelectedDate}
-        dateFormat="MMM/yyyy"
+        dateFormat={dateFormat}
         showMonthYearPicker
       />
       <div className="flex items-center gap-2">

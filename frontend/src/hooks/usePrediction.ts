@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import { useRecoilValue } from 'recoil';
 import useSWR, { SWRResponse } from 'swr';
 
-export default function usePredictions(): SWRResponse<number, any, any> {
+export default function usePredictions(): SWRResponse<number, Error> {
   const { data } = useSession();
   const config = buildHeadersAuthorization(data?.user.accessToken);
 

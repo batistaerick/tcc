@@ -1,23 +1,27 @@
 import Button from '@/components/Button';
-import DatePickerDialog from '@/components/DatePickerDialog';
+import Header from '@/components/Header';
 import Input from '@/components/Input';
+import { useModal } from '@/components/Modals/ModalContext';
 import usePredictions from '@/hooks/usePrediction';
 import { getFetcher, postFetcher, putFetcher } from '@/libs/fetchers';
-import { isOpenModalAtom, responseErrorAtom } from '@/recoil/recoilValues';
+import { responseErrorAtom, selectedDateAtom } from '@/recoil/recoilValues';
 import { Transaction } from '@/types/types';
 import { buildHeadersAuthorization } from '@/utils/headerToken';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FcCurrencyExchange, FcIdea, FcSurvey } from 'react-icons/fc';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 export interface NewTransactionProps {
   id?: string;
 }
 
 export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
+  const date = useRecoilValue(selectedDateAtom);
+  const setResponseError = useSetRecoilState(responseErrorAtom);
+  const { openModal } = useModal();
   const { push } = useRouter();
   const { t } = useTranslation();
   const { data: session } = useSession();
@@ -28,11 +32,16 @@ export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
     value: 0,
     category: '',
     notes: '',
-    date: new Date(),
+    date: date,
     transactionType: undefined,
   });
-  const setIsOpen = useSetRecoilState(isOpenModalAtom);
-  const setResponseError = useSetRecoilState(responseErrorAtom);
+
+  useEffect(() => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      date,
+    }));
+  }, [date]);
 
   useEffect(() => {
     if (id) {
@@ -41,43 +50,46 @@ export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
           `/transactions/${id}`,
           buildHeadersAuthorization(session?.user.accessToken)
         );
-        setForm({
-          id: transaction?.id ?? '',
-          user: transaction?.user ?? undefined,
-          value: transaction?.value ?? undefined,
-          category: transaction?.category,
-          notes: transaction?.notes,
-          date: new Date(transaction.date),
-          transactionType: transaction?.transactionType,
-        });
+        setForm(transaction);
       }
       getTransaction();
     }
   }, [id, session?.user.accessToken]);
 
-  async function onSubmit(event: ChangeEvent<HTMLFormElement>) {
-    try {
-      event.preventDefault();
-      if (id) {
-        await putFetcher<Transaction>(
-          '/transactions',
-          form,
-          buildHeadersAuthorization(session?.user.accessToken)
-        );
-      } else {
-        await postFetcher<Transaction>(
-          '/transactions',
-          form,
-          buildHeadersAuthorization(session?.user.accessToken)
-        );
+  const onSubmit = useCallback(
+    async (event: ChangeEvent<HTMLFormElement>) => {
+      try {
+        event.preventDefault();
+        if (id) {
+          await putFetcher<Transaction>(
+            '/transactions',
+            form,
+            buildHeadersAuthorization(session?.user.accessToken)
+          );
+        } else {
+          await postFetcher<Transaction>(
+            '/transactions',
+            form,
+            buildHeadersAuthorization(session?.user.accessToken)
+          );
+        }
+        await predictionMutate();
+        push('/');
+      } catch (error: any) {
+        setResponseError(error?.response?.data);
+        openModal();
       }
-      await predictionMutate();
-      push('/');
-    } catch (error: any) {
-      setResponseError(error?.response?.data);
-      setIsOpen(true);
-    }
-  }
+    },
+    [
+      form,
+      id,
+      predictionMutate,
+      push,
+      session?.user.accessToken,
+      openModal,
+      setResponseError,
+    ]
+  );
 
   function handleChange({
     currentTarget: { value, id },
@@ -88,21 +100,13 @@ export default function NewTransaction({ id }: Readonly<NewTransactionProps>) {
     }));
   }
 
-  function handleChangeDate(date: Date | ((currVal: Date) => Date)) {
-    setForm((prevFormState) => ({
-      ...prevFormState,
-      date: typeof date === 'function' ? date(form.date ?? new Date()) : date,
-    }));
-  }
-
   return (
-    <div className="flex w-screen flex-col items-center justify-center">
-      <DatePickerDialog
-        date={form?.date ?? new Date()}
-        setDate={handleChangeDate}
-      />
+    <div className="flex w-11/12 flex-col items-center justify-center md:w-8/12 lg:w-6/12">
+      <div className="w-full">
+        <Header />
+      </div>
       <form
-        className="mt-5 flex w-11/12 flex-col gap-10 md:w-8/12 lg:w-6/12"
+        className="mt-5 flex w-full flex-col gap-10"
         id="newTransactionForm"
         onSubmit={onSubmit}
       >

@@ -7,6 +7,7 @@ public enum I18nCode {
     INVALID_PASSWORD("invalidPassword"),
     EXISTING_EMAIL("existingEmail"),
     EMAIL_NOT_FOUND("emailNotFound"),
+    ANALYTIC_NOT_FOUND("analyticNotFound"),
     TRANSACTION_NOT_FOUND("transactionNotFound"),
     IMAGE_NOT_FOUND("imageNotFound"),
     UNAUTHORIZED_DELETION("unauthorizedDeletion"),

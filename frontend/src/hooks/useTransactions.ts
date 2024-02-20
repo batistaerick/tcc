@@ -11,7 +11,7 @@ import useSWR, { SWRResponse } from 'swr';
 
 export default function useTransactions(
   transactionType: TransactionType
-): SWRResponse<Transaction[], any, any> {
+): SWRResponse<Transaction[], Error> {
   const { data } = useSession();
   const date = useRecoilValue(selectedDateAtom);
   const startDate = getLocalDate(date);

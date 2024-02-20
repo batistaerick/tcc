@@ -7,9 +7,9 @@ import lombok.*;
 
 @Table(name = "t_image")
 @Entity
-@Builder
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Image {
