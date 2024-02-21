@@ -4,7 +4,7 @@ import { TransactionType } from '@/enums/enums';
 import useFixedTransactions from '@/hooks/useFixedTransactions';
 import usePredictions from '@/hooks/usePrediction';
 import useTransactions from '@/hooks/useTransactions';
-import { Transaction } from '@/types/types';
+import { PaginatedTransactions, Transaction } from '@/types/types';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FcBearish, FcBullish } from 'react-icons/fc';
@@ -22,14 +22,16 @@ export default function Balance() {
   const { data: expenses } = useTransactions(TransactionType.EXPENSE);
 
   function total(
-    transactions: Transaction[] | undefined,
+    paginatedTransactions: PaginatedTransactions[] | undefined,
     fixedTransactions: Transaction[] | undefined
   ) {
     const amount =
-      transactions?.reduce(
-        (sum: number, transaction: Transaction) => sum + transaction.value,
-        0
-      ) ?? 0;
+      paginatedTransactions
+        ?.flatMap((pages) => pages.content)
+        ?.reduce(
+          (sum: number, transaction: Transaction) => sum + transaction.value,
+          0
+        ) ?? 0;
     const fixedAmount =
       fixedTransactions?.reduce(
         (sum: number, transaction: Transaction) => sum + transaction.value,

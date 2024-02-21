@@ -3,6 +3,7 @@ package com.erick.backend.controllers;
 import static org.springframework.http.ResponseEntity.*;
 
 import com.erick.backend.domains.dtos.TransactionDto;
+import com.erick.backend.domains.entities.Transaction;
 import com.erick.backend.enums.TransactionType;
 import com.erick.backend.services.TransactionService;
 import java.net.URI;
@@ -10,6 +11,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -84,16 +87,20 @@ public class TransactionController {
      */
     @GetMapping
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<List<TransactionDto>> findAllTransactions(
+    public ResponseEntity<
+        Page<Transaction>
+    > findByUserEmailAndTransactionTypeAndDateBetween(
         @RequestParam LocalDate startDate,
         @RequestParam LocalDate endDate,
-        @RequestParam TransactionType transactionType
+        @RequestParam TransactionType transactionType,
+        Pageable pageable
     ) {
-        List<TransactionDto> transactions =
-            service.findAllTransactionsByTypeAndDate(
+        Page<Transaction> transactions =
+            service.findByUserEmailAndTransactionTypeAndDateBetween(
                 transactionType,
                 startDate,
-                endDate
+                endDate,
+                pageable
             );
         return ok(transactions);
     }

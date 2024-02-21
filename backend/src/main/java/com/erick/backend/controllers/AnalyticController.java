@@ -1,15 +1,15 @@
 package com.erick.backend.controllers;
 
 import static org.springframework.http.ResponseEntity.noContent;
+import static org.springframework.http.ResponseEntity.ok;
 
 import com.erick.backend.domains.dtos.AnalyticDto;
+import com.erick.backend.domains.entities.Analytic;
 import com.erick.backend.services.AnalyticService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * REST controller for managing analytics.
@@ -32,5 +32,11 @@ public class AnalyticController {
     public ResponseEntity<Void> save(@RequestBody AnalyticDto dto) {
         service.save(dto);
         return noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Analytic>> findAll() {
+        List<Analytic> analytic = service.findAll();
+        return ok(analytic);
     }
 }

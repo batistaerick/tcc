@@ -15,6 +15,8 @@ import java.time.Period;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -130,24 +132,22 @@ public class TransactionService {
      * @param endDate         The end date of the range.
      * @return A list of TransactionDto objects.
      */
-    public List<TransactionDto> findAllTransactionsByTypeAndDate(
+    public Page<Transaction> findByUserEmailAndTransactionTypeAndDateBetween(
         TransactionType transactionType,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        Pageable pageable
     ) {
         startDate = startDate.withDayOfMonth(1);
         endDate = endDate.withDayOfMonth(endDate.lengthOfMonth());
 
-        return repository
-            .findByUserEmailAndTransactionTypeAndDateBetween(
-                UserSession.getAuthenticatedEmail(),
-                transactionType,
-                startDate,
-                endDate
-            )
-            .stream()
-            .map(converter::entityToDto)
-            .toList();
+        return repository.findByUserEmailAndTransactionTypeAndDateBetween(
+            UserSession.getAuthenticatedEmail(),
+            transactionType,
+            startDate,
+            endDate,
+            pageable
+        );
     }
 
     /**
@@ -211,13 +211,15 @@ public class TransactionService {
         LocalDate startDate,
         LocalDate endDate
     ) {
-        return findAllTransactionsByTypeAndDate(
-            transactionType,
-            startDate,
-            endDate
-        )
+        return repository
+            .findByUserEmailAndTransactionTypeAndDateBetween(
+                UserSession.getAuthenticatedEmail(),
+                transactionType,
+                startDate,
+                endDate
+            )
             .stream()
-            .mapToDouble(TransactionDto::getValue)
+            .mapToDouble(Transaction::getValue)
             .sum();
     }
 
