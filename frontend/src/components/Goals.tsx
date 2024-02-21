@@ -1,10 +1,10 @@
 'use client';
-import Goal from '@/components/Goal';
 import { TransactionType } from '@/enums/enums';
 import useFixedTransactions from '@/hooks/useFixedTransactions';
 import useTransactions from '@/hooks/useTransactions';
 import { Transaction } from '@/types/types';
 
+//TODO implement the goals page
 export default function Goals() {
   const { data: fixedExpenses } = useFixedTransactions(
     TransactionType.FIXED_EXPENSE
@@ -40,31 +40,31 @@ export default function Goals() {
       <div className="flex flex-row justify-between rounded-xl bg-slate-600 p-2">
         <div className="flex flex-col items-center justify-center gap-2">
           <div>Incomes</div>
-          <Goal<Transaction>
+          {/* <Goal<Transaction>
             label="Income"
             height="h-52"
             labels={labels(incomes ?? [], fixedIncomes ?? [])}
             data={total(incomes ?? [], fixedIncomes ?? [])}
-          />
+          /> */}
         </div>
         <div className="">test</div>
       </div>
       <div className="flex flex-row justify-between rounded-xl bg-slate-600 p-2">
         <div className="flex flex-col items-center justify-center gap-2">
           <div>Incomes</div>
-          <Goal<Transaction>
+          {/* <Goal<Transaction>
             label="Expense"
             height="h-52"
             labels={labels(expenses ?? [], fixedExpenses ?? [])}
             data={total(expenses ?? [], fixedExpenses ?? [])}
-          />
+          /> */}
         </div>
         <div>test</div>
       </div>
       <div className="flex flex-row justify-between rounded-xl bg-slate-600 p-2">
         <div className="flex flex-col items-center justify-center gap-2">
           <div>Balance</div>
-          <Goal<Transaction>
+          {/* <Goal<Transaction>
             label="Balance"
             height="h-52"
             labels={[
@@ -75,7 +75,7 @@ export default function Goals() {
               ...total(incomes ?? [], fixedIncomes ?? []),
               ...total(expenses ?? [], fixedExpenses ?? []),
             ]}
-          />
+          /> */}
         </div>
         <div>test</div>
       </div>
