@@ -28,7 +28,7 @@ export default function Transactions() {
   return (
     <>
       <SingleTransaction
-        transactions={expensesResponse?.flatMap((response) => response.content)}
+        transactions={expensesResponse?.flatMap((page) => page.content)}
         transactionsMutate={expensesMutate}
         fixedTransactions={fixedExpenses}
         fixedTransactionsMutate={fixedExpensesMutate}
@@ -39,7 +39,7 @@ export default function Transactions() {
         style="text-xl text-red-700"
       />
       <SingleTransaction
-        transactions={incomesResponse?.flatMap((response) => response.content)}
+        transactions={incomesResponse?.flatMap((page) => page.content)}
         transactionsMutate={incomesMutate}
         fixedTransactions={fixedIncomes}
         fixedTransactionsMutate={fixedIncomesMutate}

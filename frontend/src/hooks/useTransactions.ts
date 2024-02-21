@@ -11,7 +11,7 @@ import useSWRInfinite, { SWRInfiniteResponse } from 'swr/infinite';
 
 export default function useTransactions(
   transactionType: TransactionType,
-  size: number
+  size?: number
 ): SWRInfiniteResponse<PaginatedTransactions, Error> {
   const { data } = useSession();
   const date: Date = useRecoilValue(selectedDateAtom);
