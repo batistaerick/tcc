@@ -16,14 +16,13 @@ export default function Transactions() {
     mutate: expensesMutate,
     setSize: setExpensesSize,
     size: expensesSize,
-  } = useTransactions(TransactionType.EXPENSE, 5);
-
+  } = useTransactions(TransactionType.EXPENSE, 2);
   const {
     data: incomesResponse,
     mutate: incomesMutate,
     setSize: setIncomesSize,
     size: incomesSize,
-  } = useTransactions(TransactionType.INCOME, 5);
+  } = useTransactions(TransactionType.INCOME, 2);
 
   return (
     <>
@@ -36,7 +35,6 @@ export default function Transactions() {
         setSize={setExpensesSize}
         length={expensesResponse?.length}
         title={t('transactions:expenses')}
-        style="text-xl text-red-700"
       />
       <SingleTransaction
         transactions={incomesResponse?.flatMap((page) => page.content)}
@@ -47,7 +45,6 @@ export default function Transactions() {
         setSize={setIncomesSize}
         length={incomesResponse?.length}
         title={t('transactions:incomes')}
-        style="text-xl text-green-700"
       />
     </>
   );

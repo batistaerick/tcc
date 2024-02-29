@@ -1,4 +1,3 @@
-import Goal from '@/components/Goal';
 import Money from '@/components/Money';
 import { TransactionType } from '@/enums/enums';
 import useFixedTransactions from '@/hooks/useFixedTransactions';
@@ -53,7 +52,7 @@ export default function Balance() {
   return (
     <div
       className={`
-        flex h-52 w-10/12 cursor-default
+        flex h-40 w-10/12 cursor-default
         flex-col items-center justify-center rounded-xl
         bg-slate-700 bg-opacity-60
       `}
@@ -67,7 +66,6 @@ export default function Balance() {
               value={predictionValue ?? 0}
             />
           </div>
-          <Goal<number> height="h-20" data={[totalExpenses, totalIncomes]} />
         </div>
         <div className="flex justify-between text-sm">
           <div className="text-left">
