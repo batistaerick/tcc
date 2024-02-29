@@ -3,13 +3,14 @@ import { NextRequest, NextResponse } from 'next/server';
 export default async function middleware(
   request: NextRequest
 ): Promise<NextResponse<unknown>> {
-  if (!request.cookies.has('next-auth.session-token')) {
-    return NextResponse.redirect(new URL('/auth', request.url));
-  }
-  const pathname: string = request.nextUrl.pathname;
-  const basePath: string = request.url;
+  const {
+    nextUrl: { pathname, origin },
+  } = request;
 
-  await fetch(`${basePath}/api/analytics`, {
+  if (!request.cookies.has('next-auth.session-token')) {
+    return NextResponse.redirect(new URL('/auth', origin));
+  }
+  await fetch(`${origin}/api/analytics`, {
     method: 'POST',
     body: JSON.stringify({ path: pathname }),
   });
