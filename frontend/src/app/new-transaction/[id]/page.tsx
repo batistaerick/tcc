@@ -3,6 +3,10 @@ import DefaultBackground from '@/components/DefaultBackground';
 import ModalError from '@/components/Modals/ModalError';
 import dynamic from 'next/dynamic';
 
+const NewTransactionComponent = dynamic(
+  () => import('@/components/NewTransaction')
+);
+
 interface EditTransactionProps {
   params: { id: string };
 }
@@ -10,10 +14,6 @@ interface EditTransactionProps {
 export default function EditTransaction({
   params: { id },
 }: Readonly<EditTransactionProps>) {
-  const NewTransactionComponent = dynamic(
-    () => import('@/components/NewTransaction')
-  );
-
   return (
     <DefaultBackground>
       <NewTransactionComponent id={id} />

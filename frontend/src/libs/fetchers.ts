@@ -30,7 +30,7 @@ export async function postFetcher<T>(
 
 export async function putFetcher<T>(
   url: string,
-  body?: T,
+  body: T,
   config?: AxiosRequestConfig
 ): Promise<T> {
   return await defaultAxios
