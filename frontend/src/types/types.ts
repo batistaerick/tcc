@@ -69,8 +69,8 @@ export interface PaginatedTransactions {
 export interface Analytic {
   id: string;
   path: string;
-  countries: Map<Date, string[]>;
-  accesses: Map<Date, number>;
+  countries: Map<string, string[]>;
+  accesses: Map<string, number>;
 }
 
 export interface ResponseError {

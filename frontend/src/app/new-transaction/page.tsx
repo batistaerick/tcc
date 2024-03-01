@@ -3,10 +3,11 @@ import DefaultBackground from '@/components/DefaultBackground';
 import ModalError from '@/components/Modals/ModalError';
 import dynamic from 'next/dynamic';
 
+const NewTransactionComponent = dynamic(
+  () => import('@/components/NewTransaction')
+);
+
 export default function Transaction() {
-  const NewTransactionComponent = dynamic(
-    () => import('@/components/NewTransaction')
-  );
   return (
     <DefaultBackground>
       <NewTransactionComponent />
