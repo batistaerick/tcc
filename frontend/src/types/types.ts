@@ -26,12 +26,12 @@ export interface Role {
 }
 
 export interface Transaction {
-  id: string;
+  id?: string;
   user?: User;
   category: string;
   notes?: string;
-  date: Date;
-  value: number;
+  date?: Date;
+  value?: number;
   transactionType?: TransactionType;
 }
 

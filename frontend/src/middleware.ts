@@ -10,6 +10,9 @@ export default async function middleware(
   if (!request.cookies.has('next-auth.session-token')) {
     return NextResponse.redirect(new URL('/auth', origin));
   }
+  if (pathname === '/analytics') {
+    return NextResponse.next();
+  }
   await fetch(`${origin}/api/analytics`, {
     method: 'POST',
     body: JSON.stringify({ path: pathname }),
@@ -18,5 +21,5 @@ export default async function middleware(
 }
 
 export const config = {
-  matcher: ['/', '/profile', '/goals', '/new-transaction'],
+  matcher: ['/', '/profile', '/goals', '/new-transaction', '/analytics'],
 };

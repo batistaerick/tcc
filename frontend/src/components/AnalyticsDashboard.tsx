@@ -1,4 +1,5 @@
 'use client';
+import Header from '@/components/Header';
 import { BarChart, Card } from '@tremor/react';
 import { useMemo } from 'react';
 import ReactCountryFlag from 'react-country-flag';
@@ -7,12 +8,14 @@ interface AnalyticsDashboardProps {
   amtVisitorsToday: number;
   topCountries: [string, number][];
   accesses: Map<string, number>;
+  path: string;
 }
 
 export default function AnalyticsDashboard({
   amtVisitorsToday,
   topCountries,
   accesses,
+  path,
 }: Readonly<AnalyticsDashboardProps>) {
   const visitors = useMemo(
     () =>
@@ -24,17 +27,26 @@ export default function AnalyticsDashboard({
   );
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="mx-auto grid w-full grid-cols-1 gap-6 sm:grid-cols-2">
-        <Card className="w-full">
+    <div className="flex flex-col gap-2">
+      <Header />
+      <Card className="w-full rounded-xl">
+        <p className="text-tremor-default text-dark-tremor-content">
+          Path (URL)
+        </p>
+        <p className="text-3xl font-semibold text-dark-tremor-content-strong">
+          {path}
+        </p>
+      </Card>
+      <div className="mx-auto grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
+        <Card className="w-full rounded-xl">
           <p className="text-tremor-default text-dark-tremor-content">
-            Avg. visitors/day
+            Average visitors/day
           </p>
           <p className="text-3xl font-semibold text-dark-tremor-content-strong">
             {Math.floor(amtVisitorsToday / 7)}
           </p>
         </Card>
-        <Card className="w-full">
+        <Card className="w-full rounded-xl">
           <p className="text-tremor-default flex items-center gap-2.5 text-dark-tremor-content">
             Visitors today
           </p>
@@ -43,7 +55,7 @@ export default function AnalyticsDashboard({
           </p>
         </Card>
       </div>
-      <Card className="flex grid-cols-4 flex-col gap-6 sm:grid">
+      <Card className="flex grid-cols-4 flex-col gap-6 rounded-xl sm:grid">
         <h2 className="sm:left-left w-full text-center text-xl font-semibold text-dark-tremor-content-strong">
           This weeks top visitors:
         </h2>
@@ -71,7 +83,7 @@ export default function AnalyticsDashboard({
           })}
         </div>
       </Card>
-      <Card>
+      <Card className="rounded-xl">
         <BarChart
           allowDecimals={false}
           showAnimation

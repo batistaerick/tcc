@@ -117,7 +117,7 @@ class UserControllerTest {
             .name("Test User")
             .email("test@test.com")
             .password("Password@123")
-            .roles(Set.of(Role.builder().roleName(RoleName.ROLE_USER).build()))
+            .roles(Set.of(Role.builder().roleName(RoleName.USER).build()))
             .build();
     }
 
@@ -128,9 +128,7 @@ class UserControllerTest {
             .name("Test User")
             .email("test@test.com")
             .password("Password@123")
-            .roles(
-                Set.of(RoleDto.builder().roleName(RoleName.ROLE_USER).build())
-            )
+            .roles(Set.of(RoleDto.builder().roleName(RoleName.USER).build()))
             .build();
     }
 }

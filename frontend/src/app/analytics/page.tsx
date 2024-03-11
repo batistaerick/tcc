@@ -3,18 +3,27 @@ import AnalyticsDashboard from '@/components/AnalyticsDashboard';
 import Button from '@/components/Button';
 import DefaultBackground from '@/components/DefaultBackground';
 import useAnalytics from '@/hooks/useAnalytics';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Analytics() {
   const { t } = useTranslation();
+  const { push } = useRouter();
   const { data: analytics } = useAnalytics();
   const [index, setIndex] = useState<number>(0);
 
-  function handleClick() {
+  function handleNext() {
     if (analytics) {
       if (index < analytics.length - 1) {
-        setIndex((prev) => prev + 1);
+        setIndex((prev) => ++prev);
+      }
+    }
+  }
+  function handlePrevious() {
+    if (analytics) {
+      if (index > 0) {
+        setIndex((prev) => --prev);
       } else {
         setIndex(0);
       }
@@ -25,7 +34,6 @@ export default function Analytics() {
     <DefaultBackground>
       {analytics && (
         <>
-          <div>Path: {analytics[index].path}</div>
           <AnalyticsDashboard
             amtVisitorsToday={Object.values(analytics[index].accesses).reduce(
               (accumulator, current) => accumulator + current,
@@ -33,13 +41,22 @@ export default function Analytics() {
             )}
             topCountries={[]}
             accesses={analytics[index].accesses}
+            path={analytics[index].path}
           />
-          <Button
-            height="h-12"
-            width="w-3/12"
-            translation={'Next Page'}
-            onClick={handleClick}
-          />
+          <div className="flex w-full items-center justify-center gap-2">
+            <Button
+              height="h-12"
+              width="w-3/12"
+              translation={'Previous Page'}
+              onClick={handlePrevious}
+            />
+            <Button
+              height="h-12"
+              width="w-3/12"
+              translation={'Next Page'}
+              onClick={handleNext}
+            />
+          </div>
         </>
       )}
     </DefaultBackground>

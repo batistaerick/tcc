@@ -24,19 +24,22 @@ export default function Balance() {
     paginatedTransactions: PaginatedTransactions[] | undefined,
     fixedTransactions: Transaction[] | undefined
   ) {
-    const amount =
-      paginatedTransactions
-        ?.flatMap((pages) => pages.content)
-        ?.reduce(
-          (sum: number, transaction: Transaction) => sum + transaction.value,
+    if (paginatedTransactions && fixedTransactions) {
+      const amount = paginatedTransactions
+        .flatMap((pages) => pages.content)
+        .reduce(
+          (sum: number, transaction: Transaction) =>
+            sum + (transaction?.value ?? 0),
           0
-        ) ?? 0;
-    const fixedAmount =
-      fixedTransactions?.reduce(
-        (sum: number, transaction: Transaction) => sum + transaction.value,
+        );
+      const fixedAmount = fixedTransactions.reduce(
+        (sum: number, transaction: Transaction) =>
+          sum + (transaction.value ?? 0),
         0
-      ) ?? 0;
-    return amount + fixedAmount;
+      );
+      return amount + fixedAmount;
+    }
+    return 0;
   }
 
   const totalExpenses = useMemo(
@@ -57,7 +60,7 @@ export default function Balance() {
         bg-slate-700 bg-opacity-60
       `}
     >
-      <div className="flex w-full flex-col gap-2 px-5">
+      <div className="flex w-full flex-col gap-2 px-3">
         <div className="flex items-center justify-between ">
           <div>
             <div className="text-left">{t('balance:totalBalance')}</div>
