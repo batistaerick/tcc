@@ -71,7 +71,7 @@ public class UserService {
         CredentialsChecker.isValidPassword(dto.getPassword());
         User user = converter.dtoToEntity(dto);
         user.setPassword(encoder.encode(dto.getPassword()));
-        Role role = roleService.findByRoleName(RoleName.ROLE_USER);
+        Role role = roleService.findByRoleName(RoleName.USER);
         user.setRoles(Collections.singleton(role));
         return converter.entityToDto(repository.save(user));
     }

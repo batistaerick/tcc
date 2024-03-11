@@ -1,13 +1,33 @@
 import DatePickerDialog from '@/components/DatePickerDialog';
-import Language from '@/components/Language';
+import Dropdown from '@/components/Dropdown';
 import useProfileImage from '@/hooks/useProfileImage';
-import { selectedDateAtom } from '@/recoil/recoilValues';
+import { newTransactionAtom, selectedDateAtom } from '@/recoil/recoilValues';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { BiUserCircle } from 'react-icons/bi';
 import { FiLogOut } from 'react-icons/fi';
-import { useRecoilState } from 'recoil';
+import { GoGoal } from 'react-icons/go';
+import { GrTransaction } from 'react-icons/gr';
+import { TbBrandGoogleAnalytics } from 'react-icons/tb';
+import { VscAccount, VscHome } from 'react-icons/vsc';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+
+function createDropdownItem(
+  icon: JSX.Element,
+  text: string,
+  onClick: () => void | Promise<void>
+) {
+  return {
+    label: (
+      <div className="flex items-center gap-2">
+        {icon}
+        {text}
+      </div>
+    ),
+    onClick,
+  };
+}
 
 interface HeaderProps {
   dateFormat?: string;
@@ -17,43 +37,45 @@ export default function Header({ dateFormat }: Readonly<HeaderProps>) {
   const { push } = useRouter();
   const { data: profileImage } = useProfileImage();
   const [selectedDate, setSelectedDate] = useRecoilState(selectedDateAtom);
+  const setIsNewTransactionOpen = useSetRecoilState(newTransactionAtom);
 
-  async function handleSignOut() {
+  async function handleSignOut(): Promise<void> {
     await signOut();
   }
 
+  const dropdownItems = [
+    createDropdownItem(<VscHome />, 'Home', () => push('/')),
+    createDropdownItem(<VscAccount />, 'Account', () => push('/account')),
+    createDropdownItem(<GrTransaction />, 'New Transaction', () =>
+      setIsNewTransactionOpen((prev) => !prev)
+    ),
+    createDropdownItem(<GoGoal />, 'Goals', () => push('/goals')),
+    createDropdownItem(<TbBrandGoogleAnalytics />, 'Analytics', () =>
+      push('/analytics')
+    ),
+    createDropdownItem(<FiLogOut />, 'Sign Out', handleSignOut),
+  ];
+
   return (
-    <header className="flex items-center justify-between gap-3">
-      {profileImage && (
-        <Image
-          className="flex h-12 w-12 cursor-pointer items-center rounded-md object-cover"
-          src={URL.createObjectURL(profileImage)}
-          alt=""
-          height={0}
-          width={0}
-          onClick={() => push('/account')}
-        />
-      )}
-      {!profileImage && (
-        <BiUserCircle
-          className="cursor-pointer text-white"
-          size={30}
-          onClick={() => push('/account')}
-        />
-      )}
+    <header className="flex items-end justify-between gap-3">
+      <Dropdown dropdownItems={dropdownItems} />
       <DatePickerDialog
         date={selectedDate}
         setDate={setSelectedDate}
         dateFormat={dateFormat}
         showMonthYearPicker
       />
-      <div className="flex items-center gap-2">
-        <Language />
-        <FiLogOut
-          className="cursor-pointer text-slate-500"
-          size={35}
-          onClick={handleSignOut}
-        />
+      <div className="flex items-end gap-2">
+        {profileImage && (
+          <Image
+            className="flex h-10 w-10 items-center rounded-md object-cover"
+            src={URL.createObjectURL(profileImage)}
+            alt=""
+            height={0}
+            width={0}
+          />
+        )}
+        {!profileImage && <BiUserCircle className="text-white" size={30} />}
       </div>
     </header>
   );

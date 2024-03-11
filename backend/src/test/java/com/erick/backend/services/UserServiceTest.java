@@ -90,8 +90,7 @@ class UserServiceTest {
         when(service.save(userDto)).thenReturn(expectedUserDto);
         when(passwordEncoder.encode(userDto.getPassword()))
             .thenReturn("hashedPassword");
-        when(roleService.findByRoleName(RoleName.ROLE_USER))
-            .thenReturn(new Role());
+        when(roleService.findByRoleName(RoleName.USER)).thenReturn(new Role());
         UserDto result = service.save(userDto);
 
         assertEquals(expectedUserDto, result);
@@ -99,7 +98,7 @@ class UserServiceTest {
         verify(repository, times(2)).save(user);
         verify(converter, times(2)).dtoToEntity(userDto);
         verify(passwordEncoder, times(2)).encode(userDto.getPassword());
-        verify(roleService, times(2)).findByRoleName(RoleName.ROLE_USER);
+        verify(roleService, times(2)).findByRoleName(RoleName.USER);
     }
 
     @Test
@@ -296,7 +295,7 @@ class UserServiceTest {
                     Role
                         .builder()
                         .id(UUID.randomUUID())
-                        .roleName(RoleName.ROLE_USER)
+                        .roleName(RoleName.USER)
                         .build()
                 )
             )
@@ -315,7 +314,7 @@ class UserServiceTest {
                     RoleDto
                         .builder()
                         .id(UUID.randomUUID())
-                        .roleName(RoleName.ROLE_USER)
+                        .roleName(RoleName.USER)
                         .build()
                 )
             )

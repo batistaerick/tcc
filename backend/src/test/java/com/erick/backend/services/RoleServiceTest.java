@@ -24,7 +24,7 @@ class RoleServiceTest {
 
     @Test
     void findByRoleName_ExistingRole_ReturnsRole() {
-        RoleName roleName = RoleName.ROLE_USER;
+        RoleName roleName = RoleName.USER;
         Role expectedRole = Role
             .builder()
             .id(UUID.randomUUID())
@@ -41,7 +41,7 @@ class RoleServiceTest {
 
     @Test
     void findByRoleName_NonExistingRole_ReturnsNull() {
-        RoleName roleName = RoleName.ROLE_ADMIN;
+        RoleName roleName = RoleName.ADMIN;
 
         when(repository.findByRoleName(roleName)).thenReturn(null);
         Role result = roleService.findByRoleName(roleName);

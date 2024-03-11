@@ -47,7 +47,7 @@ public class UserController {
      * @return A ResponseEntity with HTTP status NO_CONTENT.
      */
     @PutMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<Void> update(@RequestBody UserDto dto) {
         service.update(dto);
         return noContent().build();
@@ -59,7 +59,7 @@ public class UserController {
      * @return A ResponseEntity containing the UserDto of the authenticated user.
      */
     @GetMapping("/current-user")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<UserDto> findByAuthenticated() {
         UserDto userDto = service.findByAuthenticatedEmail();
         return ok(userDto);

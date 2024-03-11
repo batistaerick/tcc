@@ -36,7 +36,7 @@ public class TransactionController {
      * @return A ResponseEntity with the created TransactionDto and the URI of the newly created transaction.
      */
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<TransactionDto> save(
         @RequestBody TransactionDto transaction
     ) {
@@ -56,7 +56,7 @@ public class TransactionController {
      * @return A ResponseEntity with the updated TransactionDto.
      */
     @PutMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<TransactionDto> put(
         @RequestBody TransactionDto transaction
     ) {
@@ -71,7 +71,7 @@ public class TransactionController {
      * @return A ResponseEntity with HTTP status NO_CONTENT.
      */
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         service.delete(id);
         return noContent().build();
@@ -86,7 +86,7 @@ public class TransactionController {
      * @return A ResponseEntity containing a list of TransactionDtos.
      */
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<
         Page<Transaction>
     > findByUserEmailAndTransactionTypeAndDateBetween(
@@ -112,7 +112,7 @@ public class TransactionController {
      * @return A ResponseEntity containing the TransactionDto.
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<TransactionDto> findDtoById(@PathVariable UUID id) {
         TransactionDto dto = service.findDtoById(id);
         return ok(dto);
@@ -125,7 +125,7 @@ public class TransactionController {
      * @return A ResponseEntity containing a list of TransactionDtos.
      */
     @GetMapping("/{transactionType}/fixed")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<List<TransactionDto>> findByUserEmailAndDateBetween(
         @PathVariable TransactionType transactionType
     ) {
@@ -142,7 +142,7 @@ public class TransactionController {
      * @return A ResponseEntity containing the predicted balance as Double.
      */
     @GetMapping("/{endDate}/prediction")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<Double> predictRemainingBalance(
         @PathVariable LocalDate endDate
     ) {

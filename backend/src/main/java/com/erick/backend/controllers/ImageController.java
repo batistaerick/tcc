@@ -30,7 +30,7 @@ public class ImageController {
      * @return A ResponseEntity with HTTP status NO_CONTENT.
      */
     @PostMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<Void> updateProfileImage(
         @Valid @RequestBody MultipartFile file
     ) {
@@ -44,7 +44,7 @@ public class ImageController {
      * @return A ResponseEntity containing the user's profile image as a byte array.
      */
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<byte[]> getProfileImage() {
         byte[] image = service.findByUserEmail();
         return ok().contentType(MediaType.IMAGE_JPEG).body(image);
