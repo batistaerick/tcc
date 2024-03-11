@@ -19,7 +19,7 @@ import { FcCurrencyExchange, FcIdea, FcSurvey } from 'react-icons/fc';
 import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil';
 
 export interface NewTransactionProps {
-  mutateAll: () => Promise<void>;
+  mutateAll?: () => Promise<void>;
 }
 
 export default function NewTransaction({
@@ -63,7 +63,7 @@ export default function NewTransaction({
           );
         }
         await predictionMutate();
-        await mutateAll();
+        await mutateAll?.();
         setIsNewTransactionOpen((prev) => !prev);
         resetNewTransaction();
       } catch (error: any) {
@@ -98,7 +98,7 @@ export default function NewTransaction({
         <div
           className={`
             absolute flex h-screen w-screen items-center justify-center
-            bg-black bg-opacity-70 backdrop-blur-sm
+            bg-black bg-opacity-80 backdrop-blur-sm
           `}
         >
           <div className="flex w-11/12 flex-col items-center justify-center gap-2 md:w-8/12 lg:w-6/12">

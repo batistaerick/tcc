@@ -24,11 +24,7 @@ export default function Button({
       className={`
         rounded-xl text-white transition-colors duration-500
         ${height ?? 'h-10'} ${width ?? 'w-16'}
-        ${
-          disabled
-            ? 'bg-slate-700 bg-opacity-60'
-            : 'bg-indigo-800 bg-opacity-80 hover:bg-indigo-900'
-        }
+        ${disabled ? 'bg-slate-700' : 'bg-indigo-800 hover:bg-indigo-900'}
       `}
       type={type}
       form={form}

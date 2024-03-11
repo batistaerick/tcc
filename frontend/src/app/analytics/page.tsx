@@ -2,14 +2,13 @@
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
 import Button from '@/components/Button';
 import DefaultBackground from '@/components/DefaultBackground';
+import NewTransaction from '@/components/NewTransaction';
 import useAnalytics from '@/hooks/useAnalytics';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Analytics() {
   const { t } = useTranslation();
-  const { push } = useRouter();
   const { data: analytics } = useAnalytics();
   const [index, setIndex] = useState<number>(0);
 
@@ -59,6 +58,7 @@ export default function Analytics() {
           </div>
         </>
       )}
+      <NewTransaction />
     </DefaultBackground>
   );
 }
