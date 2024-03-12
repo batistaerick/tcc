@@ -9,7 +9,9 @@ export interface LanguageMap {
     error: string;
   };
   account: {
-    username: string;
+    firstName: string;
+    lastName: string;
+    middleName: string;
     newPassword: string;
     confirmPassword: string;
   };
@@ -21,7 +23,7 @@ export interface LanguageMap {
     password: string;
     signIn: string;
     signUp: string;
-    username: string;
+    firstName: string;
   };
   balance: {
     expense: string;

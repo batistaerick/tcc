@@ -3,7 +3,8 @@ package com.erick.backend.controllers;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -70,7 +71,9 @@ class UserControllerTest {
             )
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.email").value(returnedUserDto.getEmail()))
-            .andExpect(jsonPath("$.name").value(returnedUserDto.getName()));
+            .andExpect(
+                jsonPath("$.firstName").value(returnedUserDto.getFirstName())
+            );
         verify(service, times(1)).save(any(UserDto.class));
     }
 
@@ -95,26 +98,11 @@ class UserControllerTest {
         verify(service, times(1)).update(any(UserDto.class));
     }
 
-    @Test
-    void findByAuthenticated_ValidUser() throws Exception {
-        UserDto userDto = createMockUserDto();
-
-        given(service.findByAuthenticatedEmail()).willReturn(userDto);
-
-        mockMvc
-            .perform(get("/users/current-user").with(jwt()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").value(userDto.getId().toString()))
-            .andExpect(jsonPath("$.email").value(userDto.getEmail()))
-            .andExpect(jsonPath("$.name").value(userDto.getName()));
-        verify(service, times(1)).findByAuthenticatedEmail();
-    }
-
     private User createMockUser() {
         return User
             .builder()
             .id(UUID.randomUUID())
-            .name("Test User")
+            .firstName("Test")
             .email("test@test.com")
             .password("Password@123")
             .roles(Set.of(Role.builder().roleName(RoleName.USER).build()))
@@ -125,7 +113,7 @@ class UserControllerTest {
         return UserDto
             .builder()
             .id(UUID.randomUUID())
-            .name("Test User")
+            .firstName("Test")
             .email("test@test.com")
             .password("Password@123")
             .roles(Set.of(RoleDto.builder().roleName(RoleName.USER).build()))

@@ -1,16 +1,21 @@
 import { RoleName, TransactionType } from '@/enums/enums';
 
-export interface UpdatedUserType {
-  username?: string;
+export interface UpdatedUser {
+  firstName?: string;
+  lastName?: string;
+  middleName?: string;
+  password?: string;
   confirmPassword?: string;
-  newPassword?: string;
 }
 
 export interface User {
   id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
+  middleName: string;
   email: string;
   password: string;
+  profileImage?: Uint8Array;
   refreshToken: string;
   refreshTokenExpires: number;
   accessToken: string;

@@ -69,6 +69,7 @@ public class TokenService {
         userDto.setRefreshTokenExpires(now.plus(7, ChronoUnit.DAYS));
         userDto.setTransactions(null);
         userDto.setPassword(null);
+        userDto.setProfileImage(null);
 
         return userDto;
     }

@@ -15,7 +15,9 @@ const en: LanguageMap = {
     error: 'Error',
   },
   account: {
-    username: 'Username',
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    middleName: 'Middle Name',
     newPassword: 'New password',
     confirmPassword: 'Confirm password',
   },
@@ -27,7 +29,7 @@ const en: LanguageMap = {
     password: 'Password',
     signIn: 'Sign in',
     signUp: 'Sign up',
-    username: 'Username',
+    firstName: 'First Name',
   },
   balance: {
     expense: 'Total Expense',

@@ -1,6 +1,7 @@
 package com.erick.backend.controllers;
 
-import static org.springframework.http.ResponseEntity.*;
+import static org.springframework.http.ResponseEntity.created;
+import static org.springframework.http.ResponseEntity.noContent;
 
 import com.erick.backend.domains.dtos.UserDto;
 import com.erick.backend.services.UserService;
@@ -51,17 +52,5 @@ public class UserController {
     public ResponseEntity<Void> update(@RequestBody UserDto dto) {
         service.update(dto);
         return noContent().build();
-    }
-
-    /**
-     * Retrieves the currently authenticated user's details.
-     *
-     * @return A ResponseEntity containing the UserDto of the authenticated user.
-     */
-    @GetMapping("/current-user")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<UserDto> findByAuthenticated() {
-        UserDto userDto = service.findByAuthenticatedEmail();
-        return ok(userDto);
     }
 }

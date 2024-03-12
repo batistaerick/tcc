@@ -60,9 +60,12 @@ public class DefaultConverters {
         return UserDto
             .builder()
             .id(user.getId())
-            .name(user.getName())
+            .firstName(user.getFirstName())
+            .lastName(user.getLastName())
+            .middleName(user.getMiddleName())
             .email(user.getEmail())
             .password(user.getPassword())
+            .profileImage(user.getProfileImage())
             .build();
     }
 
@@ -76,9 +79,12 @@ public class DefaultConverters {
         return User
             .builder()
             .id(dto.getId())
-            .name(dto.getName())
+            .firstName(dto.getFirstName())
+            .lastName(dto.getLastName())
+            .middleName(dto.getMiddleName())
             .email(dto.getEmail())
             .password(dto.getPassword())
+            .profileImage(dto.getProfileImage())
             .build();
     }
 

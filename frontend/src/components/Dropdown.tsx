@@ -32,7 +32,7 @@ export default function Dropdown({ dropdownItems }: Readonly<DropdownProps>) {
   }
 
   return (
-    <div ref={dropdownRef}>
+    <div ref={dropdownRef} className="space-y-1">
       <button
         id="dropdownDefaultButton"
         onClick={() => setIsOpen(!isOpen)}

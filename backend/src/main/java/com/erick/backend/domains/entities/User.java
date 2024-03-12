@@ -25,7 +25,11 @@ public class User implements UserDetails {
     @GeneratedValue
     private UUID id;
 
-    private String name;
+    private String firstName;
+
+    private String lastName;
+
+    private String middleName;
 
     @Email
     @Column(unique = true)
@@ -47,7 +51,7 @@ public class User implements UserDetails {
     private transient List<Transaction> transactions;
 
     @OneToOne
-    private transient Image profileImage;
+    private Image profileImage;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

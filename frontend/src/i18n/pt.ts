@@ -15,7 +15,9 @@ const pt: LanguageMap = {
     error: 'Erro',
   },
   account: {
-    username: 'Nome de usuário',
+    firstName: 'Nome',
+    lastName: 'Sobrenome',
+    middleName: 'Nome do meio',
     newPassword: 'Nova senha',
     confirmPassword: 'Confirmar senha',
   },
@@ -27,7 +29,7 @@ const pt: LanguageMap = {
     password: 'Senha',
     signIn: 'Entrar',
     signUp: 'Inscrever-se',
-    username: 'Nome de usuário',
+    firstName: 'Nome',
   },
   balance: {
     expense: 'Total de Despesas',

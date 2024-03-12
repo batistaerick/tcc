@@ -1,18 +1,24 @@
+import { Role, Transaction } from '@/types/types';
 import 'next-auth';
 
 declare module 'next-auth' {
   interface Session {
-    user: {
-      id: string;
-      name: string;
-      email: string;
-      password: string;
-      profileImage: Uint8Array;
-      refreshToken: string;
-      accessToken: string;
-      roles: Role[];
-      transactions: Transaction[];
-      authorities: Role[];
-    };
+    user: User;
+  }
+  interface User {
+    id: string;
+    firstName: string;
+    lastName: string;
+    middleName: string;
+    email: string;
+    password: string;
+    profileImage?: Uint8Array;
+    refreshToken: string;
+    refreshTokenExpires: number;
+    accessToken: string;
+    accessTokenExpires: number;
+    roles: Role[];
+    transactions: Transaction[];
+    authorities: Role[];
   }
 }
