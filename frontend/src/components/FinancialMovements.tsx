@@ -4,8 +4,6 @@ import { deleteFetcher } from '@/libs/fetchers';
 import { newTransactionAtom, transactionFormAtom } from '@/recoil/recoilValues';
 import { PaginatedTransactions, Transaction } from '@/types/types';
 import { formatDate } from '@/utils/globalFormats';
-import { buildHeadersAuthorization } from '@/utils/headerToken';
-import { useSession } from 'next-auth/react';
 import { useTranslation } from 'react-i18next';
 import { BiEdit } from 'react-icons/bi';
 import { FcFullTrash } from 'react-icons/fc';
@@ -28,12 +26,10 @@ export default function FinancialMovements({
   const {
     i18n: { language },
   } = useTranslation();
-  const { data: session } = useSession();
   const { mutate: mutatePrediction } = usePredictions();
 
   async function deleteTransaction(): Promise<void> {
-    const config = buildHeadersAuthorization(session?.user.accessToken);
-    await deleteFetcher(`/transactions/${transaction.id}`, config);
+    await deleteFetcher(`/transactions/${transaction.id}`);
     await mutateOnDelete();
     await mutatePrediction();
   }

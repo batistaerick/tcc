@@ -1,15 +1,9 @@
 import { getFetcher } from '@/libs/fetchers';
-import { buildHeadersAuthorization } from '@/utils/headerToken';
 import { AxiosRequestConfig } from 'axios';
-import { useSession } from 'next-auth/react';
 import useSWR, { SWRResponse } from 'swr';
 
 export default function useProfileImage(): SWRResponse<File, Error> {
-  const { data } = useSession();
-  const config: AxiosRequestConfig = {
-    ...buildHeadersAuthorization(data?.user.accessToken),
-    responseType: 'blob',
-  };
+  const config: AxiosRequestConfig = { responseType: 'blob' };
 
   return useSWR(['/images', config], ([url, config]) =>
     getFetcher<File>(url, config)

@@ -6,7 +6,6 @@ import useProfileImage from '@/hooks/useProfileImage';
 import { postFetcher, putFetcher } from '@/libs/fetchers';
 import { UpdatedUser } from '@/types/types';
 import { arePasswordsEqual, hasValueInside } from '@/utils/checkers';
-import { buildHeadersAuthorization } from '@/utils/headerToken';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -38,24 +37,18 @@ export default function Profile() {
         if (!arePasswordsEqual(password, confirmPassword)) {
           throw new Error('differentPasswords');
         }
-        await putFetcher(
-          '/users',
-          { firstName, lastName, middleName, password },
-          buildHeadersAuthorization(session?.user.accessToken)
-        );
+        await putFetcher('/users', {
+          firstName,
+          lastName,
+          middleName,
+          password,
+        });
       }
       if (updatedImage) {
         await postFetcher(
           '/images',
           { file: updatedImage },
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Authorization: buildHeadersAuthorization(
-                session?.user.accessToken
-              ).headers.Authorization,
-            },
-          }
+          { headers: { 'Content-Type': 'multipart/form-data' } }
         );
       }
       await update();
