@@ -155,10 +155,10 @@ class UserServiceTest {
                 .thenReturn(authenticatedEmail);
             User existingUser = new User();
             existingUser.setEmail(authenticatedEmail);
-            existingUser.setName("OldName");
+            existingUser.setFirstName("OldName");
             existingUser.setPassword("oldPassword");
             UserDto updatedUserDto = new UserDto();
-            updatedUserDto.setName("NewName");
+            updatedUserDto.setFirstName("NewName");
             updatedUserDto.setPassword("Password@123");
 
             when(repository.findByEmail(authenticatedEmail))
@@ -168,7 +168,7 @@ class UserServiceTest {
             service.update(updatedUserDto);
 
             verify(repository, times(1)).save(existingUser);
-            assertEquals("NewName", existingUser.getName());
+            assertEquals("NewName", existingUser.getFirstName());
             assertEquals("hashedNewPassword", existingUser.getPassword());
         }
     }
@@ -185,7 +185,7 @@ class UserServiceTest {
                 .thenReturn(authenticatedEmail);
             User existingUser = new User();
             existingUser.setEmail(authenticatedEmail);
-            existingUser.setName("OldName");
+            existingUser.setFirstName("OldName");
             existingUser.setPassword("oldPassword");
             UserDto updatedUserDto = new UserDto();
 
@@ -194,7 +194,7 @@ class UserServiceTest {
             service.update(updatedUserDto);
 
             verify(repository, times(1)).findByEmail(authenticatedEmail);
-            assertEquals("OldName", existingUser.getName());
+            assertEquals("OldName", existingUser.getFirstName());
             assertEquals("oldPassword", existingUser.getPassword());
         }
     }
@@ -212,7 +212,7 @@ class UserServiceTest {
                 .thenReturn(authenticatedEmail);
             User existingUser = new User();
             existingUser.setEmail(authenticatedEmail);
-            existingUser.setName("OldName");
+            existingUser.setFirstName("OldName");
             existingUser.setPassword("oldPassword");
             UserDto updatedUserDto = new UserDto();
             updatedUserDto.setPassword("short");
@@ -240,7 +240,7 @@ class UserServiceTest {
                 .thenReturn(authenticatedEmail);
             User existingUser = new User();
             existingUser.setEmail(authenticatedEmail);
-            existingUser.setName("OldName");
+            existingUser.setFirstName("OldName");
             existingUser.setPassword("Password@123");
             UserDto updatedUserDto = new UserDto();
             updatedUserDto.setPassword("Password@123");
@@ -269,17 +269,17 @@ class UserServiceTest {
                 .thenReturn(authenticatedEmail);
             User existingUser = new User();
             existingUser.setEmail(authenticatedEmail);
-            existingUser.setName("OldName");
+            existingUser.setFirstName("OldName");
             existingUser.setPassword("oldPassword");
             UserDto updatedUserDto = new UserDto();
-            updatedUserDto.setName("NewName");
+            updatedUserDto.setFirstName("NewName");
 
             when(repository.findByEmail(authenticatedEmail))
                 .thenReturn(Optional.of(existingUser));
             service.update(updatedUserDto);
 
             verify(repository, times(1)).save(existingUser);
-            assertEquals("NewName", existingUser.getName());
+            assertEquals("NewName", existingUser.getFirstName());
         }
     }
 
@@ -289,7 +289,7 @@ class UserServiceTest {
             .id(UUID.randomUUID())
             .email("test@test.com")
             .password("Password@123")
-            .name("Test")
+            .firstName("Test")
             .roles(
                 Set.of(
                     Role
@@ -308,7 +308,7 @@ class UserServiceTest {
             .id(UUID.randomUUID())
             .email("test@test.com")
             .password("Password@123")
-            .name("Test")
+            .firstName("Test")
             .roles(
                 Set.of(
                     RoleDto

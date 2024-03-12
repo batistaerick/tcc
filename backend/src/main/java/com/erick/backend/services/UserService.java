@@ -96,8 +96,23 @@ public class UserService {
      */
     public void update(UserDto updatedUser) {
         User existingUser = findByEmail(UserSession.getAuthenticatedEmail());
-        if (updatedUser.getName() != null && !updatedUser.getName().isBlank()) {
-            existingUser.setName(updatedUser.getName());
+        if (
+            updatedUser.getFirstName() != null &&
+            !updatedUser.getFirstName().isBlank()
+        ) {
+            existingUser.setFirstName(updatedUser.getFirstName());
+        }
+        if (
+            updatedUser.getLastName() != null &&
+            !updatedUser.getLastName().isBlank()
+        ) {
+            existingUser.setLastName(updatedUser.getLastName());
+        }
+        if (
+            updatedUser.getMiddleName() != null &&
+            !updatedUser.getMiddleName().isBlank()
+        ) {
+            existingUser.setMiddleName(updatedUser.getMiddleName());
         }
         if (
             updatedUser.getPassword() != null &&

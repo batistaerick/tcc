@@ -1,5 +1,6 @@
 package com.erick.backend.domains.dtos;
 
+import com.erick.backend.domains.entities.Image;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
@@ -15,9 +16,12 @@ import lombok.*;
 public class UserDto {
 
     private UUID id;
-    private String name;
+    private String firstName;
+    private String lastName;
+    private String middleName;
     private String email;
     private String password;
+    private Image profileImage;
     private String refreshToken;
     private Instant refreshTokenExpires;
     private String accessToken;

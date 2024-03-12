@@ -45,14 +45,14 @@ export default function Header({ dateFormat }: Readonly<HeaderProps>) {
 
   const dropdownItems = [
     createDropdownItem(<VscHome />, 'Home', () => push('/')),
-    createDropdownItem(<VscAccount />, 'Account', () => push('/account')),
     createDropdownItem(<GrTransaction />, 'New Transaction', () =>
       setIsNewTransactionOpen((prev) => !prev)
     ),
-    createDropdownItem(<GoGoal />, 'Goals', () => push('/goals')),
     createDropdownItem(<TbBrandGoogleAnalytics />, 'Analytics', () =>
       push('/analytics')
     ),
+    createDropdownItem(<VscAccount />, 'Account', () => push('/account')),
+    createDropdownItem(<GoGoal />, 'Goals', () => push('/goals')),
     createDropdownItem(<FiLogOut />, 'Sign Out', handleSignOut),
   ];
 
@@ -68,7 +68,7 @@ export default function Header({ dateFormat }: Readonly<HeaderProps>) {
       <div className="flex items-end gap-2">
         {profileImage && (
           <Image
-            className="flex h-10 w-10 items-center rounded-md object-cover"
+            className="flex h-11 w-11 items-center rounded-full object-cover"
             src={URL.createObjectURL(profileImage)}
             alt=""
             height={0}

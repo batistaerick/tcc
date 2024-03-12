@@ -11,8 +11,6 @@ import {
   transactionFormAtom,
 } from '@/recoil/recoilValues';
 import { Transaction } from '@/types/types';
-import { buildHeadersAuthorization } from '@/utils/headerToken';
-import { useSession } from 'next-auth/react';
 import { ChangeEvent, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FcCurrencyExchange, FcIdea, FcSurvey } from 'react-icons/fc';
@@ -33,7 +31,6 @@ export default function NewTransaction({
   const setResponseError = useSetRecoilState(responseErrorAtom);
   const { openModal } = useModal();
   const { t } = useTranslation();
-  const { data: session } = useSession();
   const { mutate: predictionMutate } = usePredictions();
 
   useEffect(
@@ -50,17 +47,9 @@ export default function NewTransaction({
       try {
         event.preventDefault();
         if (form.id) {
-          await putFetcher<Transaction>(
-            '/transactions',
-            form,
-            buildHeadersAuthorization(session?.user.accessToken)
-          );
+          await putFetcher<Transaction>('/transactions', form);
         } else {
-          await postFetcher<Transaction>(
-            '/transactions',
-            form,
-            buildHeadersAuthorization(session?.user.accessToken)
-          );
+          await postFetcher<Transaction>('/transactions', form);
         }
         await predictionMutate();
         await mutateAll?.();
@@ -77,7 +66,6 @@ export default function NewTransaction({
       predictionMutate,
       mutateAll,
       setIsNewTransactionOpen,
-      session?.user.accessToken,
       openModal,
       setResponseError,
     ]

@@ -24,9 +24,12 @@ public class UserConverter {
         UserDto dto = UserDto
             .builder()
             .id(entity.getId())
-            .name(entity.getName())
+            .firstName(entity.getFirstName())
+            .lastName(entity.getLastName())
+            .middleName(entity.getMiddleName())
             .email(entity.getEmail())
             .password(entity.getPassword())
+            .profileImage(entity.getProfileImage())
             .build();
         if (entity.getRoles() != null) {
             dto.setRoles(
@@ -61,9 +64,12 @@ public class UserConverter {
         User entity = User
             .builder()
             .id(dto.getId())
-            .name(dto.getName())
+            .firstName(dto.getFirstName())
+            .lastName(dto.getLastName())
+            .middleName(dto.getMiddleName())
             .email(dto.getEmail())
             .password(dto.getPassword())
+            .profileImage(dto.getProfileImage())
             .build();
         if (dto.getRoles() != null) {
             entity.setRoles(

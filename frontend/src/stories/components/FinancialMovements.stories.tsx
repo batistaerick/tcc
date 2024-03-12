@@ -14,7 +14,9 @@ export default {
       id: '1',
       user: {
         id: '1',
-        name: 'Story',
+        firstName: 'Story',
+        lastName: 'Story',
+        middleName: 'Story',
         email: 'story@story.com',
         password: 'Story',
         refreshToken: 'Story',

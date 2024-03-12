@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.erick.backend.domains.dtos.UserDto;
 import com.erick.backend.services.TokenService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,7 +42,7 @@ class AuthControllerTest {
         UserDto userDto = UserDto
             .builder()
             .id(UUID.randomUUID())
-            .name("Test User")
+            .firstName("Test")
             .email("test@example.com")
             .password("Password@123")
             .accessToken("access_token")

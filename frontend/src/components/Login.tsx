@@ -99,7 +99,7 @@ export default function Login() {
             {variant === 'register' && (
               <Input
                 id="email"
-                label={t('auth:username')}
+                label={t('auth:firstName')}
                 type="text"
                 value={name}
                 onChange={({ currentTarget: { value } }) => setName(value)}
