@@ -2,13 +2,12 @@
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
 import Button from '@/components/Button';
 import DefaultBackground from '@/components/DefaultBackground';
+import Header from '@/components/Header';
 import NewTransaction from '@/components/NewTransaction';
 import useAnalytics from '@/hooks/useAnalytics';
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 export default function Analytics() {
-  const { t } = useTranslation();
   const { data: analytics } = useAnalytics();
   const [index, setIndex] = useState<number>(0);
 
@@ -30,34 +29,36 @@ export default function Analytics() {
   }
 
   return (
-    <DefaultBackground>
-      {analytics && (
-        <>
-          <AnalyticsDashboard
-            amtVisitorsToday={Object.values(analytics[index].accesses).reduce(
-              (accumulator, current) => accumulator + current,
-              0
-            )}
-            topCountries={[]}
-            accesses={analytics[index].accesses}
-            path={analytics[index].path}
-          />
-          <div className="flex w-full items-center justify-center gap-2">
-            <Button
-              height="h-12"
-              width="w-3/12"
-              translation={'Previous Page'}
-              onClick={handlePrevious}
+    <DefaultBackground style="flex flex-col items-center gap-2 pt-2">
+      <Header />
+      <div className="w-[95%]">
+        {analytics && (
+          <div className="space-y-2">
+            <AnalyticsDashboard
+              accessesAmountToday={Object.values(
+                analytics[index].accesses
+              ).reduce((accumulator, current) => accumulator + current, 0)}
+              topCountries={[]}
+              accesses={analytics[index].accesses}
+              path={analytics[index].path}
             />
-            <Button
-              height="h-12"
-              width="w-3/12"
-              translation={'Next Page'}
-              onClick={handleNext}
-            />
+            <div className="flex w-full items-center justify-center gap-2">
+              <Button
+                height="h-12"
+                width="w-3/12"
+                translation={'Previous Page'}
+                onClick={handlePrevious}
+              />
+              <Button
+                height="h-12"
+                width="w-3/12"
+                translation={'Next Page'}
+                onClick={handleNext}
+              />
+            </div>
           </div>
-        </>
-      )}
+        )}
+      </div>
       <NewTransaction />
     </DefaultBackground>
   );

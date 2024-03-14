@@ -2,24 +2,21 @@ import { ReactElement, ReactNode } from 'react';
 
 export interface DefaultBackgroundProps {
   children: ReactNode | ReactElement;
+  style?: string;
 }
 
 export default function DefaultBackground({
   children,
+  style,
 }: Readonly<DefaultBackgroundProps>) {
   return (
     <div
       className={`
-        relative h-screen w-screen bg-[url('/images/HomeBackground.jpg')]
-        bg-cover bg-fixed bg-center bg-no-repeat
+        h-screen w-screen bg-[url('/images/HomeBackground.jpg')]
+        bg-cover bg-fixed bg-center bg-no-repeat text-gray-300
       `}
     >
-      <div
-        className={`
-          flex h-screen w-screen flex-col items-center justify-center gap-2
-          bg-black bg-opacity-50 text-gray-300
-        `}
-      >
+      <div className={`${style} h-screen w-screen bg-black bg-opacity-50`}>
         {children}
       </div>
     </div>

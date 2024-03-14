@@ -1,18 +1,17 @@
 'use client';
-import Header from '@/components/Header';
 import { BarChart, Card } from '@tremor/react';
 import { useMemo } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 
 interface AnalyticsDashboardProps {
-  amtVisitorsToday: number;
+  accessesAmountToday: number;
   topCountries: [string, number][];
   accesses: Map<string, number>;
   path: string;
 }
 
 export default function AnalyticsDashboard({
-  amtVisitorsToday,
+  accessesAmountToday,
   topCountries,
   accesses,
   path,
@@ -28,7 +27,6 @@ export default function AnalyticsDashboard({
 
   return (
     <div className="flex flex-col gap-2">
-      <Header />
       <Card className="w-full rounded-xl">
         <p className="text-tremor-default text-dark-tremor-content">
           Path (URL)
@@ -40,18 +38,18 @@ export default function AnalyticsDashboard({
       <div className="mx-auto grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
         <Card className="w-full rounded-xl">
           <p className="text-tremor-default text-dark-tremor-content">
-            Average visitors/day
+            Average accesses/day
           </p>
           <p className="text-3xl font-semibold text-dark-tremor-content-strong">
-            {Math.floor(amtVisitorsToday / 7)}
+            {Math.floor(accessesAmountToday / 7)}
           </p>
         </Card>
         <Card className="w-full rounded-xl">
           <p className="text-tremor-default flex items-center gap-2.5 text-dark-tremor-content">
-            Visitors today
+            Accesses today
           </p>
           <p className="text-3xl font-semibold text-dark-tremor-content-strong">
-            {amtVisitorsToday}
+            {accessesAmountToday}
           </p>
         </Card>
       </div>

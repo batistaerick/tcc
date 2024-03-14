@@ -81,7 +81,6 @@ export default function Input({
           absolute
           left-6
           top-4
-          z-10
           origin-[0]
           -translate-y-3
           scale-75

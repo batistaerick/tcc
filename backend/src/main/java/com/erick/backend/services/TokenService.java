@@ -64,9 +64,7 @@ public class TokenService {
 
         UserDto userDto = userService.findByAuthenticatedEmail();
         userDto.setAccessToken(accessToken);
-        userDto.setAccessTokenExpires(now.plus(1, ChronoUnit.HOURS));
         userDto.setRefreshToken(refreshToken);
-        userDto.setRefreshTokenExpires(now.plus(7, ChronoUnit.DAYS));
         userDto.setTransactions(null);
         userDto.setPassword(null);
         userDto.setProfileImage(null);

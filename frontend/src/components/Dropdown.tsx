@@ -49,7 +49,7 @@ export default function Dropdown({ dropdownItems }: Readonly<DropdownProps>) {
         id="dropdown"
         className={`
           ${isOpen ? 'block' : 'hidden'}
-          absolute z-50 w-44 divide-y
+          absolute z-40 w-44 divide-y
           divide-gray-100 rounded-lg bg-gray-700 shadow
         `}
       >
