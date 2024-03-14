@@ -54,5 +54,7 @@ export async function deleteFetcher(
   url: string,
   config?: AxiosRequestConfig
 ): Promise<void> {
-  await defaultAxios.delete(url, config);
+  await defaultAxios.delete(url, config).catch((error: AxiosError) => {
+    throw error;
+  });
 }

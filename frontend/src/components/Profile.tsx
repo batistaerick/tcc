@@ -12,19 +12,21 @@ import { useRouter } from 'next/navigation';
 import { ChangeEvent, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+const newUser: UpdatedUser = {
+  firstName: '',
+  lastName: '',
+  middleName: '',
+  password: '',
+  confirmPassword: '',
+};
+
 export default function Profile() {
   const { data: session, update } = useSession();
   const { data: profileImage, mutate: mutateImage } = useProfileImage();
   const { t } = useTranslation();
   const { push } = useRouter();
   const { openModal } = useModal();
-  const [updatedUser, setUpdatedUser] = useState<UpdatedUser>({
-    firstName: '',
-    lastName: '',
-    middleName: '',
-    password: '',
-    confirmPassword: '',
-  });
+  const [updatedUser, setUpdatedUser] = useState<UpdatedUser>(newUser);
   const [updatedImage, setUpdatedImage] = useState<Blob>();
   const [unauthorized, setUnauthorized] = useState<string | undefined>();
 
@@ -51,6 +53,7 @@ export default function Profile() {
           { headers: { 'Content-Type': 'multipart/form-data' } }
         );
       }
+      setUpdatedUser(newUser);
       await update();
       await mutateImage();
     } catch (error: any) {
@@ -87,7 +90,7 @@ export default function Profile() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-5">
-      <div className="flex gap-10">
+      <div className="gap-10 space-y-5 sm:flex sm:space-y-0">
         <div className="flex flex-col items-center gap-5">
           <label
             className={`
@@ -129,9 +132,7 @@ export default function Profile() {
           </label>
           <div>
             {session?.user?.firstName && (
-              <div>
-                {`Hello, ${session.user.firstName} ${session.user.middleName} ${session.user.lastName}!`}
-              </div>
+              <div>&#128515; {`${t('Hi')}, ${session.user.firstName}!`}</div>
             )}
             <div>{session?.user?.email}</div>
           </div>

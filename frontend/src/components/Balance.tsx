@@ -55,7 +55,7 @@ export default function Balance() {
   return (
     <div
       className={`
-        flex h-40 w-10/12 cursor-default
+        flex h-1/5 w-[95%] cursor-default
         flex-col items-center justify-center rounded-xl
         bg-slate-700 bg-opacity-60
       `}
@@ -73,7 +73,7 @@ export default function Balance() {
         <div className="flex justify-between text-sm">
           <div className="text-left">
             <div>{t('balance:expense')}</div>
-            <div className="flex items-center justify-start gap-1">
+            <div className="flex items-end gap-1">
               <FcBearish size={35} />
               <div>
                 <Money value={totalExpenses} />
@@ -83,9 +83,9 @@ export default function Balance() {
           <div className="flex gap-1">
             <div className="text-right">
               <div>{t('balance:income')}</div>
-              <div className="flex items-center justify-end gap-1">
-                <FcBullish size={35} />
+              <div className="flex items-end gap-1">
                 <Money value={totalIncomes} />
+                <FcBullish size={35} />
               </div>
             </div>
           </div>

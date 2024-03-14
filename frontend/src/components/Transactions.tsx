@@ -50,7 +50,7 @@ export default function Transactions({
   }, [setSize, scrollDivRef]);
 
   return (
-    <div className="w-10/12 rounded-xl bg-blue-950 bg-opacity-65">
+    <div className="w-[95%] rounded-xl bg-blue-950 bg-opacity-65">
       <div className="mx-3">
         <div className="w-full">
           <div className="my-2 grid grid-cols-3 text-lg">
@@ -59,7 +59,7 @@ export default function Transactions({
             <div className="flex items-center justify-end">Value</div>
           </div>
           <div
-            className="h-56 space-y-2 overflow-y-auto"
+            className="h-64 space-y-2 overflow-y-auto"
             onScroll={onScroll}
             ref={scrollDivRef}
           >

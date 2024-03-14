@@ -1,26 +1,14 @@
 'use client';
+import Balance from '@/components/Balance';
 import DefaultBackground from '@/components/DefaultBackground';
+import Header from '@/components/Header';
 import ModalError from '@/components/Modals/ModalError';
 import NewTransaction from '@/components/NewTransaction';
+import Transactions from '@/components/Transactions';
 import { TransactionType } from '@/enums/enums';
 import useFixedTransactions from '@/hooks/useFixedTransactions';
 import useTransactions from '@/hooks/useTransactions';
-import dynamic from 'next/dynamic';
 import { useTranslation } from 'react-i18next';
-
-const DynamicHeader = dynamic(() => import('@/components/Header'), {
-  loading: () => <header className="h-12 w-10/12 rounded-xl" />,
-});
-const DynamicBalance = dynamic(() => import('@/components/Balance'), {
-  loading: () => (
-    <div className="h-52 w-10/12 cursor-default rounded-xl bg-slate-700 bg-opacity-60" />
-  ),
-});
-const DynamicTransactions = dynamic(() => import('@/components/Transactions'), {
-  loading: () => (
-    <div className="h-[252px] w-10/12 rounded-xl bg-blue-950 bg-opacity-65" />
-  ),
-});
 
 export default function Home() {
   const { t } = useTranslation();
@@ -51,12 +39,10 @@ export default function Home() {
   }
 
   return (
-    <DefaultBackground>
-      <div className="w-10/12">
-        <DynamicHeader dateFormat="MMM/yyyy" />
-      </div>
-      <DynamicBalance />
-      <DynamicTransactions
+    <DefaultBackground style="flex flex-col items-center gap-2 pt-2">
+      <Header dateFormat="MMM/yyyy" />
+      <Balance />
+      <Transactions
         transactions={incomesResponse?.flatMap((page) => page.content)}
         transactionsMutate={incomesMutate}
         fixedTransactions={fixedIncomes}
@@ -66,7 +52,7 @@ export default function Home() {
         length={incomesResponse?.length}
         title={t('transactions:incomes')}
       />
-      <DynamicTransactions
+      <Transactions
         transactions={expensesResponse?.flatMap((page) => page.content)}
         transactionsMutate={expensesMutate}
         fixedTransactions={fixedExpenses}

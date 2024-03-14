@@ -12,7 +12,7 @@ export default function DefaultErrorPage({
   const { push } = useRouter();
 
   return (
-    <DefaultBackground>
+    <DefaultBackground style="flex flex-col items-center justify-center gap-2 pt-2">
       <h1 className="mb-4 text-6xl font-bold">Oops &#128531;</h1>
       <p className="mb-8 text-xl">Something went wrong.</p>
       <div className="flex w-44 gap-3">
