@@ -5,6 +5,8 @@ import { getJwtExpiration } from '@/utils/jwt';
 import NextAuth, { type NextAuthOptions } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import Credentials from 'next-auth/providers/credentials';
+import GithubProvider from 'next-auth/providers/github';
+import GoogleProvider from 'next-auth/providers/google';
 
 async function refreshAccessToken(token: JWT) {
   try {
@@ -21,6 +23,14 @@ async function refreshAccessToken(token: JWT) {
 
 const authOptions: NextAuthOptions = {
   providers: [
+    GithubProvider({
+      clientId: process.env.NEXT_PUBLIC_GITHUB_ID ?? '',
+      clientSecret: process.env.NEXT_PUBLIC_GITHUB_SECRET ?? '',
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+    }),
     Credentials({
       name: 'Sign in',
       credentials: {
@@ -80,8 +90,8 @@ const authOptions: NextAuthOptions = {
   },
   pages: { signIn: '/auth' },
   session: { strategy: 'jwt', maxAge: 604800 },
-  jwt: { secret: process.env.NEXTAUTH_JWT_SECRET },
-  secret: process.env.NEXTAUTH_SECRET,
+  jwt: { secret: process.env.NEXT_PUBLIC_NEXTAUTH_JWT_SECRET },
+  secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);

@@ -7,8 +7,9 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnalyticDto {
+public class MonthlySummaryDto {
 
-    private String path;
-    private String country;
+    private String date;
+    private Double expense;
+    private Double income;
 }

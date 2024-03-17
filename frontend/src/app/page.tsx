@@ -6,36 +6,36 @@ import ModalError from '@/components/Modals/ModalError';
 import NewTransaction from '@/components/NewTransaction';
 import Transactions from '@/components/Transactions';
 import { TransactionType } from '@/enums/enums';
-import useFixedTransactions from '@/hooks/useFixedTransactions';
 import useTransactions from '@/hooks/useTransactions';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Home() {
   const { t } = useTranslation();
-  const { data: fixedExpenses, mutate: fixedExpensesMutate } =
-    useFixedTransactions(TransactionType.FIXED_EXPENSE);
-  const { data: fixedIncomes, mutate: fixedIncomesMutate } =
-    useFixedTransactions(TransactionType.FIXED_INCOME);
-  const {
-    data: expensesResponse,
-    mutate: expensesMutate,
-    setSize: setExpensesSize,
-    size: expensesSize,
-  } = useTransactions(TransactionType.EXPENSE, 2);
   const {
     data: incomesResponse,
     mutate: incomesMutate,
     setSize: setIncomesSize,
     size: incomesSize,
-  } = useTransactions(TransactionType.INCOME, 2);
+  } = useTransactions(TransactionType.INCOME, 10);
+  const {
+    data: expensesResponse,
+    mutate: expensesMutate,
+    setSize: setExpensesSize,
+    size: expensesSize,
+  } = useTransactions(TransactionType.EXPENSE, 10);
+
+  const incomes = useMemo(
+    () => incomesResponse?.flatMap((page) => page.content),
+    [incomesResponse]
+  );
+  const expenses = useMemo(
+    () => expensesResponse?.flatMap((page) => page.content),
+    [expensesResponse]
+  );
 
   async function mutateAll() {
-    await Promise.all([
-      fixedExpensesMutate(),
-      fixedIncomesMutate(),
-      expensesMutate(),
-      incomesMutate(),
-    ]);
+    await Promise.all([incomesMutate(), expensesMutate()]);
   }
 
   return (
@@ -43,20 +43,16 @@ export default function Home() {
       <Header dateFormat="MMM/yyyy" />
       <Balance />
       <Transactions
-        transactions={incomesResponse?.flatMap((page) => page.content)}
+        transactions={incomes}
         transactionsMutate={incomesMutate}
-        fixedTransactions={fixedIncomes}
-        fixedTransactionsMutate={fixedIncomesMutate}
         size={incomesSize}
         setSize={setIncomesSize}
         length={incomesResponse?.length}
         title={t('transactions:incomes')}
       />
       <Transactions
-        transactions={expensesResponse?.flatMap((page) => page.content)}
+        transactions={expenses}
         transactionsMutate={expensesMutate}
-        fixedTransactions={fixedExpenses}
-        fixedTransactionsMutate={fixedExpensesMutate}
         size={expensesSize}
         setSize={setExpensesSize}
         length={expensesResponse?.length}

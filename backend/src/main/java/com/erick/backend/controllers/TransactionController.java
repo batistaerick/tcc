@@ -1,12 +1,13 @@
 package com.erick.backend.controllers;
 
-import static org.springframework.http.ResponseEntity.*;
+import static org.springframework.http.ResponseEntity.noContent;
+import static org.springframework.http.ResponseEntity.ok;
 
+import com.erick.backend.domains.dtos.MonthlySummaryDto;
 import com.erick.backend.domains.dtos.TransactionDto;
 import com.erick.backend.domains.entities.Transaction;
 import com.erick.backend.enums.TransactionType;
 import com.erick.backend.services.TransactionService;
-import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -16,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * REST controller for managing transactions.
@@ -37,16 +37,9 @@ public class TransactionController {
      */
     @PostMapping
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<TransactionDto> save(
-        @RequestBody TransactionDto transaction
-    ) {
-        TransactionDto transactionDto = service.save(transaction);
-        URI uri = ServletUriComponentsBuilder
-            .fromCurrentRequest()
-            .path("/{id}")
-            .buildAndExpand(transactionDto.getId())
-            .toUri();
-        return created(uri).body(transactionDto);
+    public ResponseEntity<Void> save(@RequestBody TransactionDto transaction) {
+        service.save(transaction);
+        return noContent().build();
     }
 
     /**
@@ -77,26 +70,18 @@ public class TransactionController {
         return noContent().build();
     }
 
-    /**
-     * Retrieves all transactions of a specific type within a date range.
-     *
-     * @param startDate       The start date of the range.
-     * @param endDate         The end date of the range.
-     * @param transactionType The type of transactions to retrieve.
-     * @return A ResponseEntity containing a list of TransactionDtos.
-     */
     @GetMapping
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<
         Page<Transaction>
-    > findByUserEmailAndTransactionTypeAndDateBetween(
+    > findByTransactionTypeAndDateBetween(
+        TransactionType transactionType,
         @RequestParam LocalDate startDate,
         @RequestParam LocalDate endDate,
-        @RequestParam TransactionType transactionType,
         Pageable pageable
     ) {
         Page<Transaction> transactions =
-            service.findByUserEmailAndTransactionTypeAndDateBetween(
+            service.findByTransactionTypeAndDateBetween(
                 transactionType,
                 startDate,
                 endDate,
@@ -119,23 +104,6 @@ public class TransactionController {
     }
 
     /**
-     * Retrieves all transactions of a specific type.
-     *
-     * @param transactionType The type of transactions to retrieve.
-     * @return A ResponseEntity containing a list of TransactionDtos.
-     */
-    @GetMapping("/{transactionType}/fixed")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ResponseEntity<List<TransactionDto>> findByUserEmailAndDateBetween(
-        @PathVariable TransactionType transactionType
-    ) {
-        List<TransactionDto> transactions = service.findAllByTransactionType(
-            transactionType
-        );
-        return ok(transactions);
-    }
-
-    /**
      * Predicts the remaining balance by a specified end date.
      *
      * @param endDate The end date for which the balance is predicted.
@@ -148,5 +116,12 @@ public class TransactionController {
     ) {
         Double prediction = service.predictRemainingBalance(endDate);
         return ok(prediction);
+    }
+
+    @GetMapping("/monthly-summary")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<List<MonthlySummaryDto>> getMonthlySummary() {
+        List<MonthlySummaryDto> goals = service.getMonthlySummary();
+        return ok(goals);
     }
 }

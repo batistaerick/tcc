@@ -1,13 +1,14 @@
 package com.erick.backend.domains.dtos;
 
+import com.erick.backend.enums.Repeats;
 import com.erick.backend.enums.TransactionType;
 import java.time.LocalDate;
 import java.util.UUID;
 import lombok.*;
 
-@Builder
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class TransactionDto {
@@ -18,5 +19,7 @@ public class TransactionDto {
     private String notes;
     private LocalDate date;
     private Double value;
+    private Integer installments;
     private TransactionType transactionType;
+    private Repeats repeats;
 }

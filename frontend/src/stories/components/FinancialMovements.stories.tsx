@@ -31,7 +31,7 @@ export default {
       notes: 'Monthly',
       date: new Date(),
       value: 1000,
-      transactionType: TransactionType.FIXED_INCOME,
+      transactionType: TransactionType.INCOME,
     },
     mutateOnDelete: () => Promise.resolve(null),
   },

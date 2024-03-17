@@ -37,9 +37,9 @@ export default function NewTransaction({
     () =>
       setForm((prevTransaction) => ({
         ...prevTransaction,
-        date: selectedDate,
+        date: new Date(selectedDate),
       })),
-    [selectedDate]
+    [selectedDate, setForm]
   );
 
   const onSubmit = useCallback(
@@ -85,7 +85,7 @@ export default function NewTransaction({
       {isNewTransactionOpen && (
         <div
           className={`
-            absolute flex h-screen w-screen items-center justify-center
+            absolute flex h-full w-full items-center justify-center
             bg-black bg-opacity-80 backdrop-blur-sm
           `}
         >
@@ -94,7 +94,7 @@ export default function NewTransaction({
               <DatePickerDialog date={selectedDate} setDate={setSelectedDate} />
             </div>
             <form
-              className="flex w-full flex-col gap-10 rounded-lg bg-slate-700 bg-opacity-35 p-5"
+              className="flex w-full flex-col gap-5 rounded-lg bg-slate-700 bg-opacity-35 p-5"
               id="newTransactionForm"
               onSubmit={onSubmit}
             >
@@ -135,27 +135,38 @@ export default function NewTransaction({
                 <select
                   id="transactionType"
                   className={`
-                    rounded-md border border-neutral-700 bg-neutral-700 p-3
+                    w-44 rounded-md border border-neutral-700 bg-neutral-700 p-3
                     ${form.transactionType ? 'text-white' : 'text-zinc-400'}
                   `}
                   value={form?.transactionType ?? ''}
                   onChange={handleChange}
                 >
-                  <option value="" disabled>
-                    {t('newTransaction:chooseType')}
-                  </option>
+                  <option value="">{t('newTransaction:chooseType')}</option>
                   <option value="EXPENSE">
                     {t('newTransaction:expenseOption')}
                   </option>
                   <option value="INCOME">
                     {t('newTransaction:incomeOption')}
                   </option>
-                  <option value="FIXED_EXPENSE">
-                    {t('newTransaction:fixedExpenseOption')}
-                  </option>
-                  <option value="FIXED_INCOME">
-                    {t('newTransaction:fixedIncomeOption')}
-                  </option>
+                </select>
+              </div>
+              <div className="flex items-center justify-between">
+                <label className="text-zinc-300" htmlFor="repeats">
+                  {t('newTransaction:repeats')}
+                </label>
+                <select
+                  id="repeats"
+                  className={`
+                    w-44 rounded-md border border-neutral-700 bg-neutral-700 p-3
+                    ${form.repeats ? 'text-white' : 'text-zinc-400'}
+                  `}
+                  value={form?.repeats ?? ''}
+                  onChange={handleChange}
+                >
+                  <option value="">{t('newTransaction:chooseType')}</option>
+                  <option value="DAILY">{t('newTransaction:daily')}</option>
+                  <option value="WEEKLY">{t('newTransaction:weekly')}</option>
+                  <option value="MONTHLY">{t('newTransaction:monthly')}</option>
                 </select>
               </div>
             </form>

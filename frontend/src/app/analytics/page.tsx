@@ -1,13 +1,14 @@
 'use client';
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
-import Button from '@/components/Button';
 import DefaultBackground from '@/components/DefaultBackground';
 import Header from '@/components/Header';
 import NewTransaction from '@/components/NewTransaction';
 import useAnalytics from '@/hooks/useAnalytics';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function Analytics() {
+  const { t } = useTranslation();
   const { data: analytics } = useAnalytics();
   const [index, setIndex] = useState<number>(0);
 
@@ -28,6 +29,15 @@ export default function Analytics() {
     }
   }
 
+  function handleChange({
+    currentTarget: { value, id },
+  }: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+    // setForm((prevForm) => ({
+    //   ...prevForm,
+    //   [id]: value,
+    // }));
+  }
+
   return (
     <DefaultBackground style="flex flex-col items-center gap-2 pt-2">
       <Header />
@@ -42,20 +52,23 @@ export default function Analytics() {
               accesses={analytics[index].accesses}
               path={analytics[index].path}
             />
-            <div className="flex w-full items-center justify-center gap-2">
-              <Button
-                height="h-12"
-                width="w-3/12"
-                translation={'Previous Page'}
-                onClick={handlePrevious}
-              />
-              <Button
-                height="h-12"
-                width="w-3/12"
-                translation={'Next Page'}
-                onClick={handleNext}
-              />
-            </div>
+            <select
+              id="transactionType"
+              className={`
+                rounded-md border border-neutral-700 bg-neutral-700 p-3
+                ${true ? 'text-white' : 'text-zinc-400'}
+              `}
+              value={''}
+              onChange={handleChange}
+            >
+              <option value="" disabled>
+                {t('newTransaction:chooseType')}
+              </option>
+              <option value="EXPENSE">
+                {t('newTransaction:expenseOption')}
+              </option>
+              <option value="INCOME">{t('newTransaction:incomeOption')}</option>
+            </select>
           </div>
         )}
       </div>

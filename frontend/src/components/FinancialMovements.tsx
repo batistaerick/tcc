@@ -39,6 +39,16 @@ export default function FinancialMovements({
     setIsNewTransactionOpen((prev) => !prev);
   }
 
+  function getDate(): string {
+    if (transaction?.repeats) {
+      return transaction.repeats;
+    }
+    if (transaction?.date) {
+      return formatDate(transaction.date, language);
+    }
+    return '';
+  }
+
   return (
     <div className="grid grid-cols-3 border-b-2 border-gray-500 text-lg">
       <div className="flex items-center justify-start gap-2">
@@ -49,9 +59,7 @@ export default function FinancialMovements({
         />
         {transaction.category}
       </div>
-      <div className="flex items-center justify-center">
-        {transaction?.date && formatDate(transaction.date, language)}
-      </div>
+      <div className="flex items-center justify-center">{getDate()}</div>
       <div className="flex items-center justify-end gap-1">
         <Money value={transaction.value} />
         <FcFullTrash

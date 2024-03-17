@@ -1,4 +1,4 @@
-import { RoleName, TransactionType } from '@/enums/enums';
+import { Repeats, RoleName, TransactionType } from '@/enums/enums';
 
 export interface UpdatedUser {
   firstName?: string;
@@ -37,7 +37,26 @@ export interface Transaction {
   notes?: string;
   date?: Date;
   value?: number;
+  installments?: number;
   transactionType?: TransactionType;
+  repeats?: Repeats;
+}
+
+export interface Goal {
+  id?: string;
+  user?: User;
+  title?: string;
+  description?: string;
+  currentlyAmount?: number;
+  targetAmount?: number;
+  startDate?: Date;
+  endDate?: Date;
+}
+
+export interface MonthlySummary {
+  date: string;
+  expense: number;
+  income: number;
 }
 
 interface Pageable {

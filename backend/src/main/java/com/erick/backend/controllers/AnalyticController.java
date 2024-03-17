@@ -6,6 +6,7 @@ import static org.springframework.http.ResponseEntity.ok;
 import com.erick.backend.domains.dtos.AnalyticDto;
 import com.erick.backend.domains.entities.Analytic;
 import com.erick.backend.services.AnalyticService;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,19 @@ public class AnalyticController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Analytic>> findAll() {
         List<Analytic> analytic = service.findAll();
+        return ok(analytic);
+    }
+
+    @GetMapping("/find-between")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Analytic>> findByAccessesBetween(
+        @RequestParam LocalDate startDate,
+        @RequestParam LocalDate endDate
+    ) {
+        List<Analytic> analytic = service.findByAccessesBetween(
+            startDate,
+            endDate
+        );
         return ok(analytic);
     }
 }

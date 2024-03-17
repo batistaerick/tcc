@@ -25,18 +25,16 @@ public class User implements UserDetails {
     @GeneratedValue
     private UUID id;
 
-    private String firstName;
-
-    private String lastName;
-
-    private String middleName;
-
     @Email
     @Column(unique = true)
     @NotBlank(message = "Email cannot be blank!")
     private String email;
 
+    private String firstName;
+    private String lastName;
+    private String middleName;
     private String password;
+    private Double currentlyAmount;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -49,6 +47,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private transient List<Transaction> transactions;
+
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Goal> goals;
 
     @OneToOne
     private Image profileImage;

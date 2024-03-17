@@ -1,13 +1,11 @@
 import FinancialMovements from '@/components/FinancialMovements';
 import { PaginatedTransactions, Transaction } from '@/types/types';
 import { UIEvent, useEffect, useRef } from 'react';
-import { InfiniteKeyedMutator, KeyedMutator } from 'swr';
+import { InfiniteKeyedMutator } from 'swr';
 
 interface SingleTransactionProps {
   transactions: Transaction[] | undefined;
   transactionsMutate: InfiniteKeyedMutator<PaginatedTransactions[]>;
-  fixedTransactions: Transaction[] | undefined;
-  fixedTransactionsMutate: KeyedMutator<Transaction[]>;
   title: string;
   size: number;
   setSize: (
@@ -19,8 +17,6 @@ interface SingleTransactionProps {
 export default function Transactions({
   transactions,
   transactionsMutate,
-  fixedTransactions,
-  fixedTransactionsMutate,
   title,
   size,
   setSize,
@@ -59,7 +55,7 @@ export default function Transactions({
             <div className="flex items-center justify-end">Value</div>
           </div>
           <div
-            className="h-64 space-y-2 overflow-y-auto"
+            className="no-scrollbar h-64 space-y-2 overflow-y-auto"
             onScroll={onScroll}
             ref={scrollDivRef}
           >
@@ -68,13 +64,6 @@ export default function Transactions({
                 key={transaction.id}
                 transaction={transaction}
                 mutateOnDelete={transactionsMutate}
-              />
-            ))}
-            {fixedTransactions?.map((transaction) => (
-              <FinancialMovements
-                key={transaction.id}
-                transaction={transaction}
-                mutateOnDelete={fixedTransactionsMutate}
               />
             ))}
           </div>

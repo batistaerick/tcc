@@ -1,4 +1,4 @@
-import { ResponseError, Transaction } from '@/types/types';
+import { Goal, ResponseError, Transaction } from '@/types/types';
 import { atom } from 'recoil';
 
 export const selectedDateAtom = atom<Date>({
@@ -24,7 +24,22 @@ export const transactionFormAtom = atom<Transaction>({
     value: undefined,
     category: '',
     notes: '',
-    date: undefined,
+    date: new Date(),
     transactionType: undefined,
+    repeats: undefined,
+  },
+});
+
+export const goalFormAtom = atom<Goal>({
+  key: 'goal-form',
+  default: {
+    id: undefined,
+    user: undefined,
+    title: undefined,
+    description: undefined,
+    currentlyAmount: undefined,
+    targetAmount: undefined,
+    startDate: new Date(),
+    endDate: new Date(),
   },
 });

@@ -3,6 +3,7 @@ package com.erick.backend.services;
 import com.erick.backend.domains.dtos.AnalyticDto;
 import com.erick.backend.domains.entities.Analytic;
 import com.erick.backend.repositories.AnalyticRepository;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,13 @@ public class AnalyticService {
             .orElse(Analytic.builder().path(dto.getPath()).build());
         analytic.increaseValues(dto.getCountry());
         repository.save(analytic);
+    }
+
+    public List<Analytic> findByAccessesBetween(
+        LocalDate startDate,
+        LocalDate endDate
+    ) {
+        return repository.findByAccessesBetween(startDate, endDate);
     }
 
     public List<Analytic> findAll() {

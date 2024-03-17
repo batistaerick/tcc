@@ -4,9 +4,9 @@ import java.sql.Blob;
 import java.util.UUID;
 import lombok.*;
 
-@Builder
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ImageDto {

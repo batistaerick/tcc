@@ -56,6 +56,7 @@ export default function Profile() {
       setUpdatedUser(newUser);
       await update();
       await mutateImage();
+      push('/');
     } catch (error: any) {
       if (error?.response?.data?.message) {
         setUnauthorized(error?.response?.data?.errorCode);

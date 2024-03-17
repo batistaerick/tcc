@@ -26,6 +26,7 @@ export interface LanguageMap {
     firstName: string;
   };
   balance: {
+    currentlyAmount: string;
     expense: string;
     income: string;
     totalBalance: string;

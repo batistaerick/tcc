@@ -25,9 +25,9 @@ export default function useTransactions(
       url: '/transactions',
       config: {
         params: {
+          transactionType,
           startDate,
           endDate,
-          transactionType,
           page: pageIndex,
           size,
         },

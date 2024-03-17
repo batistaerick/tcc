@@ -1,8 +1,10 @@
 package com.erick.backend.converters;
 
+import com.erick.backend.domains.dtos.GoalDto;
 import com.erick.backend.domains.dtos.RoleDto;
 import com.erick.backend.domains.dtos.TransactionDto;
 import com.erick.backend.domains.dtos.UserDto;
+import com.erick.backend.domains.entities.Goal;
 import com.erick.backend.domains.entities.Role;
 import com.erick.backend.domains.entities.Transaction;
 import com.erick.backend.domains.entities.User;
@@ -91,20 +93,20 @@ public class DefaultConverters {
     /**
      * Converts a Transaction entity to a TransactionDto.
      *
-     * @param transaction The Transaction entity to convert.
+     * @param entity The Transaction entity to convert.
      * @return A TransactionDto corresponding to the Transaction entity.
      */
-    public static TransactionDto transactionEntityToDto(
-        Transaction transaction
-    ) {
+    public static TransactionDto transactionEntityToDto(Transaction entity) {
         return TransactionDto
             .builder()
-            .id(transaction.getId())
-            .category(transaction.getCategory())
-            .notes(transaction.getNotes())
-            .date(transaction.getDate())
-            .value(transaction.getValue())
-            .transactionType(transaction.getTransactionType())
+            .id(entity.getId())
+            .category(entity.getCategory())
+            .notes(entity.getNotes())
+            .date(entity.getDate())
+            .value(entity.getValue())
+            .installments(entity.getInstallments())
+            .transactionType(entity.getTransactionType())
+            .repeats(entity.getRepeats())
             .build();
     }
 
@@ -122,7 +124,35 @@ public class DefaultConverters {
             .notes(dto.getNotes())
             .date(dto.getDate())
             .value(dto.getValue())
+            .installments(dto.getInstallments())
             .transactionType(dto.getTransactionType())
+            .repeats(dto.getRepeats())
+            .build();
+    }
+
+    public static GoalDto goalEntityToDto(Goal entity) {
+        return GoalDto
+            .builder()
+            .id(entity.getId())
+            .title(entity.getTitle())
+            .description(entity.getDescription())
+            .currentlyAmount(entity.getCurrentlyAmount())
+            .targetAmount(entity.getTargetAmount())
+            .startDate(entity.getStartDate())
+            .endDate(entity.getEndDate())
+            .build();
+    }
+
+    public static Goal transactionDtoToEntity(GoalDto dto) {
+        return Goal
+            .builder()
+            .id(dto.getId())
+            .title(dto.getTitle())
+            .description(dto.getDescription())
+            .currentlyAmount(dto.getCurrentlyAmount())
+            .targetAmount(dto.getTargetAmount())
+            .startDate(dto.getStartDate())
+            .endDate(dto.getEndDate())
             .build();
     }
 }
