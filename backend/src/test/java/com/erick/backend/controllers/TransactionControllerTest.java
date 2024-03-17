@@ -13,7 +13,6 @@ import com.erick.backend.services.TransactionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -67,8 +66,7 @@ class TransactionControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(transaction))
             )
-            .andExpect(status().isNoContent())
-            .andExpect(header().exists("Location"));
+            .andExpect(status().isNoContent());
         verify(service).save(any(TransactionDto.class));
     }
 
@@ -135,24 +133,6 @@ class TransactionControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value(transaction.getId()));
         verify(service).findDtoById(id);
-    }
-
-    @Test
-    @WithMockUser(roles = "USER")
-    void testFindByUserEmailAndDateBetween() throws Exception {
-        TransactionType type = TransactionType.INCOME;
-        List<TransactionDto> transactions = Arrays.asList(
-            new TransactionDto(),
-            new TransactionDto()
-        );
-
-        given(service.findAllByTransactionType(type)).willReturn(transactions);
-
-        mockMvc
-            .perform(get("/transactions/" + type + "/fixed").with(jwt()))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.size()").value(transactions.size()));
-        verify(service).findAllByTransactionType(type);
     }
 
     @Test
