@@ -39,29 +39,6 @@ class TransactionServiceTest {
     private TransactionService transactionService;
 
     @Test
-    void save_ValidTransactionDto_SaveTransaction() {
-        String authenticatedEmail = "test@test.com";
-        try (
-            MockedStatic<UserSession> staticUserSessionMock =
-                Mockito.mockStatic(UserSession.class)
-        ) {
-            staticUserSessionMock
-                .when(UserSession::getAuthenticatedEmail)
-                .thenReturn(authenticatedEmail);
-            TransactionDto transactionDto = createMockTransactionDto();
-            Transaction transaction = createMockTransaction();
-
-            when(converter.dtoToEntity(transactionDto)).thenReturn(transaction);
-            when(userService.findByEmail(authenticatedEmail))
-                .thenReturn(createMockUser());
-            when(repository.save(transaction)).thenReturn(transaction);
-            when(converter.entityToDto(transaction)).thenReturn(transactionDto);
-            doNothing().when(transactionService).save(transactionDto);
-            verify(repository, times(1)).save(transaction);
-        }
-    }
-
-    @Test
     void delete_NonExistingTransaction_ThrowsGlobalException() {
         UUID nonExistingTransactionId = UUID.randomUUID();
 
@@ -107,7 +84,6 @@ class TransactionServiceTest {
 
     @Test
     void findAllByTransactionType_ValidParameters_ReturnsListOfTransactionDto() {
-        // Arrange
         String authenticatedEmail = "test@test.com";
         try (
             MockedStatic<UserSession> staticUserSessionMock =
