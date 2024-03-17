@@ -6,7 +6,7 @@ import NewTransaction from '@/components/NewTransaction';
 
 export default function GoalsPage() {
   return (
-    <DefaultBackground>
+    <DefaultBackground style="flex flex-col items-center gap-2 pt-2">
       <Header />
       <Goals />
       <NewTransaction />

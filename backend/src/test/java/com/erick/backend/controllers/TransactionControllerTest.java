@@ -58,8 +58,7 @@ class TransactionControllerTest {
         TransactionDto transaction = new TransactionDto();
         TransactionDto savedTransaction = new TransactionDto();
 
-        given(service.save(any(TransactionDto.class)))
-            .willReturn(savedTransaction);
+        doNothing().when(service).save(any(TransactionDto.class));
 
         mockMvc
             .perform(
@@ -68,9 +67,8 @@ class TransactionControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(transaction))
             )
-            .andExpect(status().isCreated())
-            .andExpect(header().exists("Location"))
-            .andExpect(jsonPath("$.id").value(savedTransaction.getId()));
+            .andExpect(status().isNoContent())
+            .andExpect(header().exists("Location"));
         verify(service).save(any(TransactionDto.class));
     }
 
@@ -102,7 +100,7 @@ class TransactionControllerTest {
         );
 
         given(
-            service.findByUserEmailAndTransactionTypeAndDateBetween(
+            service.findByTransactionTypeAndDateBetween(
                 type,
                 startDate,
                 endDate,

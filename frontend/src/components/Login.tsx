@@ -15,6 +15,8 @@ import { FcGoogle } from 'react-icons/fc';
 import { useRecoilState } from 'recoil';
 
 export default function Login() {
+  const { t } = useTranslation();
+  const { openModal } = useModal();
   const [responseError, setResponseError] = useRecoilState<
     ResponseError | undefined
   >(responseErrorAtom);
@@ -22,8 +24,6 @@ export default function Login() {
   const [password, setPassword] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [variant, setVariant] = useState<string>('login');
-  const { openModal } = useModal();
-  const { t } = useTranslation();
 
   const toggleVariant = useCallback(
     () =>
@@ -152,9 +152,11 @@ export default function Login() {
                 items-center justify-center rounded-full
                 bg-white transition hover:opacity-80
               `}
-              // onClick={() => {}}
             >
-              <FcGoogle size={30} />
+              <FcGoogle
+                size={30}
+                onClick={() => signIn('github', { callbackUrl: '/' })}
+              />
             </div>
             <div
               className={`
@@ -162,9 +164,12 @@ export default function Login() {
                 items-center justify-center rounded-full
                 bg-white transition hover:opacity-80
               `}
-              // onClick={() => {}}
             >
-              <FaGithub color="black" size={30} />
+              <FaGithub
+                color="black"
+                size={30}
+                onClick={() => signIn('github', { callbackUrl: '/' })}
+              />
             </div>
           </div>
           <p className="mt-12 flex items-center justify-center text-neutral-500">

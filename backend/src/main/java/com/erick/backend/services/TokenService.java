@@ -33,31 +33,23 @@ public class TokenService {
      */
     public UserDto generateTokens(Authentication authentication) {
         Instant now = Instant.now();
-        String scope = authentication
-            .getAuthorities()
-            .stream()
-            .map(GrantedAuthority::getAuthority)
-            .collect(Collectors.joining(" "));
-        JwtClaimsSet accessTokenClaims = JwtClaimsSet
-            .builder()
-            .issuer("self")
-            .issuedAt(now)
-            .expiresAt(now.plus(1, ChronoUnit.HOURS))
-            .subject(authentication.getName())
-            .claim("scope", scope)
-            .build();
+
+        JwtClaimsSet accessTokenClaims = jwtClaimsSet(
+            now,
+            1,
+            ChronoUnit.HOURS,
+            authentication
+        );
         String accessToken =
             this.encoder.encode(JwtEncoderParameters.from(accessTokenClaims))
                 .getTokenValue();
 
-        JwtClaimsSet refreshTokenClaims = JwtClaimsSet
-            .builder()
-            .issuer("self")
-            .issuedAt(now)
-            .expiresAt(now.plus(7, ChronoUnit.DAYS))
-            .subject(authentication.getName())
-            .claim("scope", scope)
-            .build();
+        JwtClaimsSet refreshTokenClaims = jwtClaimsSet(
+            now,
+            7,
+            ChronoUnit.DAYS,
+            authentication
+        );
         String refreshToken =
             this.encoder.encode(JwtEncoderParameters.from(refreshTokenClaims))
                 .getTokenValue();
@@ -70,5 +62,26 @@ public class TokenService {
         userDto.setProfileImage(null);
 
         return userDto;
+    }
+
+    private JwtClaimsSet jwtClaimsSet(
+        Instant instant,
+        Integer amountToAdd,
+        ChronoUnit unit,
+        Authentication authentication
+    ) {
+        String scope = authentication
+            .getAuthorities()
+            .stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.joining(" "));
+        return JwtClaimsSet
+            .builder()
+            .issuer("self")
+            .issuedAt(instant)
+            .expiresAt(instant.plus(amountToAdd, unit))
+            .subject(authentication.getName())
+            .claim("scope", scope)
+            .build();
     }
 }

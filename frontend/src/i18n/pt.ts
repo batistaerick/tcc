@@ -32,6 +32,7 @@ const pt: LanguageMap = {
     firstName: 'Nome',
   },
   balance: {
+    currentlyAmount: 'Valor Atual',
     expense: 'Total de Despesas',
     income: 'Total de Receitas',
     totalBalance: 'Balanço',

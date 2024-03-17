@@ -7,9 +7,9 @@ import java.util.Set;
 import java.util.UUID;
 import lombok.*;
 
-@Builder
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
@@ -25,4 +25,5 @@ public class UserDto {
     private String accessToken;
     private Set<RoleDto> roles = new HashSet<>();
     private List<TransactionDto> transactions;
+    private List<GoalDto> goals;
 }

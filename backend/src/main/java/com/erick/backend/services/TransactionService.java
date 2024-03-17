@@ -1,6 +1,7 @@
 package com.erick.backend.services;
 
 import com.erick.backend.converters.TransactionConverter;
+import com.erick.backend.domains.dtos.MonthlySummaryDto;
 import com.erick.backend.domains.dtos.TransactionDto;
 import com.erick.backend.domains.entities.Transaction;
 import com.erick.backend.domains.entities.User;
@@ -12,6 +13,7 @@ import com.erick.backend.utils.UpdateEntity;
 import com.erick.backend.utils.UserSession;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -36,21 +38,24 @@ public class TransactionService {
      * Saves a new transaction to the repository.
      *
      * @param dto The TransactionDto object containing transaction information to be saved.
-     * @return The saved TransactionDto.
      */
-    public TransactionDto save(TransactionDto dto) {
+    public void save(TransactionDto dto) {
         UUID id = userService
             .findByEmail(UserSession.getAuthenticatedEmail())
             .getId();
         Transaction transaction = converter.dtoToEntity(dto);
-        transaction.setUser(
-            User
-                .builder()
-                .id(id)
-                .email(UserSession.getAuthenticatedEmail())
-                .build()
-        );
-        return converter.entityToDto(repository.save(transaction));
+        transaction.setUser(User.builder().id(id).build());
+
+        if (transaction.getInstallments() != null) {
+            List<Transaction> transactions = new ArrayList<>();
+            for (int i = 0; i < transaction.getInstallments(); i++) {
+                transactions.add(transaction);
+                transaction.setDate(transaction.getDate().plusMonths(1));
+            }
+            repository.saveAll(transactions);
+        } else {
+            repository.save(transaction);
+        }
     }
 
     /**
@@ -124,15 +129,7 @@ public class TransactionService {
             );
     }
 
-    /**
-     * Finds all transactions of a specified type within a date range.
-     *
-     * @param transactionType The type of transactions to find.
-     * @param startDate       The start date of the range.
-     * @param endDate         The end date of the range.
-     * @return A list of TransactionDto objects.
-     */
-    public Page<Transaction> findByUserEmailAndTransactionTypeAndDateBetween(
+    public Page<Transaction> findByTransactionTypeAndDateBetween(
         TransactionType transactionType,
         LocalDate startDate,
         LocalDate endDate,
@@ -141,11 +138,12 @@ public class TransactionService {
         startDate = startDate.withDayOfMonth(1);
         endDate = endDate.withDayOfMonth(endDate.lengthOfMonth());
 
-        return repository.findByUserEmailAndTransactionTypeAndDateBetween(
+        return repository.findByUserEmailAndTransactionTypeAndDateBetweenOrRepeatsIsNotNullAndTransactionType(
             UserSession.getAuthenticatedEmail(),
             transactionType,
             startDate,
             endDate,
+            transactionType,
             pageable
         );
     }
@@ -169,6 +167,32 @@ public class TransactionService {
             .toList();
     }
 
+    public List<MonthlySummaryDto> getMonthlySummary() {
+        LocalDate starts = LocalDate.now().minusMonths(6);
+        LocalDate ends = LocalDate
+            .now()
+            .withDayOfMonth(LocalDate.now().lengthOfMonth());
+
+        List<MonthlySummaryDto> monthlySummary = repository.getMonthlySummary(
+            UserSession.getAuthenticatedEmail(),
+            starts,
+            ends
+        );
+        monthlySummary.sort((a, b) -> {
+            String[] partsA = a.getDate().split("-");
+            String[] partsB = b.getDate().split("-");
+            int monthA = Integer.parseInt(partsA[0]);
+            int yearA = Integer.parseInt(partsA[1]);
+            int monthB = Integer.parseInt(partsB[0]);
+            int yearB = Integer.parseInt(partsB[1]);
+            LocalDate dateA = LocalDate.of(yearA, monthA, 1);
+            LocalDate dateB = LocalDate.of(yearB, monthB, 1);
+            return dateA.compareTo(dateB);
+        });
+
+        return monthlySummary;
+    }
+
     /**
      * Predicts the remaining balance by a specified end date.
      *
@@ -188,10 +212,10 @@ public class TransactionService {
             endDate
         );
         double totalOfFixedExpenses = totalOfFixedTransactionsByType(
-            TransactionType.FIXED_EXPENSE
+            TransactionType.INCOME
         );
         double totalOfFixedIncomes = totalOfFixedTransactionsByType(
-            TransactionType.FIXED_INCOME
+            TransactionType.EXPENSE
         );
 
         int numberOfMonths = getNumberOfMonths(
@@ -234,7 +258,6 @@ public class TransactionService {
 
     private Integer getNumberOfMonths(LocalDate startDate, LocalDate endDate) {
         int numberOfMonths = Period.between(startDate, endDate).getMonths();
-
         if (numberOfMonths <= 0) {
             return 1;
         }

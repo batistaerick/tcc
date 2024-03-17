@@ -32,6 +32,7 @@ const en: LanguageMap = {
     firstName: 'First Name',
   },
   balance: {
+    currentlyAmount: 'Currently Amount',
     expense: 'Total Expense',
     income: 'Total Income',
     totalBalance: 'Total Balance',

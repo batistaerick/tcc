@@ -12,6 +12,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -45,6 +46,7 @@ public class SecurityConfig {
      * @throws Exception if an error occurs during the configuration.
      */
     @Bean
+    @Order(1)
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
         throws Exception {
         return http

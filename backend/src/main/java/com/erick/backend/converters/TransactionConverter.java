@@ -27,7 +27,9 @@ public class TransactionConverter {
             .notes(entity.getNotes())
             .date(entity.getDate())
             .value(entity.getValue())
+            .installments(entity.getInstallments())
             .transactionType(entity.getTransactionType())
+            .repeats(entity.getRepeats())
             .build();
         if (entity.getUser() != null) {
             dto.setUser(DefaultConverters.userEntityToDto(entity.getUser()));
@@ -51,7 +53,9 @@ public class TransactionConverter {
             .notes(dto.getNotes())
             .date(dto.getDate())
             .value(dto.getValue())
+            .installments(dto.getInstallments())
             .transactionType(dto.getTransactionType())
+            .repeats(dto.getRepeats())
             .build();
         if (dto.getUser() != null) {
             entity.setUser(DefaultConverters.userDtoToEntity(dto.getUser()));

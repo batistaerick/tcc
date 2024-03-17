@@ -10,4 +10,18 @@
   input[type='number'] {
     -moz-appearance: textfield;
   }
+  ::-webkit-scrollbar {
+    width: 4px;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: none;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 }

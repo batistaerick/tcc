@@ -24,3 +24,21 @@ export function getLocation(language: string): 'en-US' | 'pt-BR' {
 export function getCurrency(language: string): 'USD' | 'BRL' {
   return language === 'en' ? 'USD' : 'BRL';
 }
+
+export function formatBarChart(month: number): string {
+  const monthNames = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dez',
+  ];
+  return monthNames[month - 1] || '';
+}

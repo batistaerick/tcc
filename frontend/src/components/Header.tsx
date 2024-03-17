@@ -57,7 +57,7 @@ export default function Header({ dateFormat }: Readonly<HeaderProps>) {
   ];
 
   return (
-    <header className="flex w-[95%] items-end justify-between gap-3">
+    <header className="flex w-[95%] items-center justify-between gap-3">
       <Dropdown dropdownItems={dropdownItems} />
       <DatePickerDialog
         date={selectedDate}

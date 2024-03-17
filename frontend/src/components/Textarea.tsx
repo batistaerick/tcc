@@ -1,41 +1,27 @@
-import { ChangeEvent, KeyboardEvent, useState } from 'react';
-import { PiEyeDuotone, PiEyeSlashDuotone } from 'react-icons/pi';
+import { ChangeEvent, KeyboardEvent } from 'react';
 
-export interface InputProps {
+export interface TextareaProps {
   id: string;
   value: string | number | undefined;
   label: string;
   type: string;
-  accept?: string;
   height?: string;
   width?: string;
-  onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (event: KeyboardEvent<HTMLTextAreaElement>) => void;
+  onChange: (event: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-export default function Input({
+export default function Textarea({
   id,
   value,
   label,
   type,
-  accept,
   height,
   width,
   onKeyDown,
   onChange,
-}: Readonly<InputProps>) {
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
-  const EyeIcon = isPasswordVisible ? PiEyeDuotone : PiEyeSlashDuotone;
-
-  function handleType() {
-    if (type === 'password' && isPasswordVisible) {
-      return 'text';
-    }
-    return type;
-  }
-
-  function handleKeyPress(event: KeyboardEvent<HTMLInputElement>) {
+}: Readonly<TextareaProps>) {
+  function handleKeyPress(event: KeyboardEvent<HTMLTextAreaElement>) {
     if (
       type === 'number' &&
       !RegExp(/^[\d.]$/).exec(event.key) &&
@@ -55,7 +41,7 @@ export default function Input({
 
   return (
     <div className="relative">
-      <input
+      <textarea
         className={`
           ${height ?? ''}
           ${width ?? 'w-full'}
@@ -64,9 +50,7 @@ export default function Input({
         `}
         placeholder=" "
         id={id}
-        type={handleType()}
         value={value}
-        accept={accept}
         onKeyDown={handleKeyPress}
         onChange={onChange}
       />
@@ -81,15 +65,6 @@ export default function Input({
       >
         {label}
       </label>
-      {type === 'password' && (
-        <div className="absolute right-3 top-4">
-          <EyeIcon
-            className="cursor-pointer text-gray-950"
-            size={22}
-            onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-          />
-        </div>
-      )}
     </div>
   );
 }
